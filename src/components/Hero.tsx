@@ -1,5 +1,5 @@
-
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Search, MapPin, Home, Calendar, Users, FileText, MessageSquare, BarChart3, Shield, Play, Star, ArrowRight, Phone } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -7,6 +7,12 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 
 const Hero = () => {
   const [selectedAudience, setSelectedAudience] = useState('tenant');
+  const [searchFilters, setSearchFilters] = useState({
+    location: '',
+    propertyType: '',
+    moveInDate: ''
+  });
+  const navigate = useNavigate();
 
   const cities = [
     { name: 'Berlin', subtitle: 'Startup hub', image: '/placeholder.svg' },
@@ -55,6 +61,39 @@ const Hero = () => {
       daysListed: 2
     }
   ];
+
+  const handleSearch = () => {
+    const params = new URLSearchParams();
+    if (searchFilters.location) params.set('location', searchFilters.location);
+    if (searchFilters.propertyType) params.set('propertyType', searchFilters.propertyType);
+    if (searchFilters.moveInDate) params.set('moveInDate', searchFilters.moveInDate);
+    
+    navigate(`/listings?${params.toString()}`);
+  };
+
+  const handleCityClick = (cityName: string) => {
+    navigate(`/listings?location=${encodeURIComponent(cityName)}`);
+  };
+
+  const handlePropertyClick = (propertyId: number) => {
+    navigate(`/listing/${propertyId}`);
+  };
+
+  const handleCTAClick = (action: string) => {
+    switch (action) {
+      case 'list-property':
+        navigate('/list-property');
+        break;
+      case 'contact-support':
+        navigate('/contact');
+        break;
+      case 'view-all':
+        navigate('/listings');
+        break;
+      default:
+        console.log(`Action: ${action}`);
+    }
+  };
 
   const landlordFeatures = [
     {
@@ -145,7 +184,6 @@ const Hero = () => {
         {/* Dynamic Content Based on Selection */}
         <div className="animate-fade-in">
           {selectedAudience === 'tenant' ? (
-            // Tenant Content
             <>
               {/* Why Choose Us */}
               <div className="text-center mb-12">
@@ -185,9 +223,11 @@ const Hero = () => {
                       <Input 
                         placeholder="City / Area / Zip Code" 
                         className="pl-10 h-12"
+                        value={searchFilters.location}
+                        onChange={(e) => setSearchFilters({ ...searchFilters, location: e.target.value })}
                       />
                     </div>
-                    <Select>
+                    <Select value={searchFilters.propertyType} onValueChange={(value) => setSearchFilters({ ...searchFilters, propertyType: value })}>
                       <SelectTrigger className="h-12">
                         <Home className="w-4 h-4 mr-2" />
                         <SelectValue placeholder="Property Type" />
@@ -205,9 +245,11 @@ const Hero = () => {
                         type="month" 
                         className="pl-10 h-12"
                         placeholder="Move-in Date"
+                        value={searchFilters.moveInDate}
+                        onChange={(e) => setSearchFilters({ ...searchFilters, moveInDate: e.target.value })}
                       />
                     </div>
-                    <Button size="lg" className="h-12 bg-gradient-to-r from-primary to-secondary hover:opacity-90 transition-opacity">
+                    <Button size="lg" className="h-12 bg-gradient-to-r from-primary to-secondary hover:opacity-90 transition-opacity" onClick={handleSearch}>
                       <Search className="w-5 h-5 mr-2" />
                       Search
                     </Button>
@@ -240,6 +282,7 @@ const Hero = () => {
                       <div 
                         key={city.name}
                         className="bg-background rounded-2xl overflow-hidden shadow-lg border border-border hover:shadow-xl transition-shadow duration-300 cursor-pointer min-w-[250px] group"
+                        onClick={() => handleCityClick(city.name)}
                       >
                         <div className="h-40 bg-gradient-to-br from-muted to-muted/50 relative overflow-hidden">
                           <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
@@ -258,13 +301,14 @@ const Hero = () => {
               <div className="mb-16">
                 <div className="flex justify-between items-center mb-8">
                   <h2 className="text-3xl font-bold">Explore Featured Properties</h2>
-                  <Button variant="outline">View All</Button>
+                  <Button variant="outline" onClick={() => handleCTAClick('view-all')}>View All</Button>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                   {featuredProperties.map((property) => (
                     <div 
                       key={property.id}
                       className="bg-background rounded-2xl overflow-hidden shadow-lg border border-border hover:shadow-xl transition-shadow duration-300 cursor-pointer group"
+                      onClick={() => handlePropertyClick(property.id)}
                     >
                       <div className="h-48 bg-gradient-to-br from-muted to-muted/50 relative">
                         {property.verified && (
@@ -318,7 +362,6 @@ const Hero = () => {
               </div>
             </>
           ) : (
-            // Landlord Content
             <>
               {/* Why List with Us */}
               <div className="mb-16">
@@ -377,11 +420,21 @@ const Hero = () => {
                   <h2 className="text-3xl font-bold mb-4">Ready to List Your Property?</h2>
                   <p className="text-xl mb-6 opacity-90">Join thousands of successful landlords today</p>
                   <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                    <Button size="lg" variant="secondary" className="bg-white text-primary hover:bg-white/90">
+                    <Button 
+                      size="lg" 
+                      variant="secondary" 
+                      className="bg-white text-primary hover:bg-white/90"
+                      onClick={() => handleCTAClick('list-property')}
+                    >
                       <ArrowRight className="w-5 h-5 mr-2" />
                       List Your Property
                     </Button>
-                    <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-primary">
+                    <Button 
+                      size="lg" 
+                      variant="outline" 
+                      className="border-white text-white hover:bg-white hover:text-primary"
+                      onClick={() => handleCTAClick('contact-support')}
+                    >
                       <Phone className="w-5 h-5 mr-2" />
                       Contact Support
                     </Button>

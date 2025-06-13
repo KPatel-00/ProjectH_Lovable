@@ -1,16 +1,19 @@
 
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Globe, Facebook, Twitter, Instagram, Linkedin, Mail, Phone, MapPin } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 
 const Footer = () => {
+  const navigate = useNavigate();
+
   const footerSections = [
     {
       title: 'Platform',
       links: [
-        { label: 'Browse Listings', href: '#' },
-        { label: 'List Property', href: '#' },
+        { label: 'Browse Listings', href: '/listings' },
+        { label: 'List Property', href: '/list-property' },
         { label: 'How It Works', href: '#' },
         { label: 'Pricing', href: '#' },
         { label: 'Mobile App', href: '#' }
@@ -19,8 +22,8 @@ const Footer = () => {
     {
       title: 'Support',
       links: [
-        { label: 'Help Center', href: '#' },
-        { label: 'Contact Us', href: '#' },
+        { label: 'Help Center', href: '/contact' },
+        { label: 'Contact Us', href: '/contact' },
         { label: 'Safety Tips', href: '#' },
         { label: 'Report Issue', href: '#' },
         { label: 'Community Guidelines', href: '#' }
@@ -49,11 +52,24 @@ const Footer = () => {
   ];
 
   const socialLinks = [
-    { icon: Facebook, href: '#', label: 'Facebook' },
-    { icon: Twitter, href: '#', label: 'Twitter' },
-    { icon: Instagram, href: '#', label: 'Instagram' },
-    { icon: Linkedin, href: '#', label: 'LinkedIn' }
+    { icon: Facebook, href: 'https://facebook.com', label: 'Facebook' },
+    { icon: Twitter, href: 'https://twitter.com', label: 'Twitter' },
+    { icon: Instagram, href: 'https://instagram.com', label: 'Instagram' },
+    { icon: Linkedin, href: 'https://linkedin.com', label: 'LinkedIn' }
   ];
+
+  const handleLinkClick = (href: string) => {
+    if (href.startsWith('http')) {
+      window.open(href, '_blank', 'noopener,noreferrer');
+    } else if (href !== '#') {
+      navigate(href);
+    }
+  };
+
+  const handleNewsletterSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log('Newsletter subscription submitted');
+  };
 
   return (
     <footer className="bg-background border-t border-border">
@@ -68,16 +84,17 @@ const Footer = () => {
               Get the latest property listings, market insights, and platform updates delivered to your inbox.
             </p>
             
-            <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
+            <form onSubmit={handleNewsletterSubmit} className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
               <Input
                 type="email"
                 placeholder="Enter your email"
                 className="h-12 flex-1"
+                required
               />
-              <Button className="h-12 px-8 bg-gradient-to-r from-primary to-secondary hover:opacity-90 transition-opacity">
+              <Button type="submit" className="h-12 px-8 bg-gradient-to-r from-primary to-secondary hover:opacity-90 transition-opacity">
                 Subscribe
               </Button>
-            </div>
+            </form>
           </div>
         </div>
       </div>
@@ -87,7 +104,7 @@ const Footer = () => {
         <div className="grid lg:grid-cols-6 gap-8">
           {/* Company Info */}
           <div className="lg:col-span-2 space-y-6">
-            <div className="flex items-center space-x-3">
+            <div className="flex items-center space-x-3 cursor-pointer" onClick={() => navigate('/')}>
               <div className="w-10 h-10 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center">
                 <span className="text-primary-foreground font-bold">R</span>
               </div>
@@ -115,14 +132,14 @@ const Footer = () => {
 
             <div className="flex space-x-4">
               {socialLinks.map((social) => (
-                <a
+                <button
                   key={social.label}
-                  href={social.href}
+                  onClick={() => handleLinkClick(social.href)}
                   className="w-10 h-10 bg-muted rounded-lg flex items-center justify-center text-muted-foreground hover:bg-primary hover:text-primary-foreground transition-all duration-200 hover:scale-110"
                   aria-label={social.label}
                 >
                   <social.icon className="w-5 h-5" />
-                </a>
+                </button>
               ))}
             </div>
           </div>
@@ -136,12 +153,12 @@ const Footer = () => {
               <ul className="space-y-3">
                 {section.links.map((link) => (
                   <li key={link.label}>
-                    <a
-                      href={link.href}
-                      className="text-muted-foreground hover:text-foreground transition-colors duration-200 hover:underline"
+                    <button
+                      onClick={() => handleLinkClick(link.href)}
+                      className="text-muted-foreground hover:text-foreground transition-colors duration-200 hover:underline text-left"
                     >
                       {link.label}
-                    </a>
+                    </button>
                   </li>
                 ))}
               </ul>
@@ -165,15 +182,15 @@ const Footer = () => {
               </Button>
               
               <div className="flex items-center space-x-4 text-sm text-muted-foreground">
-                <a href="#" className="hover:text-foreground transition-colors">
+                <button onClick={() => handleLinkClick('#')} className="hover:text-foreground transition-colors">
                   Privacy
-                </a>
-                <a href="#" className="hover:text-foreground transition-colors">
+                </button>
+                <button onClick={() => handleLinkClick('#')} className="hover:text-foreground transition-colors">
                   Terms
-                </a>
-                <a href="#" className="hover:text-foreground transition-colors">
+                </button>
+                <button onClick={() => handleLinkClick('#')} className="hover:text-foreground transition-colors">
                   Cookies
-                </a>
+                </button>
               </div>
             </div>
           </div>
