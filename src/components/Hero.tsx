@@ -1,110 +1,179 @@
 
 import React, { useState } from 'react';
-import { Search, MapPin, Home, Users, Calendar, CheckCircle, Star, ArrowRight } from 'lucide-react';
+import { Search, MapPin, Home, Calendar, Users, FileText, MessageSquare, BarChart3, Shield, Play, Star, ArrowRight, Phone } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Card, CardContent } from '@/components/ui/card';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 const Hero = () => {
-  const [userType, setUserType] = useState<'tenant' | 'landlord'>('tenant');
+  const [selectedAudience, setSelectedAudience] = useState('tenant');
 
-  const tenantBenefits = [
-    { icon: CheckCircle, text: "Browse verified listings" },
-    { icon: CheckCircle, text: "Easy & quick applications" },
-    { icon: CheckCircle, text: "Direct landlord contact" }
-  ];
-
-  const stats = [
-    { label: "Cities Covered", value: "60+" },
-    { label: "Properties Listed", value: "5,000+" },
-    { label: "Verified Landlords", value: "2,000+" }
-  ];
-
-  const popularCities = [
-    { name: "Berlin", subtitle: "Startup hub", image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=400&h=300&fit=crop" },
-    { name: "Munich", subtitle: "Cultural capital", image: "https://images.unsplash.com/photo-1472396961693-142e6e269027?w=400&h=300&fit=crop" },
-    { name: "Frankfurt", subtitle: "Finance center", image: "https://images.unsplash.com/photo-1433086966358-54859d0ed716?w=400&h=300&fit=crop" },
-    { name: "Hamburg", subtitle: "Port city", image: "https://images.unsplash.com/photo-1482938289607-e9573fc25ebb?w=400&h=300&fit=crop" },
-    { name: "Cologne", subtitle: "Media hub", image: "https://images.unsplash.com/photo-1426604966848-d7adac402bff?w=400&h=300&fit=crop" },
-    { name: "Stuttgart", subtitle: "Tech center", image: "https://images.unsplash.com/photo-1500673922987-e212871fec22?w=400&h=300&fit=crop" }
+  const cities = [
+    { name: 'Berlin', subtitle: 'Startup hub', image: '/placeholder.svg' },
+    { name: 'Munich', subtitle: 'Home of Oktoberfest', image: '/placeholder.svg' },
+    { name: 'Frankfurt', subtitle: 'Finance capital', image: '/placeholder.svg' },
+    { name: 'Hamburg', subtitle: 'Port city charm', image: '/placeholder.svg' },
+    { name: 'Cologne', subtitle: 'Cultural center', image: '/placeholder.svg' },
+    { name: 'Stuttgart', subtitle: 'Tech innovation', image: '/placeholder.svg' },
   ];
 
   const featuredProperties = [
-    { id: 1, type: "Apartment", area: "Berlin Mitte", rent: "€1,200", image: "https://images.unsplash.com/photo-1487958449943-2429e8be8625?w=400&h=300&fit=crop", verified: true, daysAgo: 2 },
-    { id: 2, type: "House", area: "Munich Center", rent: "€2,800", image: "https://images.unsplash.com/photo-1524230572899-a752b3835840?w=400&h=300&fit=crop", verified: true, daysAgo: 1 },
-    { id: 3, type: "WG Room", area: "Frankfurt", rent: "€650", image: "https://images.unsplash.com/photo-1615729947596-a598e5de0ab3?w=400&h=300&fit=crop", verified: false, daysAgo: 3 },
-    { id: 4, type: "Studio", area: "Hamburg", rent: "€900", image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=400&h=300&fit=crop", verified: true, daysAgo: 1 }
+    {
+      id: 1,
+      image: '/placeholder.svg',
+      type: 'Apartment',
+      area: 'Berlin Mitte',
+      rent: '€1,200',
+      verified: true,
+      daysListed: 3
+    },
+    {
+      id: 2,
+      image: '/placeholder.svg',
+      type: 'WG Room',
+      area: 'Munich Schwabing',
+      rent: '€650',
+      verified: true,
+      daysListed: 1
+    },
+    {
+      id: 3,
+      image: '/placeholder.svg',
+      type: 'House',
+      area: 'Frankfurt Westend',
+      rent: '€2,100',
+      verified: false,
+      daysListed: 5
+    },
+    {
+      id: 4,
+      image: '/placeholder.svg',
+      type: 'Studio',
+      area: 'Hamburg Altona',
+      rent: '€800',
+      verified: true,
+      daysListed: 2
+    }
+  ];
+
+  const landlordFeatures = [
+    {
+      icon: FileText,
+      title: 'Easy listing creation',
+      description: 'Create professional listings in minutes with our intuitive form builder'
+    },
+    {
+      icon: Users,
+      title: 'Application management',
+      description: 'Review, compare and manage tenant applications from one dashboard'
+    },
+    {
+      icon: FileText,
+      title: 'Document management',
+      description: 'Secure document storage and sharing (Coming Soon)',
+      comingSoon: true
+    },
+    {
+      icon: MessageSquare,
+      title: 'Communicate with tenants easily',
+      description: 'Built-in messaging system for seamless landlord-tenant communication'
+    },
+    {
+      icon: BarChart3,
+      title: 'Dashboard insights',
+      description: 'Track views, leads, and performance metrics for your listings'
+    }
+  ];
+
+  const landlordReviews = [
+    {
+      name: 'Michael Weber',
+      title: 'Student Housing Manager',
+      review: 'Filled 3 units in under a week! The platform makes tenant screening so much easier.',
+      rating: 5
+    },
+    {
+      name: 'Sarah Müller',
+      title: 'Property Owner',
+      review: 'Great communication tools and the dashboard gives me all the insights I need.',
+      rating: 5
+    },
+    {
+      name: 'Thomas Schmidt',
+      title: 'Real Estate Investor',
+      review: 'Professional service and quality tenants. Highly recommend for landlords.',
+      rating: 5
+    }
   ];
 
   return (
     <section className="relative min-h-screen bg-gradient-to-br from-background via-muted/30 to-background overflow-hidden">
-      {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-5">
-        <div className="absolute top-20 left-10 w-72 h-72 bg-primary rounded-full mix-blend-multiply filter blur-xl animate-pulse"></div>
-        <div className="absolute top-40 right-10 w-72 h-72 bg-secondary rounded-full mix-blend-multiply filter blur-xl animate-pulse delay-1000"></div>
-        <div className="absolute -bottom-8 left-20 w-72 h-72 bg-accent rounded-full mix-blend-multiply filter blur-xl animate-pulse delay-500"></div>
-      </div>
+      {/* Background Elements */}
+      <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
+      <div className="absolute top-20 right-10 w-64 h-64 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-full blur-3xl"></div>
+      <div className="absolute bottom-20 left-10 w-48 h-48 bg-gradient-to-br from-secondary/20 to-primary/20 rounded-full blur-3xl"></div>
 
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 pt-20">
-        {/* Audience Split Toggle */}
-        <div className="flex justify-center mb-16 animate-fade-in">
-          <div className="inline-flex items-center bg-muted rounded-full p-1.5 shadow-lg">
-            <button
-              onClick={() => setUserType('tenant')}
-              className={`px-8 py-3 rounded-full text-sm font-medium transition-all duration-300 ${
-                userType === 'tenant'
-                  ? 'bg-background text-foreground shadow-md transform scale-105'
-                  : 'text-muted-foreground hover:text-foreground'
-              }`}
-            >
-              I'm a Tenant
-            </button>
-            <button
-              onClick={() => setUserType('landlord')}
-              className={`px-8 py-3 rounded-full text-sm font-medium transition-all duration-300 ${
-                userType === 'landlord'
-                  ? 'bg-background text-foreground shadow-md transform scale-105'
-                  : 'text-muted-foreground hover:text-foreground'
-              }`}
-            >
-              I'm a Landlord
-            </button>
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-16 relative">
+        {/* Audience Toggle */}
+        <div className="flex justify-center mb-12 animate-fade-in">
+          <div className="bg-background rounded-full p-1 shadow-lg border border-border">
+            <div className="flex">
+              <button
+                onClick={() => setSelectedAudience('tenant')}
+                className={`px-6 py-3 rounded-full font-medium transition-all duration-300 ${
+                  selectedAudience === 'tenant'
+                    ? 'bg-primary text-primary-foreground shadow-md'
+                    : 'text-muted-foreground hover:text-foreground'
+                }`}
+              >
+                I'm a Tenant
+              </button>
+              <button
+                onClick={() => setSelectedAudience('landlord')}
+                className={`px-6 py-3 rounded-full font-medium transition-all duration-300 ${
+                  selectedAudience === 'landlord'
+                    ? 'bg-primary text-primary-foreground shadow-md'
+                    : 'text-muted-foreground hover:text-foreground'
+                }`}
+              >
+                I'm a Landlord
+              </button>
+            </div>
           </div>
         </div>
 
-        {/* Dynamic Content Based on User Type */}
+        {/* Dynamic Content Based on Selection */}
         <div className="animate-fade-in">
-          {userType === 'tenant' ? (
-            <div className="space-y-20">
+          {selectedAudience === 'tenant' ? (
+            // Tenant Content
+            <>
               {/* Why Choose Us */}
-              <div className="text-center space-y-8">
-                <div className="flex flex-wrap justify-center gap-8 mb-12">
-                  {tenantBenefits.map((benefit, index) => (
-                    <div key={index} className="flex items-center space-x-3 text-muted-foreground">
-                      <benefit.icon className="w-5 h-5 text-secondary" />
-                      <span className="text-sm font-medium">{benefit.text}</span>
-                    </div>
-                  ))}
+              <div className="text-center mb-12">
+                <div className="flex justify-center space-x-8 mb-8">
+                  <div className="flex items-center space-x-2 text-sm text-muted-foreground">
+                    <div className="w-2 h-2 bg-primary rounded-full"></div>
+                    <span>Browse verified listings</span>
+                  </div>
+                  <div className="flex items-center space-x-2 text-sm text-muted-foreground">
+                    <div className="w-2 h-2 bg-primary rounded-full"></div>
+                    <span>Easy & quick applications</span>
+                  </div>
+                  <div className="flex items-center space-x-2 text-sm text-muted-foreground">
+                    <div className="w-2 h-2 bg-primary rounded-full"></div>
+                    <span>Direct landlord contact</span>
+                  </div>
                 </div>
               </div>
 
               {/* Hero Section */}
-              <div className="text-center space-y-8">
-                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground leading-tight">
-                  Find Your
+              <div className="text-center mb-16">
+                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground mb-6 leading-tight">
+                  Find Your Dream Home
                   <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                    {" "}Dream Home
+                    {" "}in Minutes
                   </span>
-                  {" "}in Minutes
                 </h1>
-                <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+                <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
                   From student rooms to full apartments – across Germany.
                 </p>
 
@@ -112,15 +181,15 @@ const Hero = () => {
                 <div className="bg-background rounded-2xl p-6 shadow-xl border border-border max-w-4xl mx-auto">
                   <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                     <div className="relative">
-                      <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" />
-                      <Input
-                        placeholder="City / Area / Zip Code"
-                        className="pl-10 h-12 border-0 bg-muted focus-visible:ring-2 focus-visible:ring-primary"
+                      <MapPin className="absolute left-3 top-3 w-5 h-5 text-muted-foreground" />
+                      <Input 
+                        placeholder="City / Area / Zip Code" 
+                        className="pl-10 h-12"
                       />
                     </div>
                     <Select>
-                      <SelectTrigger className="h-12 border-0 bg-muted">
-                        <Home className="w-5 h-5 mr-2 text-muted-foreground" />
+                      <SelectTrigger className="h-12">
+                        <Home className="w-4 h-4 mr-2" />
                         <SelectValue placeholder="Property Type" />
                       </SelectTrigger>
                       <SelectContent>
@@ -131,14 +200,14 @@ const Hero = () => {
                       </SelectContent>
                     </Select>
                     <div className="relative">
-                      <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" />
-                      <Input
-                        type="date"
+                      <Calendar className="absolute left-3 top-3 w-5 h-5 text-muted-foreground" />
+                      <Input 
+                        type="month" 
+                        className="pl-10 h-12"
                         placeholder="Move-in Date"
-                        className="pl-10 h-12 border-0 bg-muted focus-visible:ring-2 focus-visible:ring-primary"
                       />
                     </div>
-                    <Button className="h-12 bg-gradient-to-r from-primary to-secondary hover:opacity-90 transition-opacity">
+                    <Button size="lg" className="h-12 bg-gradient-to-r from-primary to-secondary hover:opacity-90 transition-opacity">
                       <Search className="w-5 h-5 mr-2" />
                       Search
                     </Button>
@@ -147,131 +216,211 @@ const Hero = () => {
               </div>
 
               {/* Platform Stats */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-                {stats.map((stat, index) => (
-                  <div key={index} className="space-y-2">
-                    <div className="text-3xl font-bold text-foreground">{stat.value}</div>
-                    <div className="text-sm text-muted-foreground">{stat.label}</div>
-                  </div>
-                ))}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16 text-center">
+                <div className="p-6 bg-background rounded-2xl shadow-lg border border-border">
+                  <div className="text-3xl font-bold text-primary mb-2">60+</div>
+                  <div className="text-muted-foreground">Cities Covered</div>
+                </div>
+                <div className="p-6 bg-background rounded-2xl shadow-lg border border-border">
+                  <div className="text-3xl font-bold text-primary mb-2">5,000+</div>
+                  <div className="text-muted-foreground">Properties Listed</div>
+                </div>
+                <div className="p-6 bg-background rounded-2xl shadow-lg border border-border">
+                  <div className="text-3xl font-bold text-primary mb-2">2,000+</div>
+                  <div className="text-muted-foreground">Verified Landlords</div>
+                </div>
               </div>
 
               {/* Popular Cities */}
-              <div className="space-y-8">
-                <h2 className="text-3xl font-bold text-center text-foreground">Explore Top Cities</h2>
-                <div className="flex overflow-x-auto gap-6 pb-4 scrollbar-hide">
-                  {popularCities.map((city, index) => (
-                    <Card key={index} className="min-w-[280px] cursor-pointer hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
-                      <div className="relative h-48 overflow-hidden rounded-t-lg">
-                        <img
-                          src={city.image}
-                          alt={city.name}
-                          className="w-full h-full object-cover transition-transform duration-300 hover:scale-110"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                        <div className="absolute bottom-4 left-4 text-white">
-                          <h3 className="text-xl font-bold">{city.name}</h3>
-                          <p className="text-sm opacity-90">{city.subtitle}</p>
+              <div className="mb-16">
+                <h2 className="text-3xl font-bold text-center mb-8">Explore Top Cities</h2>
+                <div className="cities-scroll-container overflow-x-auto pb-4">
+                  <div className="flex space-x-6 min-w-max px-4">
+                    {cities.map((city, index) => (
+                      <div 
+                        key={city.name}
+                        className="bg-background rounded-2xl overflow-hidden shadow-lg border border-border hover:shadow-xl transition-shadow duration-300 cursor-pointer min-w-[250px] group"
+                      >
+                        <div className="h-40 bg-gradient-to-br from-muted to-muted/50 relative overflow-hidden">
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+                          <div className="absolute bottom-3 left-3 text-white">
+                            <div className="text-lg font-bold">{city.name}</div>
+                            <div className="text-sm opacity-90">{city.subtitle}</div>
+                          </div>
                         </div>
                       </div>
-                    </Card>
-                  ))}
+                    ))}
+                  </div>
                 </div>
               </div>
 
               {/* Featured Properties */}
-              <div className="space-y-8">
-                <div className="flex justify-between items-center">
-                  <h2 className="text-3xl font-bold text-foreground">Explore Featured Properties</h2>
-                  <Button variant="outline" className="flex items-center gap-2">
-                    View All
-                    <ArrowRight className="w-4 h-4" />
-                  </Button>
+              <div className="mb-16">
+                <div className="flex justify-between items-center mb-8">
+                  <h2 className="text-3xl font-bold">Explore Featured Properties</h2>
+                  <Button variant="outline">View All</Button>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                   {featuredProperties.map((property) => (
-                    <Card key={property.id} className="cursor-pointer hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
-                      <div className="relative h-48 overflow-hidden rounded-t-lg">
-                        <img
-                          src={property.image}
-                          alt={property.type}
-                          className="w-full h-full object-cover"
-                        />
+                    <div 
+                      key={property.id}
+                      className="bg-background rounded-2xl overflow-hidden shadow-lg border border-border hover:shadow-xl transition-shadow duration-300 cursor-pointer group"
+                    >
+                      <div className="h-48 bg-gradient-to-br from-muted to-muted/50 relative">
                         {property.verified && (
-                          <div className="absolute top-3 right-3 bg-secondary text-secondary-foreground px-2 py-1 rounded-full text-xs font-medium">
+                          <div className="absolute top-3 right-3 bg-green-500 text-white text-xs px-2 py-1 rounded-full">
                             Verified
                           </div>
                         )}
                       </div>
-                      <CardContent className="p-4 space-y-2">
-                        <div className="flex justify-between items-start">
+                      <div className="p-4">
+                        <div className="flex justify-between items-start mb-2">
                           <div>
-                            <h3 className="font-semibold text-foreground">{property.type}</h3>
-                            <p className="text-sm text-muted-foreground">{property.area}</p>
+                            <div className="font-semibold text-foreground">{property.type}</div>
+                            <div className="text-sm text-muted-foreground">{property.area}</div>
                           </div>
-                          <div className="text-right">
-                            <p className="font-bold text-foreground">{property.rent}</p>
-                            <p className="text-xs text-muted-foreground">per month</p>
-                          </div>
+                          <div className="text-lg font-bold text-primary">{property.rent}</div>
                         </div>
-                        <p className="text-xs text-muted-foreground">Listed {property.daysAgo} days ago</p>
-                      </CardContent>
-                    </Card>
+                        <div className="text-xs text-muted-foreground">
+                          Listed {property.daysListed} days ago
+                        </div>
+                      </div>
+                    </div>
                   ))}
                 </div>
               </div>
 
               {/* Trust Bar */}
-              <div className="bg-muted rounded-2xl p-8 space-y-6">
-                <div className="text-center">
-                  <div className="flex justify-center items-center gap-2 mb-4">
-                    <div className="flex">
-                      {[...Array(5)].map((_, i) => (
-                        <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />
-                      ))}
+              <div className="bg-background rounded-2xl p-8 shadow-lg border border-border">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
+                  <div className="text-center">
+                    <div className="flex items-center justify-center mb-2">
+                      <Star className="w-5 h-5 text-yellow-500 fill-current" />
+                      <Star className="w-5 h-5 text-yellow-500 fill-current" />
+                      <Star className="w-5 h-5 text-yellow-500 fill-current" />
+                      <Star className="w-5 h-5 text-yellow-500 fill-current" />
+                      <Star className="w-5 h-5 text-yellow-500 fill-current" />
                     </div>
-                    <span className="text-lg font-semibold">4.8/5</span>
-                    <span className="text-muted-foreground">from 1,200+ users</span>
+                    <div className="font-semibold">4.8/5 from 1,200+ users</div>
+                    <div className="text-sm text-muted-foreground">Trustpilot Rating</div>
                   </div>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
-                  <div className="space-y-2">
-                    <p className="text-sm text-muted-foreground">"Found my perfect apartment in just 2 days!"</p>
-                    <p className="text-xs font-medium">- Sarah M.</p>
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-primary mb-1">💬</div>
+                    <div className="font-semibold">"Found my perfect apartment in 2 days!"</div>
+                    <div className="text-sm text-muted-foreground">- Sarah M.</div>
                   </div>
-                  <div className="space-y-2">
-                    <p className="text-sm text-muted-foreground">"Great platform with verified listings."</p>
-                    <p className="text-xs font-medium">- Tom K.</p>
-                  </div>
-                  <div className="space-y-2">
-                    <p className="text-sm text-muted-foreground">"Easy application process, highly recommended!"</p>
-                    <p className="text-xs font-medium">- Lisa R.</p>
+                  <div className="text-center">
+                    <Shield className="w-8 h-8 text-primary mx-auto mb-2" />
+                    <div className="font-semibold">GDPR Compliant</div>
+                    <div className="text-sm text-muted-foreground">Secure & Private</div>
                   </div>
                 </div>
               </div>
-            </div>
+            </>
           ) : (
-            // Landlord content (simplified for now)
-            <div className="text-center space-y-8">
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground leading-tight">
-                Rent Your Property
-                <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                  {" "}With Confidence
-                </span>
-              </h1>
-              <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-                Connect with reliable tenants and maximize your rental income. Our platform makes property management simple and profitable.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button size="lg" className="bg-gradient-to-r from-primary to-secondary hover:opacity-90 transition-opacity">
-                  <Home className="w-5 h-5 mr-2" />
-                  List Your Property
-                </Button>
-                <Button size="lg" variant="outline">
-                  Learn More
-                </Button>
+            // Landlord Content
+            <>
+              {/* Why List with Us */}
+              <div className="mb-16">
+                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-center text-foreground mb-6 leading-tight">
+                  List Your Property with
+                  <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                    {" "}Confidence
+                  </span>
+                </h1>
+                <p className="text-xl text-muted-foreground text-center mb-12 max-w-2xl mx-auto">
+                  Join thousands of landlords who trust us to connect them with quality tenants.
+                </p>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                  {landlordFeatures.map((feature, index) => (
+                    <div 
+                      key={feature.title}
+                      className="bg-background rounded-2xl p-6 shadow-lg border border-border hover:shadow-xl transition-all duration-300 hover:scale-105 group relative"
+                    >
+                      {feature.comingSoon && (
+                        <div className="absolute top-4 right-4 bg-orange-500 text-white text-xs px-2 py-1 rounded-full">
+                          Coming Soon
+                        </div>
+                      )}
+                      <div className="w-12 h-12 bg-gradient-to-br from-primary to-secondary rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+                        <feature.icon className="w-6 h-6 text-white" />
+                      </div>
+                      <h3 className="text-xl font-bold text-foreground mb-2">{feature.title}</h3>
+                      <p className="text-muted-foreground">{feature.description}</p>
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
+
+              {/* How to List Video */}
+              <div className="mb-16 text-center">
+                <h2 className="text-3xl font-bold mb-8">See How Easy It Is</h2>
+                <div className="max-w-2xl mx-auto">
+                  <div className="relative bg-gradient-to-br from-muted to-muted/50 rounded-2xl overflow-hidden aspect-video cursor-pointer group">
+                    <div className="absolute inset-0 bg-black/20 group-hover:bg-black/30 transition-colors duration-300"></div>
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                        <Play className="w-6 h-6 text-primary ml-1" />
+                      </div>
+                    </div>
+                    <div className="absolute bottom-4 left-4 text-white">
+                      <div className="text-sm opacity-90">Under 60 seconds</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Call to Action */}
+              <div className="mb-16 text-center">
+                <div className="bg-gradient-to-r from-primary to-secondary rounded-2xl p-8 text-white">
+                  <h2 className="text-3xl font-bold mb-4">Ready to List Your Property?</h2>
+                  <p className="text-xl mb-6 opacity-90">Join thousands of successful landlords today</p>
+                  <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                    <Button size="lg" variant="secondary" className="bg-white text-primary hover:bg-white/90">
+                      <ArrowRight className="w-5 h-5 mr-2" />
+                      List Your Property
+                    </Button>
+                    <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-primary">
+                      <Phone className="w-5 h-5 mr-2" />
+                      Contact Support
+                    </Button>
+                  </div>
+                </div>
+              </div>
+
+              {/* Landlord Reviews */}
+              <div className="mb-16">
+                <h2 className="text-3xl font-bold text-center mb-8">What Landlords Say</h2>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                  {landlordReviews.map((review, index) => (
+                    <div 
+                      key={review.name}
+                      className="bg-background rounded-2xl p-6 shadow-lg border border-border"
+                    >
+                      <div className="flex items-center mb-4">
+                        {[...Array(review.rating)].map((_, i) => (
+                          <Star key={i} className="w-4 h-4 text-yellow-500 fill-current" />
+                        ))}
+                      </div>
+                      <p className="text-muted-foreground mb-4 italic">"{review.review}"</p>
+                      <div>
+                        <div className="font-semibold text-foreground">{review.name}</div>
+                        <div className="text-sm text-muted-foreground">{review.title}</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Metrics Badge */}
+              <div className="text-center">
+                <div className="inline-flex items-center bg-background rounded-full px-6 py-3 shadow-lg border border-border">
+                  <BarChart3 className="w-5 h-5 text-primary mr-2" />
+                  <span className="font-semibold text-foreground">93% of listings get leads within 72 hours</span>
+                </div>
+              </div>
+            </>
           )}
         </div>
       </div>
