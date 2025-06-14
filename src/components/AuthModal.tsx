@@ -1,9 +1,11 @@
+
 import React, { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import LoginForm from './auth/LoginForm';
 import SignUpWizard from './auth/SignUpWizard';
 import AnimatedSwitch from './ui/AnimatedSwitch';
 import { useT } from "@/i18n";
+import { useI18n } from "@/hooks/useI18n";
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -14,6 +16,7 @@ interface AuthModalProps {
 const AuthModal = ({ isOpen, onClose, defaultTab = "login" }: AuthModalProps) => {
   const [activeTab, setActiveTab] = useState<'login' | 'signup'>(defaultTab);
   const t = useT();
+  const { language } = useI18n();
 
   useEffect(() => {
     setActiveTab(defaultTab);
@@ -25,7 +28,6 @@ const AuthModal = ({ isOpen, onClose, defaultTab = "login" }: AuthModalProps) =>
   };
 
   // DEBUG: log whenever modal renders and which language
-  const { language } = require('@/hooks/useI18n').useI18n();
   console.log("[AuthModal] Rendered. Language =", language);
 
   return (
@@ -109,3 +111,4 @@ const AuthModal = ({ isOpen, onClose, defaultTab = "login" }: AuthModalProps) =>
 };
 
 export default AuthModal;
+

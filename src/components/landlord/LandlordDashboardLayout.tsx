@@ -1,9 +1,11 @@
+
 import React from "react";
 import { LayoutDashboard, List, FileText, LogOut, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useT } from "@/i18n";
 import { useSignOut } from "@/hooks/useSignOut";
+import { useI18n } from '@/hooks/useI18n';
 
 const NAV_ITEMS = [
   { labelKey: "dashboard", icon: <LayoutDashboard className="w-4 h-4 mr-2" />, key: "dashboard", path: "/landlord/dashboard" },
@@ -21,9 +23,10 @@ export default function LandlordDashboardLayout({ children, section, setSection 
   const navigate = useNavigate();
   const location = useLocation();
   const t = useT();
+  const signOut = useSignOut();
+  const { language } = useI18n();
 
   // DEBUG: log whenever landlord dashboard layout rerenders and which language is active
-  const { language } = require('@/hooks/useI18n').useI18n();
   console.log("[LandlordDashboardLayout] Render. Language =", language);
 
   // Determine current section by route path
@@ -95,3 +98,4 @@ export default function LandlordDashboardLayout({ children, section, setSection 
     </div>
   );
 }
+
