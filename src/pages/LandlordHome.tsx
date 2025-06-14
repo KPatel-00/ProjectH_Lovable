@@ -13,6 +13,7 @@ import RecentApplicationsCardSkeleton from "@/components/landlord/RecentApplicat
 import { Button } from "@/components/ui/button";
 import { LayoutDashboard } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useT } from "@/i18n";
 
 // DEMO DATA
 const landlord = {
@@ -23,9 +24,9 @@ const landlord = {
 };
 
 const metrics = [
-  { label: "Active Listings", value: 4 },
-  { label: "Applications Pending", value: 2 },
-  { label: "Total Views (30d)", value: 129 }
+  { labelKey: "activeListings", value: 4 },
+  { labelKey: "applicationsPending", value: 2 },
+  { labelKey: "totalViews", value: 129 }
 ];
 
 const recentListings = [
@@ -43,10 +44,11 @@ const recentApplications = [
 const LandlordHome = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
+  const t = useT();
 
   useEffect(() => {
-    const t = setTimeout(() => setLoading(false), 900);
-    return () => clearTimeout(t);
+    const tmo = setTimeout(() => setLoading(false), 900);
+    return () => clearTimeout(tmo);
   }, []);
 
   return (
@@ -68,19 +70,19 @@ const LandlordHome = () => {
         <div className="mb-8">
           {loading
             ? <StatCardsSkeleton />
-            : <StatCards stats={metrics} />
+            : <StatCards stats={metrics.map(m => ({ label: t(m.labelKey), value: m.value }))} />
           }
         </div>
 
         {/* Recent Listings */}
         <section className="mb-8">
           <div className="flex justify-between items-center mb-4 px-1">
-            <h2 className="text-lg font-semibold text-gray-900">Recent Listings</h2>
+            <h2 className="text-lg font-semibold text-gray-900">{t("recentListings")}</h2>
             <button
               className="text-sm font-medium text-primary hover:underline transition"
               onClick={() => navigate("/landlord/dashboard/mylistings")}
             >
-              View All
+              {t("viewAll")}
             </button>
           </div>
           {loading
@@ -96,12 +98,12 @@ const LandlordHome = () => {
         {/* Recent Applications */}
         <section className="mb-8">
           <div className="flex justify-between items-center mb-4 px-1">
-            <h2 className="text-lg font-semibold text-gray-900">Recent Applications</h2>
+            <h2 className="text-lg font-semibold text-gray-900">{t("recentApplications")}</h2>
             <button
               className="text-sm font-medium text-primary hover:underline transition"
               onClick={() => navigate("/landlord/dashboard/applications")}
             >
-              View All
+              {t("viewAll")}
             </button>
           </div>
           {loading
@@ -121,7 +123,7 @@ const LandlordHome = () => {
             onClick={() => navigate("/landlord/dashboard")}
           >
             <LayoutDashboard className="w-6 h-6" />
-            <span>Open Full Dashboard</span>
+            <span>{t("openDashboard")}</span>
           </Button>
         </div>
       </main>

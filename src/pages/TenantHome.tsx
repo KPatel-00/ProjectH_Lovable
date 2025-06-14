@@ -18,6 +18,7 @@ import TenantExploreCities from "@/components/tenant/TenantExploreCities";
 import TenantExploreCitiesSkeleton from "@/components/tenant/TenantExploreCitiesSkeleton";
 import TenantTrustSupport from "@/components/tenant/TenantTrustSupport";
 import TenantTrustSupportSkeleton from "@/components/tenant/TenantTrustSupportSkeleton";
+import { useT } from "@/i18n";
 
 // Mock Data
 const mockUser = {
@@ -129,10 +130,11 @@ const mockCities = [
 
 const TenantHome = () => {
   const [loading, setLoading] = useState(true);
+  const t = useT();
 
   useEffect(() => {
-    const t = setTimeout(() => setLoading(false), 850);
-    return () => clearTimeout(t);
+    const tmo = setTimeout(() => setLoading(false), 850);
+    return () => clearTimeout(tmo);
   }, []);
 
   return (
@@ -148,25 +150,30 @@ const TenantHome = () => {
             />
           }
           {loading ? <TenantQuickStatsSkeleton /> :
-            <TenantQuickStats {...mockQuickStats} />
+            <TenantQuickStats
+              saved={mockQuickStats.saved}
+              applications={mockQuickStats.applications}
+              messages={mockQuickStats.messages}
+              t={t}
+            />
           }
           {loading ? <TenantSavedListingsSkeleton /> :
-            <TenantSavedListings listings={mockSavedListings} />
+            <TenantSavedListings listings={mockSavedListings} t={t} />
           }
           {loading ? <TenantRecommendedSkeleton /> :
-            <TenantRecommended listings={mockRecommended} />
+            <TenantRecommended listings={mockRecommended} t={t} />
           }
           {loading ? <TenantStatsSummarySkeleton /> :
-            <TenantApplicationStatuses applications={mockApplications} />
+            <TenantApplicationStatuses applications={mockApplications} t={t} />
           }
           {loading ? <TenantMessagesPreviewSkeleton /> :
-            <TenantMessagesPreview messages={mockMessages} />
+            <TenantMessagesPreview messages={mockMessages} t={t} />
           }
           {loading ? <TenantExploreCitiesSkeleton /> :
-            <TenantExploreCities cities={mockCities} />
+            <TenantExploreCities cities={mockCities} t={t} />
           }
           {loading ? <TenantTrustSupportSkeleton /> :
-            <TenantTrustSupport />
+            <TenantTrustSupport t={t} />
           }
         </div>
       </main>

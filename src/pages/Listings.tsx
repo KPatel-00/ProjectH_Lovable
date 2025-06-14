@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import Header from '@/components/Header';
@@ -7,6 +6,7 @@ import { Search, MapPin, Home, Calendar, Filter } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { useT } from "@/i18n";
 
 const Listings = () => {
   const [searchParams] = useSearchParams();
@@ -58,6 +58,7 @@ const Listings = () => {
   const handleSearch = () => {
     console.log('Searching with filters:', filters);
   };
+  const t = useT();
 
   return (
     <div className="min-h-screen bg-background">
@@ -69,7 +70,7 @@ const Listings = () => {
             <div className="relative">
               <MapPin className="absolute left-3 top-3 w-5 h-5 text-muted-foreground" />
               <Input 
-                placeholder="City / Area / Zip Code" 
+                placeholder={t("cityAreaZip")}
                 className="pl-10 h-12"
                 value={filters.location}
                 onChange={(e) => setFilters({ ...filters, location: e.target.value })}
@@ -78,13 +79,13 @@ const Listings = () => {
             <Select value={filters.propertyType} onValueChange={(value) => setFilters({ ...filters, propertyType: value })}>
               <SelectTrigger className="h-12">
                 <Home className="w-4 h-4 mr-2" />
-                <SelectValue placeholder="Property Type" />
+                <SelectValue placeholder={t("propertyType")} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="apartment">Apartment</SelectItem>
-                <SelectItem value="house">House</SelectItem>
-                <SelectItem value="wg">WG Room</SelectItem>
-                <SelectItem value="studio">Studio</SelectItem>
+                <SelectItem value="apartment">{t("apartment")}</SelectItem>
+                <SelectItem value="house">{t("house")}</SelectItem>
+                <SelectItem value="wg">{t("wgRoom")}</SelectItem>
+                <SelectItem value="studio">{t("studio")}</SelectItem>
               </SelectContent>
             </Select>
             <div className="relative">
@@ -92,14 +93,14 @@ const Listings = () => {
               <Input 
                 type="month" 
                 className="pl-10 h-12"
-                placeholder="Move-in Date"
+                placeholder={t("moveInDate")}
                 value={filters.moveInDate}
                 onChange={(e) => setFilters({ ...filters, moveInDate: e.target.value })}
               />
             </div>
             <Button size="lg" className="h-12 bg-gradient-to-r from-primary to-secondary hover:opacity-90 transition-opacity" onClick={handleSearch}>
               <Search className="w-5 h-5 mr-2" />
-              Search
+              {t("search")}
             </Button>
           </div>
         </div>
@@ -107,10 +108,10 @@ const Listings = () => {
         {/* Results */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold mb-4">
-            {searchParams.get('location') ? `Properties in ${searchParams.get('location')}` : 'All Listings'}
+            {searchParams.get('location') ? `${t("propertiesIn")} ${searchParams.get('location')}` : t("allListings")}
           </h1>
           <p className="text-muted-foreground">
-            {featuredProperties.length} properties found
+            {featuredProperties.length} {t("propertiesFound")}
           </p>
         </div>
 
@@ -125,20 +126,20 @@ const Listings = () => {
               <div className="h-48 bg-gradient-to-br from-muted to-muted/50 relative">
                 {property.verified && (
                   <div className="absolute top-3 right-3 bg-green-500 text-white text-xs px-2 py-1 rounded-full">
-                    Verified
+                    {t("verified")}
                   </div>
                 )}
               </div>
               <div className="p-4">
                 <div className="flex justify-between items-start mb-2">
                   <div>
-                    <div className="font-semibold text-foreground">{property.type}</div>
+                    <div className="font-semibold text-foreground">{t(property.type.toLowerCase())}</div>
                     <div className="text-sm text-muted-foreground">{property.area}</div>
                   </div>
                   <div className="text-lg font-bold text-primary">{property.rent}</div>
                 </div>
                 <div className="text-xs text-muted-foreground">
-                  Listed {property.daysListed} days ago
+                  {t("listedAgo", "common").replace("{days}", property.daysListed)}
                 </div>
               </div>
             </div>
