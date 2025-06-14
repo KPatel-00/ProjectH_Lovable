@@ -42,26 +42,30 @@ const AuthModal = ({ isOpen, onClose, defaultTab = 'login' }: AuthModalProps) =>
         
         {/* Top pill-style toggle: Log In on left (default), Sign Up on right */}
         <div className="px-6 pb-4">
-          <div className="bg-muted p-1 rounded-full flex">
+          <div className="bg-muted p-1 rounded-full flex gap-1 border border-border shadow-inner">
             <button
               onClick={() => setActiveTab('login')}
-              className={`flex-1 py-2 px-4 text-sm font-medium rounded-full transition-all ${
-                activeTab === 'login'
-                  ? 'bg-background text-foreground shadow-sm'
-                  : 'text-muted-foreground hover:text-foreground'
-              }`}
+              className={`flex-1 py-2 px-4 text-sm font-semibold rounded-full transition-all duration-200 outline-none
+                ${activeTab === 'login'
+                  ? 'bg-background text-foreground shadow-md ring-1 ring-primary'
+                  : 'bg-transparent text-muted-foreground hover:text-foreground'}`
+              }
               tabIndex={0}
+              aria-pressed={activeTab === 'login'}
+              style={{ transition: 'all 0.18s cubic-bezier(.4,0,.2,1)' }}
             >
               Log In
             </button>
             <button
               onClick={() => setActiveTab('signup')}
-              className={`flex-1 py-2 px-4 text-sm font-medium rounded-full transition-all ${
-                activeTab === 'signup'
-                  ? 'bg-background text-foreground shadow-sm'
-                  : 'text-muted-foreground hover:text-foreground'
-              }`}
+              className={`flex-1 py-2 px-4 text-sm font-semibold rounded-full transition-all duration-200 outline-none
+                ${activeTab === 'signup'
+                  ? 'bg-background text-foreground shadow-md ring-1 ring-primary'
+                  : 'bg-transparent text-muted-foreground hover:text-foreground'}`
+              }
               tabIndex={0}
+              aria-pressed={activeTab === 'signup'}
+              style={{ transition: 'all 0.18s cubic-bezier(.4,0,.2,1)' }}
             >
               Sign Up
             </button>
@@ -82,4 +86,3 @@ const AuthModal = ({ isOpen, onClose, defaultTab = 'login' }: AuthModalProps) =>
 };
 
 export default AuthModal;
-

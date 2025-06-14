@@ -72,26 +72,30 @@ const AccountCreationStep = ({ data, updateData, onNext, onSwitchToLogin }: Acco
         {/* Role Toggle */}
         <div className="space-y-2">
           <label className="text-sm font-medium">I am a:</label>
-          <div className="bg-muted p-1 rounded-full flex relative">
+          <div className="bg-muted p-1 rounded-full flex gap-1 border border-border shadow-inner">
             <button
               type="button"
               onClick={() => handleInputChange('role', 'tenant')}
-              className={`flex-1 py-2 px-4 text-sm font-medium rounded-full transition-all ${
-                data.role === 'tenant'
-                  ? 'bg-background text-foreground shadow-sm'
-                  : 'text-muted-foreground hover:text-foreground'
-              }`}
+              className={`flex-1 py-2 px-4 text-sm font-semibold rounded-full transition-all duration-200 outline-none
+                ${data.role === 'tenant'
+                  ? 'bg-background text-foreground shadow-md ring-1 ring-primary'
+                  : 'bg-transparent text-muted-foreground hover:text-foreground'}`
+              }
+              aria-pressed={data.role === 'tenant'}
+              style={{ transition: 'all 0.18s cubic-bezier(.4,0,.2,1)' }}
             >
               Tenant
             </button>
             <button
               type="button"
               onClick={() => handleInputChange('role', 'landlord')}
-              className={`flex-1 py-2 px-4 text-sm font-medium rounded-full transition-all ${
-                data.role === 'landlord'
-                  ? 'bg-background text-foreground shadow-sm'
-                  : 'text-muted-foreground hover:text-foreground'
-              }`}
+              className={`flex-1 py-2 px-4 text-sm font-semibold rounded-full transition-all duration-200 outline-none
+                ${data.role === 'landlord'
+                  ? 'bg-background text-foreground shadow-md ring-1 ring-primary'
+                  : 'bg-transparent text-muted-foreground hover:text-foreground'}`
+              }
+              aria-pressed={data.role === 'landlord'}
+              style={{ transition: 'all 0.18s cubic-bezier(.4,0,.2,1)' }}
             >
               Landlord
             </button>
