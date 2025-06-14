@@ -1,12 +1,27 @@
-
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Menu } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import LanguageSelector from '@/components/LanguageSelector';
+import AuthModal from '@/components/AuthModal';
+import { useState } from 'react';
 
 const LandingPageHeader = () => {
   const navigate = useNavigate();
+
+  // State to control AuthModal and which tab is active (login or signup)
+  const [authModalOpen, setAuthModalOpen] = useState(false);
+  const [authDefaultTab, setAuthDefaultTab] = useState<'login'|'signup'>('login');
+
+  const openLoginModal = () => {
+    setAuthDefaultTab('login');
+    setAuthModalOpen(true);
+  };
+
+  const openSignupModal = () => {
+    setAuthDefaultTab('signup');
+    setAuthModalOpen(true);
+  };
 
   return (
     <header className="sticky top-0 z-50 bg-background/95 backdrop-blur-md border-b border-border transition-shadow duration-200">
@@ -52,14 +67,14 @@ const LandingPageHeader = () => {
             size="sm"
             variant="ghost"
             className="font-medium"
-            onClick={() => navigate('/login')}
+            onClick={openLoginModal}
           >
             Log In
           </Button>
           <Button
             size="sm"
             className="bg-gradient-to-r from-primary to-secondary font-medium px-6"
-            onClick={() => navigate('/list-property')}
+            onClick={openSignupModal}
           >
             Get Started
           </Button>
@@ -72,9 +87,14 @@ const LandingPageHeader = () => {
             <Menu />
           </Button>
         </div>
+        {/* Render AuthModal */}
+        <AuthModal
+          isOpen={authModalOpen}
+          onClose={() => setAuthModalOpen(false)}
+          defaultTab={authDefaultTab}
+        />
       </div>
     </header>
   );
 };
 export default LandingPageHeader;
-
