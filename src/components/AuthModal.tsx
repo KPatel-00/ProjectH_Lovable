@@ -1,8 +1,8 @@
-
 import React, { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import LoginForm from './auth/LoginForm';
 import SignUpWizard from './auth/SignUpWizard';
+import AnimatedSwitch from './ui/AnimatedSwitch';
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -73,12 +73,14 @@ const AuthModal = ({ isOpen, onClose, defaultTab = 'login' }: AuthModalProps) =>
         </div>
 
         {/* Modal body */}
-        <div className="px-6 pb-6">
-          {activeTab === 'signup' ? (
-            <SignUpWizard onClose={handleClose} onSwitchToLogin={() => setActiveTab('login')} />
-          ) : (
-            <LoginForm onClose={handleClose} onSwitchToSignUp={() => setActiveTab('signup')} />
-          )}
+        <div className="px-6 pb-6 min-h-[440px]">
+          <AnimatedSwitch animationKey={activeTab}>
+            {activeTab === 'signup' ? (
+              <SignUpWizard onClose={handleClose} onSwitchToLogin={() => setActiveTab('login')} />
+            ) : (
+              <LoginForm onClose={handleClose} onSwitchToSignUp={() => setActiveTab('signup')} />
+            )}
+          </AnimatedSwitch>
         </div>
       </DialogContent>
     </Dialog>
