@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Globe, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -7,21 +8,22 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { useLanguage } from '@/hooks/useLanguage';
+import { useI18n } from '@/hooks/useI18n';
 import { useT } from "@/i18n";
 import { toast } from "@/components/ui/use-toast";
+import { LANGUAGES } from "@/hooks/useLanguage"; // Use exported languages
 
 const LanguageSelector = () => {
-  const { selectedLanguage, setLanguage, languages } = useLanguage();
+  const { language, setLanguage } = useI18n();
   const t = useT();
 
-  const currentLanguage = languages.find(lang => lang.code === selectedLanguage);
+  const currentLanguage = LANGUAGES.find(lang => lang.code === language);
 
   const handleLanguageChange = (languageCode: string) => {
-    setLanguage(languageCode);
+    setLanguage(languageCode as any); // type assertion for compatibility
     toast({
       title: t("languageChanged"),
-      description: `${languages.find(l => l.code === languageCode)?.name}`,
+      description: `${LANGUAGES.find(l => l.code === languageCode)?.name}`,
     });
   };
 
@@ -45,13 +47,13 @@ const LanguageSelector = () => {
         align="end" 
         className="w-40 bg-background/95 backdrop-blur-md border shadow-lg z-50"
       >
-        {languages.map((language) => (
+        {LANGUAGES.map((language) => (
           <DropdownMenuItem
             key={language.code}
             onClick={() => handleLanguageChange(language.code)}
             className={`flex items-center space-x-2 cursor-pointer transition-colors ${
-              selectedLanguage === language.code 
-                ? 'bg-accent text-accent-foreground' 
+              language.code === currentLanguage?.code
+                ? 'bg-accent text-accent-foreground'
                 : 'hover:bg-accent hover:text-accent-foreground'
             }`}
           >
@@ -65,3 +67,4 @@ const LanguageSelector = () => {
 };
 
 export default LanguageSelector;
+

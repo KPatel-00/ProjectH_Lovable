@@ -1,26 +1,16 @@
 
-import { useState } from "react";
-
-// Extend and expose your supported languages easily here
+// Export just the list of languages for UI use
 export const LANGUAGES = [
   { code: "en", name: "English", flag: "🇬🇧" },
   { code: "de", name: "Deutsch", flag: "🇩🇪" },
 ];
 
+// Deprecated: this hook is no longer needed when using context everywhere.
 export function useLanguage() {
-  const [selectedLanguage, setSelectedLanguage] = useState(
-    localStorage.getItem("app_language") || "en"
-  );
-
-  const setLanguage = (lang: string) => {
-    setSelectedLanguage(lang);
-    localStorage.setItem("app_language", lang);
-    // Optionally: Event system or context to signal language change globally
-  };
-
+  // You may remove this hook implementation in future refactors
   return {
-    selectedLanguage,
-    setLanguage,
+    selectedLanguage: "en",
+    setLanguage: () => {},
     languages: LANGUAGES,
   };
 }
