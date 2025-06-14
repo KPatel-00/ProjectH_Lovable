@@ -73,7 +73,7 @@ const Listings = () => {
             <div className="relative">
               <MapPin className="absolute left-3 top-3 w-5 h-5 text-muted-foreground" />
               <Input 
-                placeholder={t("cityAreaZip")}
+                placeholder={t("cityAreaZip") || "Enter city, area, or zip code"}
                 className="pl-10 h-12"
                 value={filters.location}
                 onChange={(e) => setFilters({ ...filters, location: e.target.value })}
@@ -82,7 +82,7 @@ const Listings = () => {
             <Select value={filters.propertyType} onValueChange={(value) => setFilters({ ...filters, propertyType: value })}>
               <SelectTrigger className="h-12">
                 <Home className="w-4 h-4 mr-2" />
-                <SelectValue placeholder={t("propertyType")} />
+                <SelectValue placeholder={t("propertyType") || "Property Type"} />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="apartment">{t("apartment")}</SelectItem>
@@ -96,7 +96,7 @@ const Listings = () => {
               <Input 
                 type="month" 
                 className="pl-10 h-12"
-                placeholder={t("moveInDate")}
+                placeholder={t("moveInDate") || "Choose move-in date"}
                 value={filters.moveInDate}
                 onChange={(e) => setFilters({ ...filters, moveInDate: e.target.value })}
               />
@@ -123,9 +123,15 @@ const Listings = () => {
           {featuredProperties.map((property) => (
             <div 
               key={property.id}
-              className="bg-background rounded-2xl overflow-hidden shadow-lg border border-border hover:shadow-xl transition-shadow duration-300 cursor-pointer group"
-              // Use SPA navigation here!
+              className={`
+                bg-background rounded-2xl overflow-hidden shadow-lg border border-border
+                hover:shadow-2xl hover:scale-[1.02] transition-all duration-200
+                focus-within:ring-2 focus-within:ring-primary/70 focus-within:outline-none focus-within:scale-[1.01]
+                group cursor-pointer
+              `}
+              tabIndex={0}
               onClick={() => navigate(`/listing/${property.id}`)}
+              onKeyDown={e => e.key === "Enter" && navigate(`/listing/${property.id}`)}
             >
               <div className="h-48 bg-gradient-to-br from-muted to-muted/50 relative">
                 {property.verified && (

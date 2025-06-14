@@ -114,6 +114,41 @@ const Search = () => {
     setDisplayed(PAGE_SIZE);
   }, [filters]);
 
+  // Add a helper to check if any search filter is currently applied:
+  const isFiltering = React.useMemo(() => {
+    // Ignore default price/bedrooms/sort, focus on user-applied filters
+    return !!(
+      filters.location ||
+      (filters.propertyType && filters.propertyType !== "all") ||
+      filters.price[0] !== 500 ||
+      filters.price[1] !== 2500 ||
+      (filters.bedrooms && filters.bedrooms !== "Any") ||
+      filters.moveInDate ||
+      filters.verifiedOnly ||
+      filters.furnished ||
+      filters.petFriendly ||
+      filters.parking ||
+      filters.balcony
+    );
+  }, [filters]);
+
+  const handleResetFilters = () => {
+    setFilters({
+      location: "",
+      propertyType: "all",
+      price: [500, 2500],
+      bedrooms: "Any",
+      moveInDate: "",
+      verifiedOnly: false,
+      furnished: false,
+      petFriendly: false,
+      parking: false,
+      balcony: false,
+      sort: SORT_OPTIONS[0].value,
+    });
+    setSearchParams({});
+  };
+
   const handleFilterChange = (updates: any) => setFilters(f => ({ ...f, ...updates }));
 
   const handleSearch = () => {
@@ -152,7 +187,7 @@ const Search = () => {
           <div className="relative flex-1 min-w-[120px]">
             <MapPin className="absolute left-2 top-3 w-4 h-4 text-muted-foreground" />
             <Input
-              placeholder="City / Zip Code"
+              placeholder="Enter city, area, or zip code"
               className="pl-8 h-10"
               value={filters.location}
               onChange={e => handleFilterChange({ location: e.target.value })}
@@ -186,7 +221,7 @@ const Search = () => {
               onValueChange={vals => handleFilterChange({ price: vals })}
               className="w-full h-2"
             />
-            <span className="ml-2 text-xs">{filters.price[0]}–{filters.price[1]}</span>
+            <span className="ml-2 text-xs">{`${filters.price[0]}–${filters.price[1]} €/mo`}</span>
           </div>
           <Select
             value={String(filters.bedrooms)}
@@ -207,7 +242,7 @@ const Search = () => {
             <Input
               type="month"
               className="pl-8 h-10"
-              placeholder="Move-in Date"
+              placeholder="Choose move-in date"
               value={filters.moveInDate}
               onChange={e => handleFilterChange({ moveInDate: e.target.value })}
             />
@@ -225,6 +260,15 @@ const Search = () => {
             <SearchIcon className="w-4 h-4 mr-1" />
             Search
           </Button>
+          {isFiltering && (
+            <Button size="sm" variant="ghost" className="ml-2 px-3 border border-border rounded-md text-destructive hover:bg-destructive/10 transition"
+              onClick={handleResetFilters}
+              tabIndex={0}
+              aria-label="Reset all filters"
+            >
+              Reset filters
+            </Button>
+          )}
         </div>
       </div>
 
@@ -240,23 +284,38 @@ const Search = () => {
               <div className="text-muted-foreground mb-4 text-center">
                 Try changing your filters or check back soon.
               </div>
+              <Button
+                variant="ghost"
+                className="mt-2 border border-border text-destructive hover:bg-destructive/10"
+                onClick={handleResetFilters}
+                aria-label="Reset search filters"
+              >
+                Reset filters
+              </Button>
             </div>
           ) : (
             <>
               <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5">
                 {listings.slice(0, displayed).map(l => (
-                  <ListingCard
+                  <div
                     key={l.id}
-                    image={l.image}
-                    title={l.title}
-                    rent={l.rent}
-                    city={l.city}
-                    verified={l.verified}
-                    status={l.status}
-                    bookmarked={l.bookmarked}
-                    onBookmark={() => handleBookmark(l.id)}
-                    onClick={() => navigate(`/listing/${l.id}`)}
-                  />
+                    tabIndex={0}
+                    className={`group outline-none ring-offset-2 rounded-xl transition-all bg-background
+                      hover:scale-[1.02] hover:shadow-xl focus:scale-[1.01] focus:ring-2 focus:ring-primary/60
+                    `}
+                  >
+                    <ListingCard
+                      image={l.image}
+                      title={l.title}
+                      rent={l.rent}
+                      city={l.city}
+                      verified={l.verified}
+                      status={l.status}
+                      bookmarked={l.bookmarked}
+                      onBookmark={() => handleBookmark(l.id)}
+                      onClick={() => navigate(`/listing/${l.id}`)}
+                    />
+                  </div>
                 ))}
               </div>
               {displayed < listings.length && (
