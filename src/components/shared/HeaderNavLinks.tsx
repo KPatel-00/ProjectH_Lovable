@@ -43,6 +43,7 @@ const HeaderNavLinks: React.FC<HeaderNavLinksProps> = ({
               `${btnClassName} ${isActive(l.to) ? activeClassName : inactiveClassName}`
             }
             onClick={() => onNavigate ? onNavigate(l.to) : navigate(l.to)}
+            aria-current={isActive(l.to) ? "page" : undefined}
           >
             {l.name}
           </button>
@@ -54,6 +55,7 @@ const HeaderNavLinks: React.FC<HeaderNavLinksProps> = ({
               `${btnClassName} ${isActive ? activeClassName : inactiveClassName}`
             }
             type="button"
+            // NavLink already sets aria-current="page", so no need to add explicitly here
           >
             {l.name}
           </NavLink>
@@ -64,3 +66,4 @@ const HeaderNavLinks: React.FC<HeaderNavLinksProps> = ({
 };
 
 export default HeaderNavLinks;
+
