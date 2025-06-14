@@ -21,7 +21,7 @@ const UserWelcomeBanner: React.FC<Props> = ({ name, business, verified }) => (
           Welcome, {name}
         </span>
         {verified && (
-          <ShieldCheck className="text-green-600 w-6 h-6" title="Verified" aria-label="Verified"/>
+          <ShieldCheck className="text-green-600 w-6 h-6" aria-label="Verified" />
         )}
       </div>
       {business && (
