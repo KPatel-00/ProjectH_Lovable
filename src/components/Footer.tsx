@@ -104,9 +104,11 @@ const Footer = () => {
   }];
 
   const handleLinkClick = (href: string) => {
-    if (href.startsWith('http')) {
+    if (/^(https?:)?\/\//.test(href)) {
+      // External link (starts with 'http', 'https', or '//')
       window.open(href, '_blank', 'noopener,noreferrer');
     } else if (href !== '#') {
+      // Internal navigation via React Router SPA style
       navigate(href);
     }
   };
