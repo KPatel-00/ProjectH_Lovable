@@ -7,38 +7,39 @@ import { Badge } from "@/components/ui/badge";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Line, LineChart, Tooltip, CartesianGrid } from "recharts";
-import { List, FileText, LayoutDashboard } from "lucide-react";
+import { List, FileText, LayoutDashboard, Archive, Repeat } from "lucide-react";
 
+// Demo landlord info (mocked)
 const landlord = {
   name: "Alex",
   businessName: "Prime Rentals",
   verified: true,
 };
 
-// Sample stats/insights (mock data)
+// Stats & KPIs (demo for now)
 const dashboardStats = [
   {
     label: "Total Listings",
     value: 12,
-    icon: <List className="w-5 h-5 mr-1 inline" />,
+    icon: <List className="w-5 h-5 mr-1" />,
     color: "bg-blue-100 text-blue-600",
   },
   {
     label: "Active Listings",
     value: 8,
-    icon: <List className="w-5 h-5 mr-1 inline" />,
+    icon: <List className="w-5 h-5 mr-1" />,
     color: "bg-green-100 text-green-700",
   },
   {
     label: "Avg. Views / Listing",
     value: 250,
-    icon: <LayoutDashboard className="w-5 h-5 mr-1 inline" />,
+    icon: <LayoutDashboard className="w-5 h-5 mr-1" />,
     color: "bg-yellow-100 text-yellow-800",
   },
   {
     label: "Applications Received",
     value: 45,
-    icon: <FileText className="w-5 h-5 mr-1 inline" />,
+    icon: <FileText className="w-5 h-5 mr-1" />,
     color: "bg-orange-100 text-orange-700",
   },
 ];
@@ -62,7 +63,7 @@ const applicationsByListing = [
   { name: "Penthouse FRK", apps: 9 },
 ];
 
-// Quick actions
+// Enhanced Quick Actions (add Archive, Re-publish)
 const quickActions = [
   {
     label: "Manage Listings",
@@ -75,6 +76,18 @@ const quickActions = [
     route: "/landlord/applications",
     variant: "outline" as const,
     icon: <FileText className="mr-2 w-5 h-5" />,
+  },
+  {
+    label: "Archive Listing",
+    route: "#", // TODO: action hook or dialog
+    variant: "secondary" as const,
+    icon: <Archive className="mr-2 w-5 h-5" />,
+  },
+  {
+    label: "Re-publish Listing",
+    route: "#", // TODO: action hook or dialog
+    variant: "ghost" as const,
+    icon: <Repeat className="mr-2 w-5 h-5" />,
   },
 ];
 
@@ -127,17 +140,25 @@ const LandlordDashboard = () => {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <Header />
-      <main className="container xl:max-w-6xl mx-auto flex-1 px-4 sm:px-6 lg:px-8 pt-24 pb-10">
-        {/* Page title */}
-        <div className="mb-8">
-          <h1 className="text-3xl sm:text-4xl font-bold mb-1 text-foreground">Dashboard</h1>
-          <div className="text-muted-foreground font-medium mb-1">{landlord.businessName}</div>
+      <main className="container xl:max-w-6xl mx-auto flex-1 px-2 sm:px-6 lg:px-8 pt-20 pb-10">
+        {/* Page title + description */}
+        <div className="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+          <div>
+            <h1 className="text-3xl sm:text-4xl font-bold mb-0 text-foreground">Landlord Dashboard</h1>
+            <div className="text-muted-foreground font-medium">{landlord.businessName}</div>
+          </div>
+          <Badge variant="outline" className="mt-2 sm:mt-0">
+            <span className="text-green-700">Verified Account</span>
+          </Badge>
         </div>
 
-        {/* Stats cards */}
+        {/* KPI / Stats Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-8">
           {dashboardStats.map((stat) => (
-            <Card key={stat.label} className="flex flex-col">
+            <Card
+              key={stat.label}
+              className={`flex flex-col shadow-none hover-scale border-2 border-transparent hover:border-primary transition`}
+            >
               <CardContent className="flex items-center gap-2 pt-6 pb-2">
                 <span className={stat.color + " rounded p-1"}>{stat.icon}</span>
                 <span className="text-2xl font-bold">{stat.value}</span>
@@ -149,16 +170,16 @@ const LandlordDashboard = () => {
           ))}
         </div>
 
-        {/* Listing performance section */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-          <Card>
+        {/* Analytics Charts */}
+        <div className="md:grid md:grid-cols-2 gap-6 flex flex-col mb-10">
+          <Card className="mb-6 md:mb-0">
             <CardHeader>
-              <CardTitle>Listing Views Over Time</CardTitle>
+              <CardTitle className="text-lg font-semibold">Listing Views Over Time</CardTitle>
               <CardDescription>
                 Last 7 Months <span className="ml-2 font-semibold text-green-600">+15%</span>
               </CardDescription>
             </CardHeader>
-            <CardContent className="h-56">
+            <CardContent className="h-60">
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={viewsData}>
                   <CartesianGrid strokeDasharray="3 3" />
@@ -172,12 +193,12 @@ const LandlordDashboard = () => {
           </Card>
           <Card>
             <CardHeader>
-              <CardTitle>Applications by Listing</CardTitle>
+              <CardTitle className="text-lg font-semibold">Applications by Listing</CardTitle>
               <CardDescription>
                 Last 30 Days <span className="ml-2 font-semibold text-green-600">+8%</span>
               </CardDescription>
             </CardHeader>
-            <CardContent className="h-56">
+            <CardContent className="h-60">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={applicationsByListing}>
                   <CartesianGrid strokeDasharray="3 3" />
@@ -192,13 +213,14 @@ const LandlordDashboard = () => {
         </div>
 
         {/* Quick Actions */}
-        <div className="flex flex-wrap gap-3 mb-8">
+        <div className="flex flex-wrap gap-3 mb-10">
           {quickActions.map((action) => (
             <Button
               key={action.label}
               variant={action.variant}
-              onClick={() => navigate(action.route)}
-              className="flex items-center"
+              onClick={() => action.route !== "#" && navigate(action.route)}
+              className="flex items-center gap-1"
+              disabled={action.route === "#"}
             >
               {action.icon}
               {action.label}
@@ -206,10 +228,11 @@ const LandlordDashboard = () => {
           ))}
         </div>
 
-        {/* Recent Activity Table */}
+        {/* Recent Activity */}
         <div>
-          <div className="mb-4">
+          <div className="mb-4 flex items-center justify-between">
             <h2 className="text-xl font-semibold">Recent Activity</h2>
+            <Button size="sm" variant="ghost" onClick={() => navigate("/landlord/listings")}>View All Listings</Button>
           </div>
           <div className="overflow-x-auto rounded-lg border bg-card shadow-sm">
             <table className="min-w-full divide-y divide-border">
