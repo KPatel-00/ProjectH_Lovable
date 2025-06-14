@@ -1,4 +1,3 @@
-
 import React, { useEffect, useRef, useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -43,7 +42,8 @@ const PAGE_SIZE = 9;
 const parseSearchParams = (params: URLSearchParams) => {
   const obj: any = {
     location: params.get("location") || "",
-    propertyType: params.get("propertyType") || "",
+    // CHANGE: propertyType now defaults to "all"
+    propertyType: params.get("propertyType") || "all",
     price: [Number(params.get("minPrice")) || DEFAULT_PRICE[0], Number(params.get("maxPrice")) || DEFAULT_PRICE[1]],
     bedrooms: params.get("bedrooms") || "Any",
     moveInDate: params.get("moveInDate") || "",
@@ -58,15 +58,17 @@ const parseSearchParams = (params: URLSearchParams) => {
 };
 
 const getFilteredListings = (filters: any, listings: any[]) => {
-  // Filter sample - not efficient for huge arrays
+  // Filtering logic - mock
   return listings.filter(listing => {
     if (
       filters.location &&
       !listing.city.toLowerCase().includes(filters.location.toLowerCase())
     )
       return false;
+    // Only filter by propertyType if not "all"
     if (
       filters.propertyType &&
+      filters.propertyType !== "all" &&
       listing.title.toLowerCase().indexOf(filters.propertyType.toLowerCase()) === -1
     )
       return false;
@@ -117,7 +119,9 @@ const Search = () => {
   const handleSearch = () => {
     const params = new URLSearchParams();
     if (filters.location) params.set("location", filters.location);
-    if (filters.propertyType) params.set("propertyType", filters.propertyType);
+    // Only set propertyType if not "all"
+    if (filters.propertyType && filters.propertyType !== "all")
+      params.set("propertyType", filters.propertyType);
     if (filters.price[0]) params.set("minPrice", String(filters.price[0]));
     if (filters.price[1]) params.set("maxPrice", String(filters.price[1]));
     if (filters.bedrooms && filters.bedrooms !== "Any") params.set("bedrooms", String(filters.bedrooms));
@@ -156,6 +160,7 @@ const Search = () => {
             />
           </div>
           <Select
+            // propertyType value (use "all" for unfiltered)
             value={filters.propertyType}
             onValueChange={v => handleFilterChange({ propertyType: v })}
           >
@@ -164,7 +169,8 @@ const Search = () => {
               <SelectValue placeholder="Property Type" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">All Types</SelectItem>
+              {/* Changed "All Types" to value="all" */}
+              <SelectItem value="all">All Types</SelectItem>
               {PROPERTY_TYPES.map(pt => (
                 <SelectItem key={pt.value} value={pt.value}>{pt.label}</SelectItem>
               ))}
