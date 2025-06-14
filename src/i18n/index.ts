@@ -1,4 +1,3 @@
-
 import en from "./en";
 import de from "./de";
 import { useI18n } from "@/hooks/useI18n";
@@ -17,8 +16,11 @@ function getTranslation(lang: string, ns: Namespace, key: string): string {
 // Refactored: the translation function will always use the latest "language" value from context
 export function useT() {
   const { language } = useI18n();
+  // DEBUG: log whenever useT is called and which language is used
+  console.log("[useT] Hook called: language =", language);
   return (key: string, ns: Namespace = "common") => {
-    // Pull "language" from context every time useT() is called inside a component render
+    // DEBUG: log every time a translation is fetched
+    console.log(`[useT] Fetching "${key}" for language "${language}", ns = "${ns}"`);
     return getTranslation(language, ns, key);
   };
 }

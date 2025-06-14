@@ -1,4 +1,3 @@
-
 import React from "react";
 import { LayoutDashboard, List, FileText, LogOut, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -22,7 +21,10 @@ export default function LandlordDashboardLayout({ children, section, setSection 
   const navigate = useNavigate();
   const location = useLocation();
   const t = useT();
-  const signOut = useSignOut();
+
+  // DEBUG: log whenever landlord dashboard layout rerenders and which language is active
+  const { language } = require('@/hooks/useI18n').useI18n();
+  console.log("[LandlordDashboardLayout] Render. Language =", language);
 
   // Determine current section by route path
   const activeKey =

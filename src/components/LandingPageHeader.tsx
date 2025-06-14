@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Menu } from 'lucide-react';
@@ -35,7 +34,10 @@ const LandingPageHeader = () => {
     setAuthModalOpen(true);
   };
 
-  // Use translations for nav links
+  // DEBUG: rerender trigger
+  console.log("[LandingPageHeader] Rerender: language =", language);
+
+  // Use translations for nav links (place inside the render so always updates)
   const translatedNavLinks = [
     { name: t("dashboard"), to: "/listings" },
     { name: t("getStarted"), to: "/list-property" },

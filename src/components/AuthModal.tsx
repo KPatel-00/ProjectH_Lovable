@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import LoginForm from './auth/LoginForm';
@@ -24,6 +23,10 @@ const AuthModal = ({ isOpen, onClose, defaultTab = "login" }: AuthModalProps) =>
     setActiveTab('login');
     onClose();
   };
+
+  // DEBUG: log whenever modal renders and which language
+  const { language } = require('@/hooks/useI18n').useI18n();
+  console.log("[AuthModal] Rendered. Language =", language);
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
