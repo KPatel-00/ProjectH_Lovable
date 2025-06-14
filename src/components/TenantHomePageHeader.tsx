@@ -1,7 +1,7 @@
 
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Menu, User, FileText, LogOut } from 'lucide-react';
+import React, { useState } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { Menu, Bell, User, LogOut, UsersRound, FileText, HelpCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import LanguageSelector from '@/components/LanguageSelector';
 import {
@@ -11,9 +11,32 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
+import {
+  Sheet,
+  SheetContent,
+  SheetTrigger,
+  SheetClose,
+} from "@/components/ui/sheet";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+
+const navLinks = [
+  { name: 'Browse Listings', path: '/browse', id: 'browse' },
+  { name: 'Wishlist', path: '/wishlist', id: 'wishlist' },
+  { name: 'Help Center', path: '/help', id: 'help' },
+];
+
+const avatarMenu = [
+  { label: "My Profile", icon: User, path: "/profile" },
+  { label: "Saved Listings", icon: UsersRound, path: "/wishlist" },
+  { label: "My Applications", icon: FileText, path: "/applications" },
+  { label: "Settings", icon: HelpCircle, path: "/settings" },
+];
 
 const TenantHomePageHeader = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
+
   // Hardcoded user data for demo
   const user = {
     name: 'Anna',
@@ -22,62 +45,188 @@ const TenantHomePageHeader = () => {
     role: 'Tenant',
   };
 
-  // Placeholder signout handler
   const handleSignOut = () => {
     // TODO: implement real signout logic
     alert('Signed out!');
-    navigate('/');
+    navigate('/logout');
   };
 
+  // Utility to determine active link
+  const isActive = (to: string) => location.pathname.startsWith(to);
+
+  // Avatar fallback (initials)
+  const getInitials = (name: string) => {
+    if (!name) return "?";
+    return name.split(" ").map((n) => n[0]).join("").toUpperCase();
+  };
+
+  // Sheet content for avatar actions (mobile)
+  const avatarSheet = (
+    <SheetContent side="right" className="w-full max-w-xs p-0 flex flex-col">
+      <div className="px-6 py-4 flex items-center gap-3 border-b">
+        <Avatar>
+          {user.avatarUrl ? (
+            <AvatarImage src={user.avatarUrl} alt={user.name} />
+          ) : (
+            <AvatarFallback>{getInitials(user.name)}</AvatarFallback>
+          )}
+        </Avatar>
+        <div>
+          <div className="font-bold">{user.name}</div>
+          <div className="text-xs text-muted-foreground">{user.email}</div>
+        </div>
+      </div>
+      <div className="flex-1 flex flex-col mt-2">
+        {avatarMenu.map((item, idx) => (
+          <Button
+            key={item.label}
+            variant="ghost"
+            className="justify-start gap-2 rounded-none px-6"
+            onClick={() => { setMobileNavOpen(false); navigate(item.path); }}
+          >
+            <item.icon className="w-4 h-4" />
+            {item.label}
+          </Button>
+        ))}
+        <DropdownMenuSeparator className="my-2" />
+        <Button
+          variant="ghost"
+          className="justify-start gap-2 rounded-none px-6 text-destructive"
+          onClick={() => { setMobileNavOpen(false); handleSignOut(); }}
+        >
+          <LogOut className="w-4 h-4" />
+          Log Out
+        </Button>
+      </div>
+      <div className="px-6 py-2 text-xs text-muted-foreground border-t">
+        RentConnect · Tenant
+      </div>
+    </SheetContent>
+  );
+
   return (
-    <header className="sticky top-0 z-50 bg-background/95 backdrop-blur-md border-b border-border transition-shadow duration-200">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-        {/* Logo */}
+    <header className="sticky top-0 z-50 bg-background/95 backdrop-blur border-b border-border shadow-sm transition-all duration-200">
+      <div className="container mx-auto px-2 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-2">
+        {/* --- LEFT: Brand --- */}
         <div
           className="flex items-center space-x-3 cursor-pointer hover:scale-105 hover:text-primary transition-all duration-200"
-          onClick={() => navigate("/")}
+          onClick={() => navigate("/tenant/home")}
         >
           <div className="w-8 h-8 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center shadow-sm">
             <span className="text-primary-foreground font-bold text-sm">R</span>
           </div>
-          <span className="text-xl font-bold text-foreground">RentConnect</span>
+          <span className="text-xl font-bold text-foreground hidden sm:inline-block">RentConnect</span>
         </div>
-        {/* Tenant nav */}
-        <nav className="hidden md:flex space-x-8">
-          <Button variant="ghost" onClick={() => navigate('/listings')} className="text-muted-foreground hover:text-foreground font-medium">
-            Browse Listings
-          </Button>
-          <Button variant="ghost" onClick={() => navigate('/list-property')} className="text-muted-foreground hover:text-foreground font-medium">
-            List Property
-          </Button>
-          <Button variant="ghost" onClick={() => navigate('/contact')} className="text-muted-foreground hover:text-foreground font-medium">
-            Help Center
-          </Button>
+        {/* --- CENTER: Navigation Menu --- */}
+        <nav className="hidden md:flex mx-auto flex-1 justify-center items-center gap-2">
+          {navLinks.map((l) => (
+            <Button
+              key={l.id}
+              variant="ghost"
+              size="sm"
+              onClick={() => navigate(l.path)}
+              className={`relative px-4 font-medium transition-all
+                ${isActive(l.path) ? 'text-primary' : 'text-muted-foreground'}
+                ${isActive(l.path) ? 'after:absolute after:-bottom-px after:left-1/2 after:-translate-x-1/2 after:w-5/6 after:h-[2px] after:bg-primary after:rounded-full content-[""]' : ''}
+              `}
+            >
+              {l.name}
+            </Button>
+          ))}
         </nav>
-        {/* Actions */}
-        <div className="flex items-center space-x-3">
-          <div className="hidden sm:block"><LanguageSelector /></div>
-          {/* Dropdown for user profile */}
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button size="sm" variant="ghost" className="font-medium">
-                {user.name}
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={() => navigate('/tenant/profile')}>
-                <User className="mr-2 h-4 w-4" /> My Profile
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => navigate('/tenant/applications')}>
-                <FileText className="mr-2 h-4 w-4" /> My Applications
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={handleSignOut}>
-                <LogOut className="mr-2 h-4 w-4" /> Sign Out
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-          <Button size="sm" variant="ghost" className="md:hidden" onClick={() => {/* Open nav menu (not yet implemented) */}}><Menu /></Button>
+        {/* --- RIGHT: Actions --- */}
+        <div className="flex items-center space-x-1">
+          {/* Language Selector */}
+          <div className="hidden sm:block">
+            <LanguageSelector />
+          </div>
+          {/* Notifications */}
+          <Button
+            size="icon"
+            variant="ghost"
+            aria-label="Notifications"
+            onClick={() => navigate('/notifications')}
+            className="relative"
+          >
+            <Bell className="w-5 h-5" />
+            {/* Add badge if unread notifications needed */}
+            {/* <span className="absolute top-0 right-0 mt-1 mr-1 w-2 h-2 rounded-full bg-red-500"></span> */}
+          </Button>
+          {/* Avatar Dropdown (desktop) */}
+          <div className="hidden md:block">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button size="icon" variant="ghost" className="rounded-full aspect-square">
+                  <Avatar>
+                    {user.avatarUrl ?
+                      <AvatarImage src={user.avatarUrl} alt={user.name} /> :
+                      <AvatarFallback>{getInitials(user.name)}</AvatarFallback>}
+                  </Avatar>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56 z-[99] bg-background border">
+                <div className="p-4 pb-2 border-b">
+                  <div className="font-bold">{user.name}</div>
+                  <div className="text-xs text-muted-foreground">{user.email}</div>
+                </div>
+                <DropdownMenuSeparator />
+                {avatarMenu.map(item =>
+                  <DropdownMenuItem
+                    key={item.label}
+                    onClick={() => navigate(item.path)}
+                  >
+                    <item.icon className="mr-2 h-4 w-4" /> {item.label}
+                  </DropdownMenuItem>
+                )}
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={handleSignOut} className="text-destructive">
+                  <LogOut className="mr-2 h-4 w-4" /> Log Out
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+          {/* Hamburger menu + avatar (mobile) */}
+          <div className="flex items-center md:hidden gap-1">
+            <Sheet open={mobileNavOpen} onOpenChange={setMobileNavOpen}>
+              <SheetTrigger asChild>
+                <Button size="icon" variant="ghost" className="rounded-full aspect-square">
+                  <Avatar>
+                    {user.avatarUrl ?
+                      <AvatarImage src={user.avatarUrl} alt={user.name} /> :
+                      <AvatarFallback>{getInitials(user.name)}</AvatarFallback>}
+                  </Avatar>
+                </Button>
+              </SheetTrigger>
+              {avatarSheet}
+            </Sheet>
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button size="icon" variant="ghost" className="ml-1">
+                  <Menu className="w-6 h-6" />
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="left" className="w-60 p-0 flex flex-col">
+                <div className="px-6 py-4 flex items-center gap-3 border-b">
+                  <div className="w-8 h-8 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center shadow-sm">
+                    <span className="text-primary-foreground font-bold text-sm">R</span>
+                  </div>
+                  <span className="font-bold text-lg">RentConnect</span>
+                </div>
+                <div className="flex flex-col mt-2">
+                  {navLinks.map((l) => (
+                    <Button
+                      key={l.id}
+                      variant={isActive(l.path) ? 'secondary' : 'ghost'}
+                      className="justify-start px-6 py-3 text-base rounded-none"
+                      onClick={() => { setMobileNavOpen(false); navigate(l.path); }}
+                    >
+                      {l.name}
+                    </Button>
+                  ))}
+                </div>
+              </SheetContent>
+            </Sheet>
+          </div>
         </div>
       </div>
     </header>
