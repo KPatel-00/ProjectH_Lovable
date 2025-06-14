@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Header from "@/components/Header";
@@ -12,12 +11,9 @@ import Map from "@/components/Map";
 import RecommendedListings from "@/components/RecommendedListings";
 import { Skeleton } from "@/components/ui/skeleton";
 
-// Mock Firestore fetch - replace with real fetch when backend is connected
-const mockFetchListing = async (id: string) => {
-  await new Promise(res => setTimeout(res, 800)); // simulate delay
-  // Demo fallback - returns `null` if not '1'
-  if (id !== "1") return null;
-  return {
+// Mock Firestore fetch - now returns data for all demo IDs
+const demoListings: Record<string, any> = {
+  "1": {
     id: "1",
     title: "Spacious 2BR Apartment in Berlin",
     city: "Berlin",
@@ -25,7 +21,7 @@ const mockFetchListing = async (id: string) => {
     rent: 1200,
     verified: true,
     type: "Apartment",
-    listedAt: Date.now() - 1000 * 60 * 60 * 24 * 5, // 5 days ago
+    listedAt: Date.now() - 1000 * 60 * 60 * 24 * 5,
     size: 73,
     rooms: 2,
     floor: 3,
@@ -55,7 +51,117 @@ const mockFetchListing = async (id: string) => {
       rating: 4.8,
       business: "Berlin Living GmbH"
     }
-  };
+  },
+  "2": {
+    id: "2",
+    title: "Cozy WG Room in Munich",
+    city: "Munich",
+    neighborhood: "Schwabing",
+    rent: 650,
+    verified: true,
+    type: "WG Room",
+    listedAt: Date.now() - 1000 * 60 * 60 * 24 * 1,
+    size: 18,
+    rooms: 1,
+    floor: 2,
+    furnishing: "Partly furnished",
+    moveInDate: "2024-08-15",
+    amenities: [
+      { name: "Wi-Fi", icon: "wifi" },
+      { name: "Heating", icon: "thermometer" },
+      { name: "Washer", icon: "washing-machine" }
+    ],
+    description:
+      "Join a friendly flat share in the heart of Schwabing. Close to everything. Perfect for students or young professionals.",
+    images: [
+      "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?w=800&q=80",
+      "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800&q=80"
+    ],
+    location: {
+      lat: 48.159327,
+      lng: 11.580163
+    },
+    landlord: {
+      name: "Anna Müller",
+      verified: false,
+      rating: 4.5,
+      business: null
+    }
+  },
+  "3": {
+    id: "3",
+    title: "Modern Family House in Frankfurt",
+    city: "Frankfurt",
+    neighborhood: "Westend",
+    rent: 2100,
+    verified: false,
+    type: "House",
+    listedAt: Date.now() - 1000 * 60 * 60 * 24 * 5,
+    size: 120,
+    rooms: 4,
+    floor: 1,
+    furnishing: "Unfurnished",
+    moveInDate: "2024-09-01",
+    amenities: [
+      { name: "Heating", icon: "thermometer" },
+      { name: "Pets Allowed", icon: "paw-print" },
+    ],
+    description:
+      "Spacious family house with a private garden in popular Westend. Perfect for families or professionals seeking more space.",
+    images: [
+      "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80",
+      "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?w=800&q=80"
+    ],
+    location: {
+      lat: 50.117088,
+      lng: 8.663788
+    },
+    landlord: {
+      name: "Philip Hoffmann",
+      verified: false,
+      rating: 3.9,
+      business: "Private"
+    }
+  },
+  "4": {
+    id: "4",
+    title: "Sunny Studio in Hamburg",
+    city: "Hamburg",
+    neighborhood: "Altona",
+    rent: 800,
+    verified: true,
+    type: "Studio",
+    listedAt: Date.now() - 1000 * 60 * 60 * 24 * 2,
+    size: 28,
+    rooms: 1,
+    floor: 4,
+    furnishing: "Furnished",
+    moveInDate: "2024-07-10",
+    amenities: [
+      { name: "Wi-Fi", icon: "wifi" },
+      { name: "Washer", icon: "washing-machine" }
+    ],
+    description:
+      "Bright and cozy studio with city views in Hamburg Altona. Move in ready, ideal for singles or expats.",
+    images: [
+      "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800&q=80"
+    ],
+    location: {
+      lat: 53.54992,
+      lng: 9.93528
+    },
+    landlord: {
+      name: "Clara Lehmann",
+      verified: true,
+      rating: 5.0,
+      business: null
+    }
+  }
+};
+
+const mockFetchListing = async (id: string) => {
+  await new Promise(res => setTimeout(res, 800)); // Simulate delay
+  return demoListings[id] || null;
 };
 
 const PropertyDetail: React.FC = () => {
