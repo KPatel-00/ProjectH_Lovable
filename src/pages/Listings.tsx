@@ -178,12 +178,14 @@ const Listings = () => {
                 className={`
                   bg-background rounded-2xl overflow-hidden shadow-lg border border-border
                   hover:shadow-2xl hover:scale-[1.02] transition-all duration-200
-                  focus-within:ring-2 focus-within:ring-primary/70 focus-within:outline-none focus-within:scale-[1.01]
+                  outline-none ring-0
+                  focus-visible:ring-4 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:scale-[1.03]
                   group cursor-pointer
                 `}
                 tabIndex={0}
                 onClick={() => navigate(`/listing/${property.id}`)}
                 onKeyDown={e => e.key === "Enter" && navigate(`/listing/${property.id}`)}
+                aria-label={`Open ${property.type} in ${property.area}`}
               >
                 <div className="h-48 bg-gradient-to-br from-muted to-muted/50 relative">
                   {property.verified && (
