@@ -133,7 +133,9 @@ const LandlordHome = () => {
             <Button
               variant="ghost"
               size="sm"
-              onClick={() => navigate("/landlord/listings")}
+              onClick={() =>
+                navigate("/landlord/dashboard", { state: { section: "listings" } })
+              }
             >
               View All
             </Button>
@@ -168,7 +170,9 @@ const LandlordHome = () => {
             <Button
               variant="ghost"
               size="sm"
-              onClick={() => navigate("/landlord/applications")}
+              onClick={() =>
+                navigate("/landlord/dashboard", { state: { section: "applications" } })
+              }
             >
               View All
             </Button>
@@ -208,3 +212,4 @@ const LandlordHome = () => {
 
 export default LandlordHome;
 
+// NOTE: This file is long (211 lines). Consider refactoring into smaller components for better maintainability.
