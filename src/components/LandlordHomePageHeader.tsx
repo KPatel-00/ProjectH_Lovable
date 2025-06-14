@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { NavLink, useNavigate, useLocation } from "react-router-dom";
 import { Menu, Bell, User, LogOut, LayoutDashboard, List, HelpCircle, FileText, Settings } from "lucide-react";
@@ -17,6 +16,9 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+
+import BrandLogo from "@/components/shared/BrandLogo";
+import HeaderNavLinks from "@/components/shared/HeaderNavLinks";
 
 // Avatar dropdown menu items
 const avatarMenu = [
@@ -76,27 +78,16 @@ const LandlordHomePageHeader = () => {
   const mobileMenu = (
     <SheetContent side="left" className="w-full max-w-xs p-0 flex flex-col">
       <div className="px-6 py-4 flex items-center gap-3 border-b">
-        <div className="w-8 h-8 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center shadow-sm">
-          <span className="text-primary-foreground font-bold text-sm">R</span>
-        </div>
-        <span className="font-bold text-lg">RentConnect</span>
-        <span className="ml-auto px-2 py-0.5 rounded bg-green-100 text-green-700 text-xs font-bold">Landlord</span>
+        <BrandLogo showText={true} showRoleTag={true} roleTag="Landlord" />
       </div>
       <div className="flex flex-col mt-2">
-        {navLinks.map((l) => (
-          <NavLink
-            key={l.to}
-            to={l.to}
-            className={({ isActive }) =>
-              `w-full text-left px-6 py-3 rounded-none font-medium text-base 
-                ${isActive ? "bg-primary/10 text-primary" : "text-muted-foreground hover:bg-accent"}`
-            }
-            onClick={() => setSheetOpen(false)}
-            type="button"
-          >
-            {l.name}
-          </NavLink>
-        ))}
+        <HeaderNavLinks
+          links={navLinks}
+          navClassName="flex flex-col"
+          btnClassName="w-full text-left px-6 py-3 rounded-none font-medium text-base"
+          activeClassName="bg-primary/10 text-primary"
+          inactiveClassName="text-muted-foreground hover:bg-accent"
+        />
       </div>
     </SheetContent>
   );
@@ -155,37 +146,20 @@ const LandlordHomePageHeader = () => {
     >
       <div className="container mx-auto px-2 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-2">
         {/* --- LEFT: Brand --- */}
-        <div
-          className="flex items-center space-x-3 cursor-pointer hover:scale-105 hover:text-primary transition-all duration-200"
+        <BrandLogo
+          showText={true}
+          showRoleTag={true}
+          roleTag="Landlord"
           onClick={() => navigate("/landlord/home")}
-          role="button"
-          tabIndex={0}
-        >
-          <div className="w-8 h-8 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center shadow-sm">
-            <span className="text-primary-foreground font-bold text-sm">R</span>
-          </div>
-          <span className="text-xl font-bold text-foreground hidden sm:inline-block">RentConnect</span>
-          <span className="ml-2 px-2 py-0.5 rounded bg-green-100 text-green-700 text-xs font-bold hidden sm:inline-block">Landlord</span>
-        </div>
+        />
         {/* --- CENTER: Navigation Menu --- */}
-        <nav className="hidden md:flex mx-auto flex-1 justify-center items-center gap-2">
-          {navLinks.map((l) => (
-            <NavLink
-              to={l.to}
-              key={l.to}
-              end={l.to === "/help"}
-              className={({ isActive }) =>
-                `relative px-4 py-1 font-medium transition-all rounded-sm
-                ${isActive ? "text-primary" : "text-muted-foreground"}
-                hover:text-primary
-                ${isActive ? "after:absolute after:-bottom-px after:left-1/2 after:-translate-x-1/2 after:w-5/6 after:h-[2px] after:bg-primary after:rounded-full content-['']" : ""}`
-              }
-              type="button"
-            >
-              {l.name}
-            </NavLink>
-          ))}
-        </nav>
+        <HeaderNavLinks
+          links={navLinks}
+          navClassName="hidden md:flex mx-auto flex-1 justify-center items-center gap-2"
+          btnClassName="relative px-4 py-1 font-medium transition-all rounded-sm"
+          activeClassName="text-primary after:absolute after:-bottom-px after:left-1/2 after:-translate-x-1/2 after:w-5/6 after:h-[2px] after:bg-primary after:rounded-full content-['']"
+          inactiveClassName="text-muted-foreground hover:text-primary"
+        />
         {/* --- RIGHT: Actions --- */}
         <div className="flex items-center space-x-1">
           {/* Language Selector */}

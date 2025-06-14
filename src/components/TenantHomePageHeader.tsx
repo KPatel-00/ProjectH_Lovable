@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Menu, Bell, User, LogOut, UsersRound, FileText, HelpCircle } from 'lucide-react';
@@ -18,6 +17,8 @@ import {
   SheetClose,
 } from "@/components/ui/sheet";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import BrandLogo from "@/components/shared/BrandLogo";
+import HeaderNavLinks from "@/components/shared/HeaderNavLinks";
 
 const navLinks = [
   { name: 'Browse Listings', path: '/browse', id: 'browse' },
@@ -108,32 +109,19 @@ const TenantHomePageHeader = () => {
     <header className="sticky top-0 z-50 bg-background/95 backdrop-blur border-b border-border shadow-sm transition-all duration-200">
       <div className="container mx-auto px-2 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-2">
         {/* --- LEFT: Brand --- */}
-        <div
-          className="flex items-center space-x-3 cursor-pointer hover:scale-105 hover:text-primary transition-all duration-200"
+        <BrandLogo
+          showText={true}
+          showRoleTag={false}
           onClick={() => navigate("/tenant/home")}
-        >
-          <div className="w-8 h-8 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center shadow-sm">
-            <span className="text-primary-foreground font-bold text-sm">R</span>
-          </div>
-          <span className="text-xl font-bold text-foreground hidden sm:inline-block">RentConnect</span>
-        </div>
+        />
         {/* --- CENTER: Navigation Menu --- */}
-        <nav className="hidden md:flex mx-auto flex-1 justify-center items-center gap-2">
-          {navLinks.map((l) => (
-            <Button
-              key={l.id}
-              variant="ghost"
-              size="sm"
-              onClick={() => navigate(l.path)}
-              className={`relative px-4 font-medium transition-all
-                ${isActive(l.path) ? 'text-primary' : 'text-muted-foreground'}
-                ${isActive(l.path) ? 'after:absolute after:-bottom-px after:left-1/2 after:-translate-x-1/2 after:w-5/6 after:h-[2px] after:bg-primary after:rounded-full content-[""]' : ''}
-              `}
-            >
-              {l.name}
-            </Button>
-          ))}
-        </nav>
+        <HeaderNavLinks
+          links={navLinks.map(l => ({ name: l.name, to: l.path, id: l.id }))}
+          navClassName="hidden md:flex mx-auto flex-1 justify-center items-center gap-2"
+          btnClassName="relative px-4 font-medium transition-all"
+          button={true}
+          onNavigate={(to) => navigate(to)}
+        />
         {/* --- RIGHT: Actions --- */}
         <div className="flex items-center space-x-1">
           {/* Language Selector */}

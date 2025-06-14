@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Menu } from 'lucide-react';
@@ -5,6 +6,14 @@ import { Button } from '@/components/ui/button';
 import LanguageSelector from '@/components/LanguageSelector';
 import AuthModal from '@/components/AuthModal';
 import { useState } from 'react';
+import BrandLogo from '@/components/shared/BrandLogo';
+import HeaderNavLinks from '@/components/shared/HeaderNavLinks';
+
+const navLinks = [
+  { name: "Browse Listings", to: "/listings" },
+  { name: "List Property", to: "/list-property" },
+  { name: "Help Center", to: "/contact" }, // Actually goes to contact for now
+];
 
 const LandingPageHeader = () => {
   const navigate = useNavigate();
@@ -27,39 +36,15 @@ const LandingPageHeader = () => {
     <header className="sticky top-0 z-50 bg-background/95 backdrop-blur-md border-b border-border transition-shadow duration-200">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         {/* Logo and brand */}
-        <div
-          className="flex items-center space-x-3 cursor-pointer hover:scale-105 hover:text-primary transition-all duration-200"
-          onClick={() => navigate("/")}
-        >
-          <div className="w-8 h-8 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center shadow-sm">
-            <span className="text-primary-foreground font-bold text-sm">R</span>
-          </div>
-          <span className="text-xl font-bold text-foreground">RentConnect</span>
-        </div>
+        <BrandLogo showText={true} showRoleTag={false} onClick={() => navigate("/")} />
         {/* Nav */}
-        <nav className="hidden md:flex space-x-8">
-          <Button
-            variant="ghost"
-            onClick={() => navigate('/listings')}
-            className="text-muted-foreground hover:text-foreground font-medium"
-          >
-            Browse Listings
-          </Button>
-          <Button
-            variant="ghost"
-            onClick={() => navigate('/list-property')}
-            className="text-muted-foreground hover:text-foreground font-medium"
-          >
-            List Property
-          </Button>
-          <Button
-            variant="ghost"
-            onClick={() => navigate('/contact')}
-            className="text-muted-foreground hover:text-foreground font-medium"
-          >
-            Help Center
-          </Button>
-        </nav>
+        <HeaderNavLinks
+          links={navLinks}
+          navClassName="hidden md:flex space-x-8"
+          btnClassName="font-medium"
+          inactiveClassName="text-muted-foreground hover:text-foreground"
+          activeClassName="text-foreground underline underline-offset-4"
+        />
         {/* Actions */}
         <div className="flex items-center space-x-3">
           <div className="hidden sm:block"><LanguageSelector /></div>
