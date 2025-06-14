@@ -1,5 +1,7 @@
 
 import React from "react";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 import TenantWelcomeBanner from "@/components/TenantWelcomeBanner";
 import TenantSearchBar from "@/components/TenantSearchBar";
 import TenantSavedSearches from "@/components/TenantSavedSearches";
@@ -124,17 +126,21 @@ const mockApplications = [
 
 const TenantHome = () => {
   return (
-    <div className="min-h-screen bg-muted/30 flex flex-col">
-      <div className="container mx-auto max-w-5xl px-4 py-8 flex-1 flex flex-col gap-8">
-        <TenantWelcomeBanner firstName={mockUser.firstName} moveInGoal={mockUser.moveInGoal} />
-        <TenantSearchBar />
-        <TenantWishlist properties={mockWishlistProperties} />
-        <TenantSavedSearches savedSearches={mockSavedSearches} />
-        <TenantRecommendedProperties properties={mockRecommendations} />
-        <TenantAnnouncements announcements={mockAnnouncements} />
-        <TenantApplicationStatuses applications={mockApplications} />
+    <>
+      <Header />
+      <div className="min-h-screen bg-muted/30 flex flex-col">
+        <div className="container mx-auto max-w-5xl px-4 py-8 flex-1 flex flex-col gap-8">
+          <TenantWelcomeBanner firstName={mockUser.firstName} moveInGoal={mockUser.moveInGoal} />
+          <TenantSearchBar />
+          <TenantWishlist properties={mockWishlistProperties} />
+          <TenantSavedSearches savedSearches={mockSavedSearches} />
+          <TenantRecommendedProperties properties={mockRecommendations} />
+          <TenantAnnouncements announcements={mockAnnouncements} />
+          <TenantApplicationStatuses applications={mockApplications} />
+        </div>
       </div>
-    </div>
+      <Footer />
+    </>
   );
 };
 
