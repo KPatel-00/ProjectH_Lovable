@@ -18,12 +18,30 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 const Header = () => {
   // Simulate authentication (Replace with actual auth logic later)
   const [isAuthenticated, setIsAuthenticated] = useState(true);
-  // Simulated user info
-  const user = {
+
+  // ---- 👇 Detect user type based on route ----
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  // Determine if this is a landlord route
+  const isLandlord = location.pathname.startsWith('/landlord');
+  // Mock landlord info
+  const landlordUser = {
+    name: 'Alex',
+    email: 'contact@primerentals.com',
+    avatarUrl: '',
+    businessName: 'Prime Rentals',
+    role: 'Landlord',
+    verified: true,
+  };
+  // Simulated tenant info
+  const tenantUser = {
     name: 'Anna',
     email: 'anna.tenant@example.com',
     avatarUrl: '',
+    role: 'Tenant',
   };
+  const user = isLandlord ? landlordUser : tenantUser;
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [authModal, setAuthModal] = useState<{ isOpen: boolean; tab: 'login' | 'signup' }>({
@@ -31,21 +49,24 @@ const Header = () => {
     tab: 'signup'
   });
   const [isScrolled, setIsScrolled] = useState(false);
-  const navigate = useNavigate();
-  const location = useLocation();
 
-  const navItems = [
-    { label: 'Browse Listings', href: '/listings' },
-    { label: 'List Property', href: '/list-property' },
-    { label: 'Help Center', href: '/contact' }
-  ];
+  const navItems = isLandlord
+    ? [
+        { label: 'Dashboard', href: '/landlord/dashboard' },
+        { label: 'My Listings', href: '/landlord/listings' },
+        { label: 'Inbox', href: '/landlord/inbox' },
+      ]
+    : [
+        { label: 'Browse Listings', href: '/listings' },
+        { label: 'List Property', href: '/list-property' },
+        { label: 'Help Center', href: '/contact' },
+      ];
 
   // Handle scroll effect for sticky header
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10);
     };
-
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
@@ -56,7 +77,7 @@ const Header = () => {
   };
 
   const handleLogoClick = () => {
-    navigate('/');
+    navigate(isLandlord ? '/landlord/home' : '/');
     setIsMenuOpen(false);
   };
 
@@ -96,6 +117,9 @@ const Header = () => {
               <span className="text-xl font-bold text-foreground transition-colors duration-200">
                 RentConnect
               </span>
+              {isLandlord && (
+                <span className="ml-2 px-2 py-0.5 rounded bg-green-100 text-green-700 text-xs font-bold">Landlord</span>
+              )}
             </div>
 
             {/* Center Section - Navigation Menu */}
@@ -123,7 +147,6 @@ const Header = () => {
                 <LanguageSelector />
               </div>
               {isAuthenticated ? (
-                // --- Tenant Authenticated Header ---
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button variant="ghost" size="icon" className="rounded-full">
@@ -136,19 +159,38 @@ const Header = () => {
                       </Avatar>
                     </Button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end" className="w-48">
+                  <DropdownMenuContent align="end" className="w-56">
                     <DropdownMenuLabel className="flex flex-col">
                       <span className="font-semibold">{user.name}</span>
+                      {isLandlord && user.businessName && (
+                        <span className="text-xs font-medium text-muted-foreground mb-1">{user.businessName}</span>
+                      )}
                       <span className="text-xs font-normal text-muted-foreground">{user.email}</span>
+                      <span className="text-[10px] mt-0.5 font-semibold text-green-600">{isLandlord ? "Landlord" : "Tenant"}</span>
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem onClick={() => navigate('/profile')}>
-                      <UserRound className="w-4 h-4 mr-2" /> My Profile
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => navigate('/profile/applications')}>
-                      <User className="w-4 h-4 mr-2" /> My Applications
-                    </DropdownMenuItem>
-                    {/* Optionally: Add more account menu items here */}
+                    {isLandlord ? (
+                      <>
+                        <DropdownMenuItem onClick={() => navigate('/landlord/listings')}>
+                          <User className="w-4 h-4 mr-2" /> My Listings
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => navigate('/landlord/dashboard')}>
+                          <UserRound className="w-4 h-4 mr-2" /> Dashboard
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => navigate('/landlord/inbox')}>
+                          <User className="w-4 h-4 mr-2" /> Inbox
+                        </DropdownMenuItem>
+                      </>
+                    ) : (
+                      <>
+                        <DropdownMenuItem onClick={() => navigate('/profile')}>
+                          <UserRound className="w-4 h-4 mr-2" /> My Profile
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => navigate('/profile/applications')}>
+                          <User className="w-4 h-4 mr-2" /> My Applications
+                        </DropdownMenuItem>
+                      </>
+                    )}
                     <DropdownMenuSeparator />
                     <DropdownMenuItem onClick={handleSignOut} className="text-destructive">
                       <LogOut className="w-4 h-4 mr-2" /> Sign Out
@@ -190,7 +232,7 @@ const Header = () => {
 
           {/* Mobile Menu */}
           {isMenuOpen && (
-            <div className="md:hidden absolute top-16 left-0 right-0 bg-background/95 backdrop-blur-md border-b border-border shadow-lg animate-in slide-in-from-top-2 duration-200">
+            <div className="md:hidden absolute top-16 left-0 right-0 bg-background/95 backdrop-blur-md border-b border-border shadow-lg animate-in slide-in-from-top-2 duration-200 z-50">
               <div className="px-4 py-6 space-y-4">
                 {/* Navigation Items */}
                 {navItems.map((item) => (
@@ -222,12 +264,28 @@ const Header = () => {
                           </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="start" className="w-48">
-                          <DropdownMenuItem onClick={() => navigate('/profile')}>
-                            <UserRound className="w-4 h-4 mr-2" /> My Profile
-                          </DropdownMenuItem>
-                          <DropdownMenuItem onClick={() => navigate('/profile/applications')}>
-                            <User className="w-4 h-4 mr-2" /> My Applications
-                          </DropdownMenuItem>
+                          {isLandlord ? (
+                            <>
+                              <DropdownMenuItem onClick={() => navigate('/landlord/listings')}>
+                                <User className="w-4 h-4 mr-2" /> My Listings
+                              </DropdownMenuItem>
+                              <DropdownMenuItem onClick={() => navigate('/landlord/dashboard')}>
+                                <UserRound className="w-4 h-4 mr-2" /> Dashboard
+                              </DropdownMenuItem>
+                              <DropdownMenuItem onClick={() => navigate('/landlord/inbox')}>
+                                <User className="w-4 h-4 mr-2" /> Inbox
+                              </DropdownMenuItem>
+                            </>
+                          ) : (
+                            <>
+                              <DropdownMenuItem onClick={() => navigate('/profile')}>
+                                <UserRound className="w-4 h-4 mr-2" /> My Profile
+                              </DropdownMenuItem>
+                              <DropdownMenuItem onClick={() => navigate('/profile/applications')}>
+                                <User className="w-4 h-4 mr-2" /> My Applications
+                              </DropdownMenuItem>
+                            </>
+                          )}
                           <DropdownMenuSeparator />
                           <DropdownMenuItem onClick={handleSignOut} className="text-destructive">
                             <LogOut className="w-4 h-4 mr-2" /> Sign Out
