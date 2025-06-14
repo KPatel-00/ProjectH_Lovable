@@ -13,6 +13,7 @@ import NotFound from "./pages/NotFound";
 import TenantHome from "./pages/TenantHome";
 import LandlordHome from "./pages/LandlordHome";
 import Search from "./pages/Search";
+import RentalApplicationPage from "./pages/RentalApplication";
 
 const queryClient = new QueryClient();
 
@@ -28,6 +29,7 @@ const App: React.FC = () => (
           <Route path="/list-property" element={<ListProperty />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/listing/:id" element={<PropertyDetail />} />
+          <Route path="/apply/:listingId" element={<RentalApplicationPage />} />
           <Route path="/tenant/home" element={<TenantHome />} />
           <Route path="/landlord/home" element={<LandlordHome />} />
           <Route path="/search" element={<Search />} />
