@@ -12,7 +12,7 @@ interface AuthModalProps {
 
 const COMPANY_NAME = "RentConnect";
 
-const AuthModal = ({ isOpen, onClose, defaultTab = 'login' }: AuthModalProps) => {
+const AuthModal = ({ isOpen, onClose, defaultTab = "login" }: AuthModalProps) => {
   // Default to login tab as per instruction
   const [activeTab, setActiveTab] = useState<'login' | 'signup'>(defaultTab);
 
@@ -28,57 +28,84 @@ const AuthModal = ({ isOpen, onClose, defaultTab = 'login' }: AuthModalProps) =>
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="sm:max-w-lg p-0 gap-0">
+      <DialogContent className="sm:max-w-lg px-0 pb-0 pt-0 overflow-visible !rounded-2xl !shadow-xl bg-neutral-50 backdrop-blur-lg border border-gray-200">
         <DialogHeader className="px-6 pt-6 pb-4">
           <div className="flex items-center space-x-3">
             <div className="w-8 h-8 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center">
               <span className="text-primary-foreground font-bold text-sm">R</span>
             </div>
             <DialogTitle className="text-xl font-bold">
-              Welcome to {COMPANY_NAME}
+              Welcome to RentConnect
             </DialogTitle>
           </div>
         </DialogHeader>
-        
-        {/* Top pill-style toggle: Log In on left (default), Sign Up on right */}
+
+        {/* TOP TOGGLE */}
         <div className="px-6 pb-4">
-          <div className="bg-muted p-1 rounded-full flex gap-1 border border-border shadow-inner">
+          <div className="relative flex gap-0.5 rounded-full bg-neutral-100 border border-primary/20 shadow-inner">
+            {/* Log In */}
             <button
-              onClick={() => setActiveTab('login')}
-              className={`flex-1 py-2 px-4 text-sm font-semibold rounded-full transition-all duration-200 outline-none
-                ${activeTab === 'login'
-                  ? 'bg-background text-foreground shadow-md ring-1 ring-primary'
-                  : 'bg-transparent text-muted-foreground hover:text-foreground'}`
-              }
-              tabIndex={0}
-              aria-pressed={activeTab === 'login'}
-              style={{ transition: 'all 0.18s cubic-bezier(.4,0,.2,1)' }}
+              onClick={() => setActiveTab("login")}
+              className={`flex-1 py-2 px-4 text-base font-semibold rounded-full transition-all
+                duration-200 outline-none z-10
+                ${
+                  activeTab === "login"
+                    ? "bg-white border-2 border-primary shadow-lg text-primary"
+                    : "bg-transparent text-neutral-400 hover:text-primary"
+                }`}
+              aria-pressed={activeTab === "login"}
+              style={{
+                transition: "all 0.20s cubic-bezier(.4,0,.2,1)",
+                borderColor: activeTab === "login" ? "var(--tw-shadow-color)" : "transparent",
+              }}
             >
               Log In
             </button>
+            {/* Sign Up */}
             <button
-              onClick={() => setActiveTab('signup')}
-              className={`flex-1 py-2 px-4 text-sm font-semibold rounded-full transition-all duration-200 outline-none
-                ${activeTab === 'signup'
-                  ? 'bg-background text-foreground shadow-md ring-1 ring-primary'
-                  : 'bg-transparent text-muted-foreground hover:text-foreground'}`
-              }
-              tabIndex={0}
-              aria-pressed={activeTab === 'signup'}
-              style={{ transition: 'all 0.18s cubic-bezier(.4,0,.2,1)' }}
+              onClick={() => setActiveTab("signup")}
+              className={`flex-1 py-2 px-4 text-base font-semibold rounded-full transition-all
+                duration-200 outline-none z-10
+                ${
+                  activeTab === "signup"
+                    ? "bg-white border-2 border-primary shadow-lg text-primary"
+                    : "bg-transparent text-neutral-400 hover:text-primary"
+                }`}
+              aria-pressed={activeTab === "signup"}
+              style={{
+                transition: "all 0.20s cubic-bezier(.4,0,.2,1)",
+                borderColor: activeTab === "signup" ? "var(--tw-shadow-color)" : "transparent",
+              }}
             >
               Sign Up
             </button>
+            {/* Animated "bubble" background */}
+            <span
+              className={`absolute top-1 left-1 h-[calc(100%-0.5rem)] w-1/2 rounded-full
+                 bg-primary/5 shadow-lg transition-all duration-300 z-0 ${
+                activeTab === "signup" ? "translate-x-full" : "translate-x-0"
+              }`}
+              style={{
+                transition: "transform 0.30s cubic-bezier(.4,0,.2,1)",
+              }}
+              aria-hidden="true"
+            />
           </div>
         </div>
 
-        {/* Modal body */}
-        <div className="px-6 pb-6 min-h-[440px]">
+        {/* MODAL CONTENT */}
+        <div className="px-6 pb-6 min-h-[430px]">
           <AnimatedSwitch animationKey={activeTab}>
-            {activeTab === 'signup' ? (
-              <SignUpWizard onClose={handleClose} onSwitchToLogin={() => setActiveTab('login')} />
+            {activeTab === "signup" ? (
+              <SignUpWizard
+                onClose={handleClose}
+                onSwitchToLogin={() => setActiveTab("login")}
+              />
             ) : (
-              <LoginForm onClose={handleClose} onSwitchToSignUp={() => setActiveTab('signup')} />
+              <LoginForm
+                onClose={handleClose}
+                onSwitchToSignUp={() => setActiveTab("signup")}
+              />
             )}
           </AnimatedSwitch>
         </div>

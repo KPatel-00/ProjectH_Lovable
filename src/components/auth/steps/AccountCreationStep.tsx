@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -72,36 +71,57 @@ const AccountCreationStep = ({ data, updateData, onNext, onSwitchToLogin }: Acco
         {/* Role Toggle */}
         <div className="space-y-2">
           <label className="text-sm font-medium">I am a:</label>
-          <div className="bg-muted p-1 rounded-full flex gap-1 border border-border shadow-inner">
+          {/* Better pill toggle */}
+          <div className="relative flex gap-0.5 rounded-full bg-neutral-100 border border-primary/20 shadow-inner">
             <button
               type="button"
-              onClick={() => handleInputChange('role', 'tenant')}
-              className={`flex-1 py-2 px-4 text-sm font-semibold rounded-full transition-all duration-200 outline-none
-                ${data.role === 'tenant'
-                  ? 'bg-background text-foreground shadow-md ring-1 ring-primary'
-                  : 'bg-transparent text-muted-foreground hover:text-foreground'}`
-              }
-              aria-pressed={data.role === 'tenant'}
-              style={{ transition: 'all 0.18s cubic-bezier(.4,0,.2,1)' }}
+              onClick={() => handleInputChange("role", "tenant")}
+              className={`flex-1 py-2 px-4 text-sm font-semibold rounded-full transition-all
+                duration-200 z-10
+                ${
+                  data.role === "tenant"
+                    ? "bg-white border-2 border-primary shadow-lg text-primary"
+                    : "bg-transparent text-neutral-400 hover:text-primary"
+                }`}
+              aria-pressed={data.role === "tenant"}
+              style={{
+                transition: "all 0.20s cubic-bezier(.4,0,.2,1)",
+                borderColor: data.role === "tenant" ? "var(--tw-shadow-color)" : "transparent",
+              }}
             >
               Tenant
             </button>
             <button
               type="button"
-              onClick={() => handleInputChange('role', 'landlord')}
-              className={`flex-1 py-2 px-4 text-sm font-semibold rounded-full transition-all duration-200 outline-none
-                ${data.role === 'landlord'
-                  ? 'bg-background text-foreground shadow-md ring-1 ring-primary'
-                  : 'bg-transparent text-muted-foreground hover:text-foreground'}`
-              }
-              aria-pressed={data.role === 'landlord'}
-              style={{ transition: 'all 0.18s cubic-bezier(.4,0,.2,1)' }}
+              onClick={() => handleInputChange("role", "landlord")}
+              className={`flex-1 py-2 px-4 text-sm font-semibold rounded-full transition-all
+                duration-200 z-10
+                ${
+                  data.role === "landlord"
+                    ? "bg-white border-2 border-primary shadow-lg text-primary"
+                    : "bg-transparent text-neutral-400 hover:text-primary"
+                }`}
+              aria-pressed={data.role === "landlord"}
+              style={{
+                transition: "all 0.20s cubic-bezier(.4,0,.2,1)",
+                borderColor: data.role === "landlord" ? "var(--tw-shadow-color)" : "transparent",
+              }}
             >
               Landlord
             </button>
+            {/* bubble */}
+            <span
+              className={`absolute top-1 left-1 h-[calc(100%-0.5rem)] w-1/2 rounded-full
+                bg-primary/5 shadow-lg transition-transform duration-300 z-0
+                ${data.role === "landlord" ? "translate-x-full" : "translate-x-0"}`}
+              style={{
+                transition: "transform 0.30s cubic-bezier(.4,0,.2,1)",
+              }}
+              aria-hidden="true"
+            />
           </div>
-          <div className="flex items-center space-x-1 text-xs text-muted-foreground">
-            <Info className="w-3 h-3" />
+          <div className="flex items-center space-x-1 text-xs text-muted-foreground mt-1">
+            <span className="w-3 h-3 inline-block">ℹ️</span>
             <span>You can switch or add the other role later in your profile.</span>
           </div>
         </div>
