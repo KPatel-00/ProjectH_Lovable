@@ -141,8 +141,8 @@ const LandlordDashboard = () => {
     <div className="min-h-screen bg-background flex flex-col">
       <Header />
       <main className="container xl:max-w-6xl mx-auto flex-1 px-2 sm:px-6 lg:px-8 pt-20 pb-10">
-        {/* Page title + description */}
-        <div className="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+        {/* Title & business info */}
+        <div className="mb-7 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
           <div>
             <h1 className="text-3xl sm:text-4xl font-bold mb-0 text-foreground">Landlord Dashboard</h1>
             <div className="text-muted-foreground font-medium">{landlord.businessName}</div>
@@ -152,12 +152,12 @@ const LandlordDashboard = () => {
           </Badge>
         </div>
 
-        {/* KPI / Stats Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+        {/* KPI Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-5 mb-9">
           {dashboardStats.map((stat) => (
             <Card
               key={stat.label}
-              className={`flex flex-col shadow-none hover-scale border-2 border-transparent hover:border-primary transition`}
+              className={`flex flex-col border-2 border-transparent shadow-none hover-scale hover:border-primary transition`}
             >
               <CardContent className="flex items-center gap-2 pt-6 pb-2">
                 <span className={stat.color + " rounded p-1"}>{stat.icon}</span>
@@ -228,7 +228,7 @@ const LandlordDashboard = () => {
           ))}
         </div>
 
-        {/* Recent Activity */}
+        {/* Recent Activity Table */}
         <div>
           <div className="mb-4 flex items-center justify-between">
             <h2 className="text-xl font-semibold">Recent Activity</h2>
@@ -268,4 +268,6 @@ const LandlordDashboard = () => {
 };
 
 export default LandlordDashboard;
+
+// NOTE: File getting quite long; consider refactoring into components!
 

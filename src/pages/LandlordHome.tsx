@@ -1,115 +1,102 @@
+
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardHeader, CardContent, CardTitle, CardDescription } from "@/components/ui/card";
-import { Edit, View, X } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { useNavigate } from "react-router-dom";
 
-// Mock landlord data
+// Mock landlord/user data
 const landlord = {
   firstName: "Alex",
   businessName: "Prime Rentals",
   verified: true,
+  uid: "landlord-demo-1",
 };
 
-// Mock stats
-const stats = [
+// Mock stats (demo)
+const metrics = [
   {
     label: "Active Listings",
     value: 4,
-    color: "green",
+    color: "text-green-600",
   },
   {
-    label: "Pending Applications",
+    label: "Applications Pending",
     value: 2,
-    color: "yellow",
+    color: "text-yellow-600",
   },
   {
-    label: "Views Last 7 Days",
+    label: "Total Views (last 30 days)",
     value: 129,
-    color: "blue",
-  },
-  {
-    label: "Verified Status",
-    value: landlord.verified ? "Verified" : "Not Verified",
-    color: landlord.verified ? "green" : "red",
+    color: "text-blue-600",
   },
 ];
 
-// Mock recent listings
+// More realistic listings mock
 const recentListings = [
   {
     id: 1,
-    thumbnail: "/placeholder.svg",
     title: "Modern 2BR Apartment",
-    rent: "€1,400",
-    city: "Berlin",
-    status: "active",
+    status: "Active",
+    views: 73,
+    lastUpdated: "2024-06-09",
   },
   {
     id: 2,
-    thumbnail: "/placeholder.svg",
     title: "Cozy Studio Center",
-    rent: "€950",
-    city: "Hamburg",
-    status: "pending",
+    status: "Pending",
+    views: 36,
+    lastUpdated: "2024-06-05",
   },
   {
     id: 3,
-    thumbnail: "/placeholder.svg",
     title: "Family Home",
-    rent: "€2,200",
-    city: "Munich",
-    status: "inactive",
+    status: "Inactive",
+    views: 20,
+    lastUpdated: "2024-06-02",
   },
 ];
 
-// Mock applications
+// More realistic applications mock (show 2–3)
 const recentApplications = [
   {
     id: 1,
-    tenantName: "Emma Becker",
-    property: "Modern 2BR Apartment",
-    status: "pending",
+    applicantName: "Emma Becker",
+    listingTitle: "Modern 2BR Apartment",
+    date: "2024-06-10",
   },
   {
     id: 2,
-    tenantName: "Lucas Schulz",
-    property: "Cozy Studio Center",
-    status: "accepted",
+    applicantName: "Lucas Schulz",
+    listingTitle: "Cozy Studio Center",
+    date: "2024-06-08",
   },
   {
     id: 3,
-    tenantName: "Nina Graf",
-    property: "Family Home",
-    status: "rejected",
+    applicantName: "Nina Graf",
+    listingTitle: "Family Home",
+    date: "2024-06-06",
   },
 ];
 
+// Status color helpers
 const statusColors: Record<string, string> = {
-  active: "bg-green-100 text-green-800",
-  pending: "bg-yellow-100 text-yellow-800",
-  inactive: "bg-red-100 text-red-800",
-  accepted: "bg-green-100 text-green-800",
-  rejected: "bg-red-100 text-red-800",
+  Active: "bg-green-100 text-green-700",
+  Pending: "bg-yellow-100 text-yellow-800",
+  Inactive: "bg-red-100 text-red-700",
 };
 
 const LandlordHome = () => {
   const navigate = useNavigate();
 
-  // Add a helper to handle clicking an application in recentApplications to jump to applications dashboard
-  const handleGoToApplications = () => {
-    navigate("/landlord/applications");
-  };
-
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <Header />
-      <main className="container xl:max-w-6xl mx-auto flex-1 px-4 sm:px-6 lg:px-8 pt-24 pb-10">
-        {/* Welcome Header */}
-        <div className="mb-8">
+      <main className="container xl:max-w-4xl mx-auto flex-1 px-4 sm:px-6 lg:px-8 pt-24 pb-10">
+        {/* Welcome Section */}
+        <div className="mb-6">
           <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-1">
             Welcome back, {landlord.firstName}
           </h1>
@@ -118,92 +105,31 @@ const LandlordHome = () => {
               {landlord.businessName}
             </div>
           )}
-          <div>
-            <Badge
-              className={
-                landlord.verified
-                  ? "bg-green-500 text-white"
-                  : "bg-red-500 text-white"
-              }
-            >
-              {landlord.verified ? "Verified" : "Not Verified"}
-            </Badge>
-          </div>
+          <Badge
+            className={
+              landlord.verified
+                ? "bg-green-500 text-white"
+                : "bg-red-500 text-white"
+            }
+          >
+            {landlord.verified ? "Verified" : "Not Verified"}
+          </Badge>
         </div>
 
-        {/* CTA Buttons */}
-        <div className="flex flex-col sm:flex-row gap-3 mb-10">
-          <Button
-            className="w-full sm:w-auto"
-            onClick={() => navigate("/list-property")}
-          >
-            Add New Listing
-          </Button>
-          <Button
-            variant="secondary"
-            className="w-full sm:w-auto"
-            onClick={() => navigate("/landlord/listings")}
-          >
-            Manage Listings
-          </Button>
-          <Button
-            variant="outline"
-            className="w-full sm:w-auto"
-            onClick={() => navigate("/landlord/dashboard")}
-          >
-            Go to Dashboard
-          </Button>
-        </div>
-
-        {/* Quick Stats */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-          {stats.map((stat) => (
-            <Card key={stat.label} className="flex flex-col cursor-pointer"
-              onClick={
-                stat.label === "Active Listings"
-                  ? () => navigate("/landlord/listings")
-                  : stat.label === "Pending Applications"
-                  ? () => navigate("/landlord/applications")
-                  : undefined
-              }
-            >
-              <CardHeader className="pb-2">
-                <CardDescription className="text-base font-medium">{stat.label}</CardDescription>
-              </CardHeader>
-              <CardContent className="flex items-center gap-2 flex-1">
-                <span
-                  className={`text-2xl font-bold ${
-                    stat.color === "green"
-                      ? "text-green-600"
-                      : stat.color === "yellow"
-                      ? "text-yellow-600"
-                      : stat.color === "red"
-                      ? "text-red-600"
-                      : "text-blue-600"
-                  }`}
-                >
-                  {stat.value}
-                </span>
-                {(stat.label === "Verified Status") && (
-                  <Badge
-                    className={
-                      landlord.verified
-                        ? "bg-green-500 text-white"
-                        : "bg-red-500 text-white"
-                    }
-                  >
-                    {stat.value}
-                  </Badge>
-                )}
-              </CardContent>
+        {/* Metrics Section */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-7">
+          {metrics.map((m) => (
+            <Card key={m.label} className="flex flex-col items-center py-4">
+              <CardDescription className="text-base font-medium">{m.label}</CardDescription>
+              <div className={`text-2xl font-bold mt-2 ${m.color}`}>{m.value}</div>
             </Card>
           ))}
         </div>
 
-        {/* Recent Listings */}
-        <div className="mb-12">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-semibold">Recent Listings</h2>
+        {/* Listings Preview */}
+        <div className="mb-8">
+          <div className="flex items-center justify-between mb-3">
+            <h2 className="text-lg font-semibold">Recent Listings</h2>
             <Button
               variant="ghost"
               size="sm"
@@ -212,91 +138,67 @@ const LandlordHome = () => {
               View All
             </Button>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {recentListings.map((listing) => (
-              <Card key={listing.id} className="overflow-hidden flex flex-col">
-                <img
-                  src={listing.thumbnail}
-                  alt={listing.title}
-                  className="h-36 w-full object-cover bg-muted"
-                />
-                <CardContent className="flex-1 flex flex-col pt-4">
-                  <div className="mb-1 flex flex-row items-center justify-between">
-                    <CardTitle className="text-lg">{listing.title}</CardTitle>
-                    <Badge className={statusColors[listing.status]}>
-                      {listing.status.charAt(0).toUpperCase() +
-                        listing.status.slice(1)}
-                    </Badge>
+          <div className="rounded-lg bg-card border divide-y">
+            {recentListings.slice(0, 3).map((listing) => (
+              <div key={listing.id} className="flex flex-row items-center px-5 py-3 gap-3">
+                <div className="flex-1">
+                  <div className="font-semibold text-base">{listing.title}</div>
+                  <div className="text-sm text-muted-foreground">
+                    <span className="mr-4">
+                      <Badge className={statusColors[listing.status]} variant="outline">
+                        {listing.status}
+                      </Badge>
+                    </span>
+                    <span className="mr-4">Views: <span className="font-semibold">{listing.views}</span></span>
+                    <span>Updated: {listing.lastUpdated}</span>
                   </div>
-                  <div className="mb-1 text-primary font-bold text-lg">{listing.rent}</div>
-                  <div className="text-muted-foreground mb-2">{listing.city}</div>
-                  <div className="flex gap-2 mt-auto pt-2">
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      onClick={() => navigate(`/listing/${listing.id}/edit`)}
-                      title="Edit"
-                    >
-                      <Edit className="w-4 h-4 mr-1" />
-                      Edit
-                    </Button>
-                    <Button
-                      size="sm"
-                      variant="secondary"
-                      onClick={() => navigate(`/listing/${listing.id}`)}
-                      title="View"
-                    >
-                      <View className="w-4 h-4 mr-1" />
-                      View
-                    </Button>
-                    <Button
-                      size="sm"
-                      variant="destructive"
-                      onClick={() => alert("Deactivate action")}
-                      title="Deactivate"
-                    >
-                      <X className="w-4 h-4 mr-1" />
-                      Deactivate
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
+                </div>
+              </div>
             ))}
+            {recentListings.length === 0 && (
+              <div className="px-5 py-4 text-muted-foreground">No listings yet.</div>
+            )}
           </div>
         </div>
 
-        {/* Recent Applications */}
+        {/* Applications Preview */}
         <div className="mb-10">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-semibold">Recent Applications</h2>
+          <div className="flex items-center justify-between mb-3">
+            <h2 className="text-lg font-semibold">Recent Applications</h2>
             <Button
               variant="ghost"
               size="sm"
-              onClick={handleGoToApplications}
+              onClick={() => navigate("/landlord/applications")}
             >
               View All
             </Button>
           </div>
-          <div className="flex flex-col gap-2">
-            {recentApplications.map((app) => (
-              <Card
-                key={app.id}
-                className="flex md:flex-row flex-col items-center md:items-stretch gap-4 py-3 px-4 cursor-pointer"
-                onClick={handleGoToApplications}
-                title="View all applications"
-              >
+          <div className="rounded-lg bg-card border divide-y">
+            {recentApplications.slice(0, 3).map((app) => (
+              <div key={app.id} className="flex flex-row items-center px-5 py-3 gap-3">
                 <div className="flex-1">
-                  <div className="font-semibold">{app.tenantName}</div>
-                  <div className="text-muted-foreground text-sm">
-                    {app.property}
+                  <div className="font-semibold">{app.applicantName}</div>
+                  <div className="text-sm text-muted-foreground">
+                    {app.listingTitle} <span className="mx-3">|</span>
+                    <span>Applied {app.date}</span>
                   </div>
                 </div>
-                <Badge className={statusColors[app.status]}>
-                  {app.status.charAt(0).toUpperCase() + app.status.slice(1)}
-                </Badge>
-              </Card>
+              </div>
             ))}
+            {recentApplications.length === 0 && (
+              <div className="px-5 py-4 text-muted-foreground">No applications yet.</div>
+            )}
           </div>
+        </div>
+
+        {/* Dashboard CTA */}
+        <div className="flex justify-center pt-3">
+          <Button
+            className="w-full sm:w-auto text-lg font-semibold py-4"
+            onClick={() => navigate("/landlord/dashboard")}
+          >
+            Open Full Dashboard
+          </Button>
         </div>
       </main>
       <Footer />
@@ -305,3 +207,4 @@ const LandlordHome = () => {
 };
 
 export default LandlordHome;
+
