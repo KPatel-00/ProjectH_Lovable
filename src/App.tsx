@@ -11,6 +11,7 @@ import Contact from "./pages/Contact";
 import PropertyDetail from "./pages/PropertyDetail";
 import NotFound from "./pages/NotFound";
 import TenantHome from "./pages/TenantHome";
+import LandlordHome from "./pages/LandlordHome";
 
 const queryClient = new QueryClient();
 
@@ -27,6 +28,7 @@ const App: React.FC = () => (
           <Route path="/contact" element={<Contact />} />
           <Route path="/listing/:id" element={<PropertyDetail />} />
           <Route path="/tenant/home" element={<TenantHome />} />
+          <Route path="/landlord/home" element={<LandlordHome />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
