@@ -1,6 +1,5 @@
-
 import React, { useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Search, MapPin, Home, Calendar, Filter } from 'lucide-react';
@@ -16,6 +15,9 @@ const Listings = () => {
     propertyType: searchParams.get('propertyType') || '',
     moveInDate: searchParams.get('moveInDate') || ''
   });
+
+  // Add useNavigate for SPA navigation
+  const navigate = useNavigate();
 
   const featuredProperties = [
     {
@@ -122,7 +124,8 @@ const Listings = () => {
             <div 
               key={property.id}
               className="bg-background rounded-2xl overflow-hidden shadow-lg border border-border hover:shadow-xl transition-shadow duration-300 cursor-pointer group"
-              onClick={() => window.location.href = `/listing/${property.id}`}
+              // Use SPA navigation here!
+              onClick={() => navigate(`/listing/${property.id}`)}
             >
               <div className="h-48 bg-gradient-to-br from-muted to-muted/50 relative">
                 {property.verified && (
