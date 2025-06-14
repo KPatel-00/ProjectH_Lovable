@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
@@ -32,7 +31,7 @@ export default function ListingsSection() {
           <h2 className="text-2xl font-bold">Listings</h2>
           <div className="text-muted-foreground text-base">Manage all property listings on the platform.</div>
         </div>
-        <Button variant="primary">+ Add New Listing</Button>
+        <Button variant="default">+ Add New Listing</Button>
       </div>
       <div className="mt-3 bg-white rounded-lg shadow border">
         <Table>
