@@ -29,6 +29,8 @@ interface SignUpWizardProps {
   onSwitchToLogin: () => void;
 }
 
+const DOTS = [1, 2, 3, 4];
+
 const SignUpWizard = ({ onClose, onSwitchToLogin }: SignUpWizardProps) => {
   const [currentStep, setCurrentStep] = useState(1);
   const [signUpData, setSignUpData] = useState<SignUpData>({
@@ -54,18 +56,24 @@ const SignUpWizard = ({ onClose, onSwitchToLogin }: SignUpWizardProps) => {
 
   const handleComplete = () => {
     console.log('Sign up completed:', signUpData);
-    // TODO: Implement actual sign up logic
     onClose();
   };
 
+  // Render dots at the top as a progress indicator
   const renderProgressDots = () => (
-    <div className="flex justify-center space-x-2 mb-6">
-      {[1, 2, 3, 4].map((step) => (
+    <div className="flex justify-center items-center mb-4 mt-1">
+      {DOTS.map((dot, idx) => (
         <div
-          key={step}
-          className={`w-2 h-2 rounded-full transition-colors ${
-            step <= currentStep ? 'bg-primary' : 'bg-muted'
-          }`}
+          key={dot}
+          className={`w-3 h-3 rounded-full mx-1 transition-all duration-200
+            ${currentStep === dot
+              ? 'bg-primary border-2 border-primary/60 shadow-md'
+              : 'bg-primary/10 border border-primary/20'}
+          `}
+          style={{
+            opacity: currentStep >= dot ? 1 : 0.4,
+            transform: currentStep === dot ? 'scale(1.15)' : 'scale(1)',
+          }}
         />
       ))}
     </div>

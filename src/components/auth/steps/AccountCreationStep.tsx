@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
-import { User, Mail, Lock, Eye, EyeOff, Info } from 'lucide-react';
+import { User, Mail, Lock, Eye, EyeOff } from 'lucide-react';
 import { SignUpData } from '../SignUpWizard';
 
 interface AccountCreationStepProps {
@@ -19,12 +19,10 @@ const AccountCreationStep = ({ data, updateData, onNext, onSwitchToLogin }: Acco
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
     if (!data.agreeToTerms) {
       setShowTermsError(true);
       return;
     }
-    
     setShowTermsError(false);
     onNext();
   };
@@ -40,9 +38,8 @@ const AccountCreationStep = ({ data, updateData, onNext, onSwitchToLogin }: Acco
     <div className="space-y-6">
       <div className="text-center">
         <h3 className="text-lg font-semibold mb-2">Create Your Account</h3>
-        <p className="text-sm text-muted-foreground">Step 1 of 4</p>
+        {/* Step 1 of 4 [REMOVED] */}
       </div>
-
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="grid grid-cols-2 gap-3">
           <div className="relative">
@@ -69,10 +66,8 @@ const AccountCreationStep = ({ data, updateData, onNext, onSwitchToLogin }: Acco
           </div>
         </div>
 
-        {/* Role Toggle */}
         <div className="space-y-2">
           <label className="text-sm font-medium">I am a:</label>
-          {/* Pill outline design for role toggle */}
           <div className="relative flex rounded-full border border-primary/40 bg-white w-full overflow-hidden transition-all">
             <button
               type="button"
@@ -106,7 +101,6 @@ const AccountCreationStep = ({ data, updateData, onNext, onSwitchToLogin }: Acco
             >
               Landlord
             </button>
-            {/* Outline indicator for active role */}
             <span
               className="absolute top-0 bottom-0 w-1/2 rounded-full border-2 border-primary pointer-events-none transition-all duration-300"
               style={{
@@ -122,7 +116,6 @@ const AccountCreationStep = ({ data, updateData, onNext, onSwitchToLogin }: Acco
             <span>You can switch or add the other role later in your profile.</span>
           </div>
         </div>
-
         <div className="relative">
           <Mail className="absolute left-3 top-3 w-5 h-5 text-muted-foreground" />
           <Input 
@@ -134,7 +127,6 @@ const AccountCreationStep = ({ data, updateData, onNext, onSwitchToLogin }: Acco
             required 
           />
         </div>
-
         <div className="relative">
           <Lock className="absolute left-3 top-3 w-5 h-5 text-muted-foreground" />
           <Input 
@@ -153,8 +145,6 @@ const AccountCreationStep = ({ data, updateData, onNext, onSwitchToLogin }: Acco
             {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
           </button>
         </div>
-
-        {/* Terms Checkbox */}
         <div className="space-y-2">
           <div className="flex items-start space-x-2">
             <Checkbox
@@ -176,7 +166,6 @@ const AccountCreationStep = ({ data, updateData, onNext, onSwitchToLogin }: Acco
             </p>
           )}
         </div>
-
         <Button 
           type="submit" 
           className="w-full bg-gradient-to-r from-primary to-secondary hover:opacity-90 transition-opacity"
@@ -185,7 +174,6 @@ const AccountCreationStep = ({ data, updateData, onNext, onSwitchToLogin }: Acco
           Create Account
         </Button>
       </form>
-
       <div className="text-center text-sm text-muted-foreground">
         Already have an account?{' '}
         <button onClick={onSwitchToLogin} className="text-primary hover:underline font-medium">

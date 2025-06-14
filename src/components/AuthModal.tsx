@@ -38,8 +38,6 @@ const AuthModal = ({ isOpen, onClose, defaultTab = "login" }: AuthModalProps) =>
             </DialogTitle>
           </div>
         </DialogHeader>
-
-        {/* TOP TOGGLE */}
         <div className="px-6 pb-4">
           <div className="flex flex-col gap-2">
             <div className="relative flex rounded-full border border-primary/40 bg-white transition-all w-full overflow-hidden">
@@ -86,20 +84,7 @@ const AuthModal = ({ isOpen, onClose, defaultTab = "login" }: AuthModalProps) =>
             </div>
           </div>
         </div>
-
-        {/* STEP DOTS if on SIGNUP */}
-        <div className="w-full flex justify-center items-center mb-2" style={{ minHeight: 18 }}>
-          {activeTab === "signup" && (
-            <div className="flex gap-1">
-              <span className="w-2 h-2 rounded-full bg-primary/70 inline-block" />
-              <span className="w-2 h-2 rounded-full bg-primary/20 inline-block" />
-              <span className="w-2 h-2 rounded-full bg-primary/20 inline-block" />
-              <span className="w-2 h-2 rounded-full bg-primary/20 inline-block" />
-            </div>
-          )}
-        </div>
-
-        {/* MODAL CONTENT */}
+        {/* STEP DOTS [REMOVED, dots are now only in SignUpWizard] */}
         <div className="px-6 pb-6 min-h-[420px]">
           <AnimatedSwitch animationKey={activeTab}>
             {activeTab === "signup" ? (
