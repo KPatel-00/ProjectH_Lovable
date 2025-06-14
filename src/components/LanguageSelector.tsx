@@ -19,6 +19,8 @@ const LanguageSelector = () => {
 
   const currentLanguage = LANGUAGES.find(lang => lang.code === language);
 
+  console.log("LanguageSelector re-rendered, language is:", language);
+
   const handleLanguageChange = (languageCode: string) => {
     setLanguage(languageCode as any); // type assertion for compatibility
     toast({
@@ -67,4 +69,3 @@ const LanguageSelector = () => {
 };
 
 export default LanguageSelector;
-

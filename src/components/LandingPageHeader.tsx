@@ -8,6 +8,7 @@ import AuthModal from '@/components/AuthModal';
 import { useState } from 'react';
 import BrandLogo from '@/components/shared/BrandLogo';
 import HeaderNavLinks from '@/components/shared/HeaderNavLinks';
+import { useI18n } from '@/hooks/useI18n';
 
 const navLinks = [
   { name: "Browse Listings", to: "/listings" },
@@ -17,6 +18,7 @@ const navLinks = [
 
 const LandingPageHeader = () => {
   const navigate = useNavigate();
+  const { language } = useI18n();
 
   // State to control AuthModal and which tab is active (login or signup)
   const [authModalOpen, setAuthModalOpen] = useState(false);
@@ -31,6 +33,9 @@ const LandingPageHeader = () => {
     setAuthDefaultTab('signup');
     setAuthModalOpen(true);
   };
+
+  // console log to check if this component re-renders on language change
+  console.log("LandingPageHeader re-rendered, language is:", language);
 
   return (
     <header className="sticky top-0 z-50 bg-background/95 backdrop-blur-md border-b border-border transition-shadow duration-200">
