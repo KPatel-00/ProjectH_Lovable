@@ -42,7 +42,7 @@ const ReferralSourceStep = ({ data, updateData, onNext, onBack }: ReferralSource
   };
 
   const handleContinue = () => {
-    console.log('Referral source:', data.referralSource, data.referralOther);
+    // Removed console.log for production
     onNext();
   };
 

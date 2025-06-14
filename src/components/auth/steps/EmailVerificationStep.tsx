@@ -20,13 +20,13 @@ const EmailVerificationStep = ({ email, onNext, onBack }: EmailVerificationStepP
   }, [resendCountdown]);
 
   const handleResendEmail = () => {
-    console.log('Resending verification email to:', email);
+    // Removed console.log for production
     setResendCountdown(60);
     // TODO: Implement actual resend logic
   };
 
   const handleVerified = () => {
-    console.log('Email verified for:', email);
+    // Removed console.log for production
     // TODO: Check verification status
     onNext();
   };

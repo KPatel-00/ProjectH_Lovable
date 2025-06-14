@@ -59,7 +59,7 @@ const Listings = () => {
   ];
 
   const handleSearch = () => {
-    console.log('Searching with filters:', filters);
+    // Removed console.log for production
   };
   const t = useT();
 
