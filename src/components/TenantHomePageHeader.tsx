@@ -1,24 +1,19 @@
+
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Menu, Bell, User, LogOut, UsersRound, FileText, HelpCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import LanguageSelector from '@/components/LanguageSelector';
 import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-} from "@/components/ui/dropdown-menu";
-import {
   Sheet,
   SheetContent,
   SheetTrigger,
-  SheetClose,
 } from "@/components/ui/sheet";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import BrandLogo from "@/components/shared/BrandLogo";
 import HeaderNavLinks from "@/components/shared/HeaderNavLinks";
+import { toast } from '@/components/ui/use-toast';
+import { AvatarMenuDropdown } from "@/components/shared/AvatarMenuDropdown";
 
 const navLinks = [
   { name: 'Browse Listings', path: '/browse', id: 'browse' },
@@ -37,6 +32,7 @@ const TenantHomePageHeader = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
+  const [avatarSheetOpen, setAvatarSheetOpen] = useState(false);
 
   // Hardcoded user data for demo
   const user = {
@@ -47,9 +43,13 @@ const TenantHomePageHeader = () => {
   };
 
   const handleSignOut = () => {
-    // TODO: implement real signout logic
-    alert('Signed out!');
-    navigate('/logout');
+    localStorage.clear();
+    sessionStorage.clear();
+    toast({
+      title: "Signed out",
+      description: "You have been signed out successfully.",
+    });
+    navigate('/');
   };
 
   // Utility to determine active link
@@ -78,22 +78,24 @@ const TenantHomePageHeader = () => {
         </div>
       </div>
       <div className="flex-1 flex flex-col mt-2">
-        {avatarMenu.map((item, idx) => (
+        {avatarMenu.map((item) => (
           <Button
             key={item.label}
             variant="ghost"
             className="justify-start gap-2 rounded-none px-6"
-            onClick={() => { setMobileNavOpen(false); navigate(item.path); }}
+            onClick={() => { setAvatarSheetOpen(false); navigate(item.path); }}
+            type="button"
           >
             <item.icon className="w-4 h-4" />
             {item.label}
           </Button>
         ))}
-        <DropdownMenuSeparator className="my-2" />
+        <hr className="my-2" />
         <Button
           variant="ghost"
           className="justify-start gap-2 rounded-none px-6 text-destructive"
-          onClick={() => { setMobileNavOpen(false); handleSignOut(); }}
+          onClick={() => { setAvatarSheetOpen(false); handleSignOut(); }}
+          type="button"
         >
           <LogOut className="w-4 h-4" />
           Log Out
@@ -135,49 +137,24 @@ const TenantHomePageHeader = () => {
             aria-label="Notifications"
             onClick={() => navigate('/notifications')}
             className="relative"
+            type="button"
           >
             <Bell className="w-5 h-5" />
-            {/* Add badge if unread notifications needed */}
-            {/* <span className="absolute top-0 right-0 mt-1 mr-1 w-2 h-2 rounded-full bg-red-500"></span> */}
           </Button>
           {/* Avatar Dropdown (desktop) */}
           <div className="hidden md:block">
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button size="icon" variant="ghost" className="rounded-full aspect-square">
-                  <Avatar>
-                    {user.avatarUrl ?
-                      <AvatarImage src={user.avatarUrl} alt={user.name} /> :
-                      <AvatarFallback>{getInitials(user.name)}</AvatarFallback>}
-                  </Avatar>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56 z-[99] bg-background border">
-                <div className="p-4 pb-2 border-b">
-                  <div className="font-bold">{user.name}</div>
-                  <div className="text-xs text-muted-foreground">{user.email}</div>
-                </div>
-                <DropdownMenuSeparator />
-                {avatarMenu.map(item =>
-                  <DropdownMenuItem
-                    key={item.label}
-                    onClick={() => navigate(item.path)}
-                  >
-                    <item.icon className="mr-2 h-4 w-4" /> {item.label}
-                  </DropdownMenuItem>
-                )}
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={handleSignOut} className="text-destructive">
-                  <LogOut className="mr-2 h-4 w-4" /> Log Out
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <AvatarMenuDropdown
+              user={user}
+              menu={avatarMenu}
+              onNavigate={navigate}
+              onSignOut={handleSignOut}
+            />
           </div>
           {/* Hamburger menu + avatar (mobile) */}
           <div className="flex items-center md:hidden gap-1">
-            <Sheet open={mobileNavOpen} onOpenChange={setMobileNavOpen}>
+            <Sheet open={avatarSheetOpen} onOpenChange={setAvatarSheetOpen}>
               <SheetTrigger asChild>
-                <Button size="icon" variant="ghost" className="rounded-full aspect-square">
+                <Button size="icon" variant="ghost" className="rounded-full aspect-square" type="button">
                   <Avatar>
                     {user.avatarUrl ?
                       <AvatarImage src={user.avatarUrl} alt={user.name} /> :
@@ -187,7 +164,7 @@ const TenantHomePageHeader = () => {
               </SheetTrigger>
               {avatarSheet}
             </Sheet>
-            <Sheet>
+            <Sheet open={mobileNavOpen} onOpenChange={setMobileNavOpen}>
               <SheetTrigger asChild>
                 <Button size="icon" variant="ghost" className="ml-1">
                   <Menu className="w-6 h-6" />
@@ -222,3 +199,4 @@ const TenantHomePageHeader = () => {
 };
 
 export default TenantHomePageHeader;
+
