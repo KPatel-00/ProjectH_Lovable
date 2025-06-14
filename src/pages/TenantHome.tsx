@@ -1,8 +1,11 @@
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import TenantWelcomeBanner from "@/components/TenantWelcomeBanner";
+import TenantWelcomeBanner from "@/components/tenant/TenantWelcomeBanner";
+import TenantWelcomeBannerSkeleton from "@/components/tenant/TenantWelcomeBannerSkeleton";
+import TenantStatsSummary from "@/components/tenant/TenantStatsSummary";
+import TenantStatsSummarySkeleton from "@/components/tenant/TenantStatsSummarySkeleton";
 import TenantSearchBar from "@/components/TenantSearchBar";
 import TenantSavedSearches from "@/components/TenantSavedSearches";
 import TenantRecommendedProperties from "@/components/TenantRecommendedProperties";
@@ -125,12 +128,28 @@ const mockApplications = [
 ];
 
 const TenantHome = () => {
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const t = setTimeout(() => setLoading(false), 900);
+    return () => clearTimeout(t);
+  }, []);
+
   return (
     <>
       <Header />
       <div className="min-h-screen bg-muted/30 flex flex-col">
         <div className="container mx-auto max-w-5xl px-4 py-8 flex-1 flex flex-col gap-8">
-          <TenantWelcomeBanner firstName={mockUser.firstName} moveInGoal={mockUser.moveInGoal} />
+          {loading
+            ? <TenantWelcomeBannerSkeleton />
+            : <TenantWelcomeBanner firstName={mockUser.firstName} moveInGoal={mockUser.moveInGoal} />
+          }
+
+          {loading
+            ? <TenantStatsSummarySkeleton />
+            : <TenantStatsSummary />
+          }
+
           <TenantSearchBar />
           <TenantWishlist properties={mockWishlistProperties} />
           <TenantSavedSearches savedSearches={mockSavedSearches} />

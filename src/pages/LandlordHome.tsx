@@ -1,11 +1,15 @@
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import UserWelcomeBanner from "@/components/landlord/UserWelcomeBanner";
+import LandlordWelcomeBanner from "@/components/landlord/LandlordWelcomeBanner";
+import LandlordWelcomeBannerSkeleton from "@/components/landlord/LandlordWelcomeBannerSkeleton";
 import StatCards from "@/components/landlord/StatCards";
+import StatCardsSkeleton from "@/components/landlord/StatCardsSkeleton";
 import RecentListingsCard from "@/components/landlord/RecentListingsCard";
+import RecentListingsCardSkeleton from "@/components/landlord/RecentListingsCardSkeleton";
 import RecentApplicationsCard from "@/components/landlord/RecentApplicationsCard";
+import RecentApplicationsCardSkeleton from "@/components/landlord/RecentApplicationsCardSkeleton";
 import { Button } from "@/components/ui/button";
 import { LayoutDashboard } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -15,7 +19,7 @@ const landlord = {
   firstName: "Alex",
   businessName: "Prime Rentals",
   verified: true,
-  uid: "landlord-demo-1",
+  uid: "landlord-demo-1"
 };
 
 const metrics = [
@@ -38,6 +42,12 @@ const recentApplications = [
 
 const LandlordHome = () => {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const t = setTimeout(() => setLoading(false), 900);
+    return () => clearTimeout(t);
+  }, []);
 
   return (
     <div className="min-h-screen flex flex-col bg-neutral-50">
@@ -45,15 +55,21 @@ const LandlordHome = () => {
       {/* Main Content */}
       <main className="flex-1 w-full max-w-3xl mx-auto px-3 md:px-0 pt-12 pb-20 flex flex-col">
         {/* Header */}
-        <UserWelcomeBanner
-          name={landlord.firstName}
-          business={landlord.businessName}
-          verified={landlord.verified}
-        />
+        {loading
+          ? <LandlordWelcomeBannerSkeleton />
+          : <LandlordWelcomeBanner
+              name={landlord.firstName}
+              business={landlord.businessName}
+              verified={landlord.verified}
+            />
+        }
 
         {/* Stat Cards */}
         <div className="mb-8">
-          <StatCards stats={metrics} />
+          {loading
+            ? <StatCardsSkeleton />
+            : <StatCards stats={metrics} />
+          }
         </div>
 
         {/* Recent Listings */}
@@ -67,11 +83,14 @@ const LandlordHome = () => {
               View All
             </button>
           </div>
-          <RecentListingsCard
-            listings={recentListings}
-            showHeader={false}
-            className="border-none shadow-none bg-transparent"
-          />
+          {loading
+            ? <RecentListingsCardSkeleton />
+            : <RecentListingsCard
+                listings={recentListings}
+                showHeader={false}
+                className="border-none shadow-none bg-transparent"
+              />
+          }
         </section>
 
         {/* Recent Applications */}
@@ -85,11 +104,14 @@ const LandlordHome = () => {
               View All
             </button>
           </div>
-          <RecentApplicationsCard
-            applications={recentApplications}
-            showHeader={false}
-            className="border-none shadow-none bg-transparent"
-          />
+          {loading
+            ? <RecentApplicationsCardSkeleton />
+            : <RecentApplicationsCard
+                applications={recentApplications}
+                showHeader={false}
+                className="border-none shadow-none bg-transparent"
+              />
+          }
         </section>
 
         {/* CTA: Open Full Dashboard */}
@@ -109,4 +131,3 @@ const LandlordHome = () => {
 };
 
 export default LandlordHome;
-
