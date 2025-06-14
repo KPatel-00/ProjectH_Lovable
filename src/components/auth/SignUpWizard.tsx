@@ -1,9 +1,9 @@
-
 import React, { useState } from 'react';
 import AccountCreationStep from './steps/AccountCreationStep';
 import EmailVerificationStep from './steps/EmailVerificationStep';
 import ReferralSourceStep from './steps/ReferralSourceStep';
 import ProfileSetupStep from './steps/ProfileSetupStep';
+import { useNavigate } from 'react-router-dom';
 
 export interface SignUpData {
   firstName: string;
@@ -41,6 +41,7 @@ const SignUpWizard = ({ onClose, onSwitchToLogin }: SignUpWizardProps) => {
     role: 'tenant',
     agreeToTerms: false
   });
+  const navigate = useNavigate();
 
   const updateSignUpData = (data: Partial<SignUpData>) => {
     setSignUpData(prev => ({ ...prev, ...data }));
@@ -57,6 +58,12 @@ const SignUpWizard = ({ onClose, onSwitchToLogin }: SignUpWizardProps) => {
   const handleComplete = () => {
     console.log('Sign up completed:', signUpData);
     onClose();
+    // Redirect based on role
+    if (signUpData.role === 'landlord') {
+      navigate('/landlord/home');
+    } else {
+      navigate('/tenant/home');
+    }
   };
 
   // Render dots at the top as a progress indicator

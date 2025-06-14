@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Mail, Lock, Eye, EyeOff } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 interface LoginFormProps {
   onClose: () => void;
@@ -13,14 +14,22 @@ const LoginForm = ({ onClose, onSwitchToSignUp }: LoginFormProps) => {
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     email: '',
-    password: ''
+    password: '',
+    role: 'tenant', // default to tenant, user can select landlord for demo
   });
+  const navigate = useNavigate();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log('Login attempt:', formData);
     // TODO: Implement actual login logic
     onClose();
+    // Redirect according to role
+    if (formData.role === 'landlord') {
+      navigate('/landlord/home');
+    } else {
+      navigate('/tenant/home');
+    }
   };
 
   const handleInputChange = (field: string, value: string) => {
@@ -61,6 +70,32 @@ const LoginForm = ({ onClose, onSwitchToSignUp }: LoginFormProps) => {
           </button>
         </div>
 
+        {/* Role selection for demo (can be removed/replaced with backend logic) */}
+        <div className="flex space-x-4">
+          <label className="flex items-center space-x-2">
+            <input
+              type="radio"
+              name="role"
+              value="tenant"
+              checked={formData.role === 'tenant'}
+              onChange={() => setFormData(prev => ({ ...prev, role: 'tenant' }))}
+              className="accent-primary"
+            />
+            <span className="text-sm">Tenant</span>
+          </label>
+          <label className="flex items-center space-x-2">
+            <input
+              type="radio"
+              name="role"
+              value="landlord"
+              checked={formData.role === 'landlord'}
+              onChange={() => setFormData(prev => ({ ...prev, role: 'landlord' }))}
+              className="accent-primary"
+            />
+            <span className="text-sm">Landlord</span>
+          </label>
+        </div>
+
         <Button type="submit" className="w-full bg-gradient-to-r from-primary to-secondary hover:opacity-90 transition-opacity">
           Log In
         </Button>
@@ -82,3 +117,4 @@ const LoginForm = ({ onClose, onSwitchToSignUp }: LoginFormProps) => {
 };
 
 export default LoginForm;
+
