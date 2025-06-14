@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { X } from 'lucide-react';
@@ -14,6 +14,11 @@ interface AuthModalProps {
 
 const AuthModal = ({ isOpen, onClose, defaultTab = 'signup' }: AuthModalProps) => {
   const [activeTab, setActiveTab] = useState<'login' | 'signup'>(defaultTab);
+
+  // Update activeTab when defaultTab changes
+  useEffect(() => {
+    setActiveTab(defaultTab);
+  }, [defaultTab]);
 
   const handleClose = () => {
     setActiveTab('signup'); // Reset to default
