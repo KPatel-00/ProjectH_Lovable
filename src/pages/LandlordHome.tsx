@@ -2,7 +2,6 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardHeader, CardContent, CardTitle, CardDescription } from "@/components/ui/card";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { useNavigate } from "react-router-dom";
@@ -20,21 +19,18 @@ const metrics = [
   {
     label: "Active Listings",
     value: 4,
-    color: "text-green-600",
   },
   {
     label: "Applications Pending",
     value: 2,
-    color: "text-yellow-600",
   },
   {
-    label: "Total Views (last 30 days)",
+    label: "Total Views (30d)",
     value: 129,
-    color: "text-blue-600",
   },
 ];
 
-// More realistic listings mock
+// Mock listings
 const recentListings = [
   {
     id: 1,
@@ -59,7 +55,7 @@ const recentListings = [
   },
 ];
 
-// More realistic applications mock (show 2–3)
+// Mock applications
 const recentApplications = [
   {
     id: 1,
@@ -81,125 +77,122 @@ const recentApplications = [
   },
 ];
 
-// Status color helpers
-const statusColors: Record<string, string> = {
-  Active: "bg-green-100 text-green-700",
-  Pending: "bg-yellow-100 text-yellow-800",
-  Inactive: "bg-red-100 text-red-700",
+const statusTextColor: Record<string, string> = {
+  Active: "text-green-600",
+  Pending: "text-yellow-700",
+  Inactive: "text-red-500",
 };
 
 const LandlordHome = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
+    <div className="min-h-screen flex flex-col bg-background">
       <Header />
-      <main className="container xl:max-w-4xl mx-auto flex-1 px-4 sm:px-6 lg:px-8 pt-24 pb-10">
-        {/* Welcome Section */}
-        <div className="mb-6">
-          <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-1">
-            Welcome back, {landlord.firstName}
+      <main className="container max-w-2xl mx-auto flex-1 px-4 py-16">
+        {/* Welcome */}
+        <section className="mb-10">
+          <h1 className="text-[2rem] font-bold mb-1 leading-snug tracking-tight text-foreground">
+            Welcome, {landlord.firstName}
           </h1>
           {landlord.businessName && (
-            <div className="text-muted-foreground font-medium mb-1">
-              {landlord.businessName}
-            </div>
+            <div className="text-base text-muted-foreground font-medium mb-2">{landlord.businessName}</div>
           )}
           <Badge
             className={
               landlord.verified
-                ? "bg-green-500 text-white"
-                : "bg-red-500 text-white"
+                ? "bg-green-400 text-white px-2 py-1 text-xs rounded"
+                : "bg-red-400 text-white px-2 py-1 text-xs rounded"
             }
           >
             {landlord.verified ? "Verified" : "Not Verified"}
           </Badge>
-        </div>
-
-        {/* Metrics Section */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-7">
+        </section>
+        {/* Metrics */}
+        <section className="grid grid-cols-3 gap-4 mb-10">
           {metrics.map((m) => (
-            <Card key={m.label} className="flex flex-col items-center py-4">
-              <CardDescription className="text-base font-medium">{m.label}</CardDescription>
-              <div className={`text-2xl font-bold mt-2 ${m.color}`}>{m.value}</div>
-            </Card>
+            <div
+              key={m.label}
+              className="rounded-lg min-h-[66px] flex flex-col items-center justify-center bg-background border border-border"
+            >
+              <div className="text-2xl font-bold text-foreground">{m.value}</div>
+              <div className="text-xs text-muted-foreground font-medium mt-1 text-center">{m.label}</div>
+            </div>
           ))}
-        </div>
-
-        {/* Listings Preview */}
-        <div className="mb-8">
+        </section>
+        {/* Recent Listings */}
+        <section className="mb-10">
           <div className="flex items-center justify-between mb-3">
-            <h2 className="text-lg font-semibold">Recent Listings</h2>
+            <h2 className="text-base font-semibold">Recent Listings</h2>
             <Button
               variant="ghost"
               size="sm"
-              onClick={() =>
-                navigate("/landlord/dashboard", { state: { section: "listings" } })
-              }
+              className="text-xs px-2"
+              onClick={() => navigate("/landlord/dashboard", { state: { section: "listings" } })}
             >
               View All
             </Button>
           </div>
-          <div className="rounded-lg bg-card border divide-y">
-            {recentListings.slice(0, 3).map((listing) => (
-              <div key={listing.id} className="flex flex-row items-center px-5 py-3 gap-3">
-                <div className="flex-1">
-                  <div className="font-semibold text-base">{listing.title}</div>
-                  <div className="text-sm text-muted-foreground">
-                    <span className="mr-4">
-                      <Badge className={statusColors[listing.status]} variant="outline">
-                        {listing.status}
-                      </Badge>
-                    </span>
-                    <span className="mr-4">Views: <span className="font-semibold">{listing.views}</span></span>
-                    <span>Updated: {listing.lastUpdated}</span>
-                  </div>
-                </div>
-              </div>
-            ))}
+          <div>
             {recentListings.length === 0 && (
-              <div className="px-5 py-4 text-muted-foreground">No listings yet.</div>
+              <div className="py-5 text-muted-foreground text-center text-sm">No listings yet.</div>
             )}
-          </div>
-        </div>
-
-        {/* Applications Preview */}
-        <div className="mb-10">
-          <div className="flex items-center justify-between mb-3">
-            <h2 className="text-lg font-semibold">Recent Applications</h2>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() =>
-                navigate("/landlord/dashboard", { state: { section: "applications" } })
-              }
-            >
-              View All
-            </Button>
-          </div>
-          <div className="rounded-lg bg-card border divide-y">
-            {recentApplications.slice(0, 3).map((app) => (
-              <div key={app.id} className="flex flex-row items-center px-5 py-3 gap-3">
-                <div className="flex-1">
-                  <div className="font-semibold">{app.applicantName}</div>
-                  <div className="text-sm text-muted-foreground">
-                    {app.listingTitle} <span className="mx-3">|</span>
-                    <span>Applied {app.date}</span>
+            {recentListings.slice(0, 3).map((listing) => (
+              <div
+                key={listing.id}
+                className="flex flex-row items-center justify-between px-0 py-2 border-b border-border last:border-b-0"
+              >
+                <div>
+                  <div className="font-medium text-sm text-foreground">{listing.title}</div>
+                  <div className="text-xs text-muted-foreground">
+                    <span className={statusTextColor[listing.status]}>
+                      {listing.status}
+                    </span>
+                    {" · "}Views: <span className="font-semibold">{listing.views}</span>
+                    {" · "}Updated: {listing.lastUpdated}
                   </div>
                 </div>
               </div>
             ))}
-            {recentApplications.length === 0 && (
-              <div className="px-5 py-4 text-muted-foreground">No applications yet.</div>
-            )}
           </div>
-        </div>
-
-        {/* Dashboard CTA */}
-        <div className="flex justify-center pt-3">
+        </section>
+        {/* Recent Applications */}
+        <section className="mb-10">
+          <div className="flex items-center justify-between mb-3">
+            <h2 className="text-base font-semibold">Recent Applications</h2>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="text-xs px-2"
+              onClick={() => navigate("/landlord/dashboard", { state: { section: "applications" } })}
+            >
+              View All
+            </Button>
+          </div>
+          <div>
+            {recentApplications.length === 0 && (
+              <div className="py-5 text-muted-foreground text-center text-sm">No applications yet.</div>
+            )}
+            {recentApplications.slice(0, 3).map((app) => (
+              <div
+                key={app.id}
+                className="flex flex-row items-center justify-between px-0 py-2 border-b border-border last:border-b-0"
+              >
+                <div>
+                  <div className="font-medium text-sm text-foreground">{app.applicantName}</div>
+                  <div className="text-xs text-muted-foreground">
+                    {app.listingTitle} · Applied {app.date}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+        <div className="pt-1">
           <Button
-            className="w-full sm:w-auto text-lg font-semibold py-4"
+            className="w-full text-base font-semibold py-3 rounded-md"
             onClick={() => navigate("/landlord/dashboard")}
+            variant="outline"
           >
             Open Full Dashboard
           </Button>
@@ -213,3 +206,4 @@ const LandlordHome = () => {
 export default LandlordHome;
 
 // NOTE: This file is long (211 lines). Consider refactoring into smaller components for better maintainability.
+
