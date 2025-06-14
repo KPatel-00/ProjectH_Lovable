@@ -11,9 +11,9 @@ import { useI18n } from '@/hooks/useI18n';
 import { useT } from "@/i18n";
 
 const navLinks = [
-  { name: "Browse Listings", to: "/listings" },
-  { name: "List Property", to: "/list-property" },
-  { name: "Help Center", to: "/contact" }, // Actually goes to contact for now
+  { name: "dashboard", to: "/listings" },
+  { name: "getStarted", to: "/list-property" },
+  { name: "helpCenter", to: "/contact" },
 ];
 
 const LandingPageHeader = () => {
@@ -35,12 +35,9 @@ const LandingPageHeader = () => {
     setAuthModalOpen(true);
   };
 
-  // console log to check if this component re-renders on language change
-  console.log("LandingPageHeader re-rendered, language is:", language);
-
   // Use translations for nav links
   const translatedNavLinks = [
-    { name: t("dashboard"), to: "/listings" }, // Choose keys "dashboard", etc. from en.ts/de.ts
+    { name: t("dashboard"), to: "/listings" },
     { name: t("getStarted"), to: "/list-property" },
     { name: t("helpCenter"), to: "/contact" },
   ];

@@ -3,11 +3,13 @@ import React from "react";
 import { LayoutDashboard, List, FileText, LogOut, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate, useLocation } from "react-router-dom";
+import { useT } from "@/i18n";
+import { useSignOut } from "@/hooks/useSignOut";
 
 const NAV_ITEMS = [
-  { label: "Analytics", icon: <LayoutDashboard className="w-4 h-4 mr-2" />, key: "dashboard", path: "/landlord/dashboard" },
-  { label: "My Listings", icon: <List className="w-4 h-4 mr-2" />, key: "listings", path: "/landlord/dashboard/mylistings" },
-  { label: "Applications", icon: <FileText className="w-4 h-4 mr-2" />, key: "applications", path: "/landlord/dashboard/applications" },
+  { labelKey: "dashboard", icon: <LayoutDashboard className="w-4 h-4 mr-2" />, key: "dashboard", path: "/landlord/dashboard" },
+  { labelKey: "myListings", icon: <List className="w-4 h-4 mr-2" />, key: "listings", path: "/landlord/dashboard/mylistings" },
+  { labelKey: "applications", icon: <FileText className="w-4 h-4 mr-2" />, key: "applications", path: "/landlord/dashboard/applications" },
 ];
 
 type Props = {
@@ -19,6 +21,8 @@ type Props = {
 export default function LandlordDashboardLayout({ children, section, setSection }: Props) {
   const navigate = useNavigate();
   const location = useLocation();
+  const t = useT();
+  const signOut = useSignOut();
 
   // Determine current section by route path
   const activeKey =
@@ -41,7 +45,7 @@ export default function LandlordDashboardLayout({ children, section, setSection 
               onClick={() => navigate("/landlord/home")}
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
-              Close Dashboard
+              {t("closeDashboard") || "Close Dashboard"}
             </Button>
           </div>
           {/* Brand/Header */}
@@ -51,7 +55,7 @@ export default function LandlordDashboardLayout({ children, section, setSection 
             </div>
             <div>
               <div className="font-bold text-lg text-foreground">RentConnect</div>
-              <div className="text-xs text-muted-foreground">Landlord Panel</div>
+              <div className="text-xs text-muted-foreground">{t("landlordPanel") || "Landlord Panel"}</div>
             </div>
           </div>
           {/* Navigation */}
@@ -69,16 +73,16 @@ export default function LandlordDashboardLayout({ children, section, setSection 
                 }}
               >
                 {item.icon}
-                {item.label}
+                {t(item.labelKey)}
               </button>
             ))}
           </nav>
         </div>
         {/* Bottom bar */}
         <div className="px-6 py-4 border-t">
-          <Button size="sm" variant="ghost" className="w-full justify-start">
+          <Button size="sm" variant="ghost" className="w-full justify-start" onClick={signOut}>
             <LogOut className="w-4 h-4 mr-2" />
-            Sign out
+            {t("signOut")}
           </Button>
         </div>
       </aside>

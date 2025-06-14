@@ -4,6 +4,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import LoginForm from './auth/LoginForm';
 import SignUpWizard from './auth/SignUpWizard';
 import AnimatedSwitch from './ui/AnimatedSwitch';
+import { useT } from "@/i18n";
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -11,10 +12,9 @@ interface AuthModalProps {
   defaultTab?: 'login' | 'signup';
 }
 
-const COMPANY_NAME = "RentConnect";
-
 const AuthModal = ({ isOpen, onClose, defaultTab = "login" }: AuthModalProps) => {
   const [activeTab, setActiveTab] = useState<'login' | 'signup'>(defaultTab);
+  const t = useT();
 
   useEffect(() => {
     setActiveTab(defaultTab);
@@ -34,7 +34,7 @@ const AuthModal = ({ isOpen, onClose, defaultTab = "login" }: AuthModalProps) =>
               <span className="text-primary-foreground font-bold text-sm">R</span>
             </div>
             <DialogTitle className="text-xl font-bold">
-              Welcome to RentConnect
+              {t("welcomeTo", "common") || "Welcome to"} RentConnect
             </DialogTitle>
           </div>
         </DialogHeader>
@@ -54,7 +54,7 @@ const AuthModal = ({ isOpen, onClose, defaultTab = "login" }: AuthModalProps) =>
                 }}
                 aria-pressed={activeTab === "login"}
               >
-                Log In
+                {t("login")}
               </button>
               <button
                 onClick={() => setActiveTab("signup")}
@@ -69,7 +69,7 @@ const AuthModal = ({ isOpen, onClose, defaultTab = "login" }: AuthModalProps) =>
                 }}
                 aria-pressed={activeTab === "signup"}
               >
-                Sign Up
+                {t("getStarted")}
               </button>
               {/* Outline indicator for active tab */}
               <span

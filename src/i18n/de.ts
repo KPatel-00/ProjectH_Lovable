@@ -51,6 +51,9 @@ export default {
     yourEmail: "Ihre E-Mail",
     subject: "Betreff",
     yourMessage: "Ihre Nachricht",
+    closeDashboard: "Dashboard schließen",
+    landlordPanel: "Vermieter-Bereich",
+    welcomeTo: "Willkommen bei",
   },
   empty: {
     noSavedListings: "Keine gespeicherten Inserate",

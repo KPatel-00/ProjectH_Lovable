@@ -51,6 +51,9 @@ export default {
     yourEmail: "Your Email",
     subject: "Subject",
     yourMessage: "Your Message",
+    closeDashboard: "Close Dashboard",
+    landlordPanel: "Landlord Panel",
+    welcomeTo: "Welcome to",
   },
   empty: {
     noSavedListings: "No saved listings",
