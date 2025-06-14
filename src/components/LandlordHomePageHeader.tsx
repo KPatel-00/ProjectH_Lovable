@@ -21,6 +21,9 @@ import BrandLogo from "@/components/shared/BrandLogo";
 import HeaderNavLinks from "@/components/shared/HeaderNavLinks";
 import { AvatarMenuDropdown } from "@/components/shared/AvatarMenuDropdown";
 import { toast } from "@/components/ui/use-toast";
+import LandlordHeaderBrand from "@/components/LandlordHeaderBrand";
+import LandlordHeaderMobileMenu from "@/components/LandlordHeaderMobileMenu";
+import LandlordHeaderMobileAvatar from "@/components/LandlordHeaderMobileAvatar";
 
 // Avatar dropdown menu items
 const avatarMenu = [
@@ -77,70 +80,6 @@ const LandlordHomePageHeader = () => {
     return () => window.removeEventListener("scroll", handler);
   }, []);
 
-  // ---------- MOBILE SHEET CONTENT ----------
-  const mobileMenu = (
-    <SheetContent side="left" className="w-full max-w-xs p-0 flex flex-col">
-      <div className="px-6 py-4 flex items-center gap-3 border-b">
-        <BrandLogo showText={true} showRoleTag={true} roleTag="Landlord" />
-      </div>
-      <div className="flex flex-col mt-2">
-        <HeaderNavLinks
-          links={navLinks}
-          navClassName="flex flex-col"
-          btnClassName="w-full text-left px-6 py-3 rounded-none font-medium text-base"
-          activeClassName="bg-primary/10 text-primary"
-          inactiveClassName="text-muted-foreground hover:bg-accent"
-        />
-      </div>
-    </SheetContent>
-  );
-
-  // MOBILE avatar sheet modal
-  const mobileAvatarSheet = (
-    <SheetContent side="right" className="w-full max-w-xs p-0 flex flex-col">
-      <div className="px-6 py-4 flex items-center gap-3 border-b">
-        <Avatar>
-          {user.avatarUrl ? (
-            <AvatarImage src={user.avatarUrl} alt={user.name} />
-          ) : (
-            <AvatarFallback>{getInitials(user.name)}</AvatarFallback>
-          )}
-        </Avatar>
-        <div>
-          <div className="font-bold">{user.name}</div>
-          <div className="text-xs text-muted-foreground">{user.email}</div>
-        </div>
-      </div>
-      <div className="flex-1 flex flex-col mt-2">
-        {avatarMenu.map((item) => (
-          <Button
-            key={item.label}
-            variant="ghost"
-            className="justify-start gap-2 rounded-none px-6"
-            onClick={() => { setAvatarSheetOpen(false); navigate(item.path); }}
-            type="button"
-          >
-            <item.icon className="w-4 h-4" />
-            {item.label}
-          </Button>
-        ))}
-        <DropdownMenuSeparator className="my-2" />
-        <Button
-          variant="ghost"
-          className="justify-start gap-2 rounded-none px-6 text-destructive"
-          onClick={() => { setAvatarSheetOpen(false); handleSignOut(); }}
-          type="button"
-        >
-          <LogOut className="w-4 h-4" />
-          Log Out
-        </Button>
-      </div>
-      <div className="px-6 py-2 text-xs text-muted-foreground border-t">
-        RentConnect · Landlord
-      </div>
-    </SheetContent>
-  );
-
   return (
     <header
       className={`sticky top-0 z-50 bg-background/95 backdrop-blur border-b border-border transition-shadow duration-200 ${
@@ -149,12 +88,7 @@ const LandlordHomePageHeader = () => {
     >
       <div className="container mx-auto px-2 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-2">
         {/* --- LEFT: Brand --- */}
-        <BrandLogo
-          showText={true}
-          showRoleTag={true}
-          roleTag="Landlord"
-          onClick={() => navigate("/landlord/home")}
-        />
+        <LandlordHeaderBrand onClick={() => navigate("/landlord/home")} />
         {/* --- CENTER: Navigation Menu --- */}
         <HeaderNavLinks
           links={navLinks}
@@ -202,7 +136,13 @@ const LandlordHomePageHeader = () => {
                   </Avatar>
                 </Button>
               </SheetTrigger>
-              {mobileAvatarSheet}
+              <LandlordHeaderMobileAvatar
+                user={user}
+                avatarMenu={avatarMenu}
+                setAvatarSheetOpen={setAvatarSheetOpen}
+                handleSignOut={handleSignOut}
+                navigate={navigate}
+              />
             </Sheet>
             <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
               <SheetTrigger asChild>
@@ -210,7 +150,7 @@ const LandlordHomePageHeader = () => {
                   <Menu className="w-6 h-6" />
                 </Button>
               </SheetTrigger>
-              {mobileMenu}
+              <LandlordHeaderMobileMenu navLinks={navLinks} />
             </Sheet>
           </div>
         </div>
