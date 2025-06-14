@@ -14,9 +14,11 @@ function getTranslation(lang: string, ns: Namespace, key: string): string {
   return resources[lang]?.[ns]?.[key] || resources["en"][ns][key] || key;
 }
 
+// Refactored: the translation function will always use the latest "language" value from context
 export function useT() {
   const { language } = useI18n();
   return (key: string, ns: Namespace = "common") => {
+    // Pull "language" from context every time useT() is called inside a component render
     return getTranslation(language, ns, key);
   };
 }

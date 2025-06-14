@@ -1,14 +1,14 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Menu } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import LanguageSelector from '@/components/LanguageSelector';
 import AuthModal from '@/components/AuthModal';
-import { useState } from 'react';
 import BrandLogo from '@/components/shared/BrandLogo';
 import HeaderNavLinks from '@/components/shared/HeaderNavLinks';
 import { useI18n } from '@/hooks/useI18n';
+import { useT } from "@/i18n";
 
 const navLinks = [
   { name: "Browse Listings", to: "/listings" },
@@ -19,6 +19,7 @@ const navLinks = [
 const LandingPageHeader = () => {
   const navigate = useNavigate();
   const { language } = useI18n();
+  const t = useT();
 
   // State to control AuthModal and which tab is active (login or signup)
   const [authModalOpen, setAuthModalOpen] = useState(false);
@@ -37,6 +38,13 @@ const LandingPageHeader = () => {
   // console log to check if this component re-renders on language change
   console.log("LandingPageHeader re-rendered, language is:", language);
 
+  // Use translations for nav links
+  const translatedNavLinks = [
+    { name: t("dashboard"), to: "/listings" }, // Choose keys "dashboard", etc. from en.ts/de.ts
+    { name: t("getStarted"), to: "/list-property" },
+    { name: t("helpCenter"), to: "/contact" },
+  ];
+
   return (
     <header className="sticky top-0 z-50 bg-background/95 backdrop-blur-md border-b border-border transition-shadow duration-200">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
@@ -44,7 +52,7 @@ const LandingPageHeader = () => {
         <BrandLogo showText={true} showRoleTag={false} onClick={() => navigate("/")} />
         {/* Nav */}
         <HeaderNavLinks
-          links={navLinks}
+          links={translatedNavLinks}
           navClassName="hidden md:flex space-x-8"
           btnClassName="font-medium"
           inactiveClassName="text-muted-foreground hover:text-foreground"
@@ -59,14 +67,14 @@ const LandingPageHeader = () => {
             className="font-medium"
             onClick={openLoginModal}
           >
-            Log In
+            {t("login")}
           </Button>
           <Button
             size="sm"
             className="bg-gradient-to-r from-primary to-secondary font-medium px-6"
             onClick={openSignupModal}
           >
-            Get Started
+            {t("getStarted")}
           </Button>
           <Button
             size="sm"
@@ -87,4 +95,5 @@ const LandingPageHeader = () => {
     </header>
   );
 };
+
 export default LandingPageHeader;
