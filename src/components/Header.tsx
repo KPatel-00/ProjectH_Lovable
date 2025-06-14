@@ -162,8 +162,11 @@ const Header = () => {
                   <DropdownMenuContent align="end" className="w-56">
                     <DropdownMenuLabel className="flex flex-col">
                       <span className="font-semibold">{user.name}</span>
-                      {isLandlord && user.businessName && (
-                        <span className="text-xs font-medium text-muted-foreground mb-1">{user.businessName}</span>
+                      {/* Fix: Only try to render businessName if it exists */}
+                      {isLandlord && (user as typeof landlordUser).businessName && (
+                        <span className="text-xs font-medium text-muted-foreground mb-1">
+                          {(user as typeof landlordUser).businessName}
+                        </span>
                       )}
                       <span className="text-xs font-normal text-muted-foreground">{user.email}</span>
                       <span className="text-[10px] mt-0.5 font-semibold text-green-600">{isLandlord ? "Landlord" : "Tenant"}</span>
