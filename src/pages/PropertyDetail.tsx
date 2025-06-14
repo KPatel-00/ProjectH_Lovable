@@ -1,130 +1,167 @@
 
-import React from 'react';
-import { useParams } from 'react-router-dom';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
-import { Button } from '@/components/ui/button';
-import { MapPin, Bed, Bath, Square, Calendar, Phone, Mail, Star } from 'lucide-react';
+import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import PropertyImageGallery from "@/components/PropertyImageGallery";
+import PropertySummary from "@/components/PropertySummary";
+import PropertyAmenities from "@/components/PropertyAmenities";
+import LandlordCard from "@/components/LandlordCard";
+import ActionPanel from "@/components/ActionPanel";
+import Map from "@/components/Map";
+import RecommendedListings from "@/components/RecommendedListings";
+import { Skeleton } from "@/components/ui/skeleton";
 
-const PropertyDetail = () => {
-  const { id } = useParams();
-
-  const property = {
-    id: id,
-    title: 'Modern Apartment in Berlin Mitte',
-    area: 'Berlin Mitte',
-    rent: '€1,200',
-    type: 'Apartment',
+// Mock Firestore fetch - replace with real fetch when backend is connected
+const mockFetchListing = async (id: string) => {
+  await new Promise(res => setTimeout(res, 800)); // simulate delay
+  // Demo fallback - returns `null` if not '1'
+  if (id !== "1") return null;
+  return {
+    id: "1",
+    title: "Spacious 2BR Apartment in Berlin",
+    city: "Berlin",
+    neighborhood: "Mitte",
+    rent: 1200,
     verified: true,
-    bedrooms: 2,
-    bathrooms: 1,
-    size: '65m²',
-    description: 'Beautiful modern apartment in the heart of Berlin Mitte. Perfect for young professionals or students. Fully furnished with modern amenities.',
-    amenities: ['Furnished', 'Balcony', 'Washing Machine', 'Internet', 'Heating'],
+    type: "Apartment",
+    listedAt: Date.now() - 1000 * 60 * 60 * 24 * 5, // 5 days ago
+    size: 73,
+    rooms: 2,
+    floor: 3,
+    furnishing: "Furnished",
+    moveInDate: "2024-07-01",
+    amenities: [
+      { name: "Wi-Fi", icon: "wifi" },
+      { name: "Heating", icon: "thermometer" },
+      { name: "Pets Allowed", icon: "paw-print" },
+      { name: "Washer", icon: "washing-machine" }
+    ],
+    description:
+      "Enjoy urban living in this spacious apartment located in vibrant Berlin Mitte. Close to cafes, parks, and transit. Open layout, garden view, pets allowed.",
+    images: [
+      "https://images.unsplash.com/photo-1649972904349-6e44c42644a7?w=800&q=80",
+      "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?w=800&q=80",
+      "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80",
+      "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800&q=80"
+    ],
+    location: {
+      lat: 52.520008,
+      lng: 13.404954
+    },
     landlord: {
-      name: 'Michael Weber',
+      name: "Michael Weber",
+      verified: true,
       rating: 4.8,
-      properties: 12
+      business: "Berlin Living GmbH"
     }
   };
+};
+
+const PropertyDetail: React.FC = () => {
+  const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
+  const [listing, setListing] = useState<any | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let ignore = false;
+    if (!id) {
+      navigate("/404");
+      return;
+    }
+    setLoading(true);
+    mockFetchListing(id).then((data) => {
+      if (ignore) return;
+      if (!data) {
+        navigate("/404");
+      } else {
+        setListing(data);
+        setLoading(false);
+      }
+    });
+    return () => { ignore = true; };
+  }, [id, navigate]);
+
+  if (loading) {
+    // Loading skeletons
+    return (
+      <div className="min-h-screen bg-background">
+        <Header />
+        <main className="container mx-auto px-4 pt-24 pb-16">
+          <Skeleton className="h-80 w-full mb-6 rounded-xl" />
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div className="lg:col-span-2 space-y-5">
+              <Skeleton className="h-10 w-1/3" />
+              <Skeleton className="h-6 w-2/3" />
+              <Skeleton className="h-32 w-full" />
+              <Skeleton className="h-6 w-40" />
+            </div>
+            <div>
+              <Skeleton className="h-64 w-full rounded-xl" />
+            </div>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
+
+  if (!listing) return null;
 
   return (
     <div className="min-h-screen bg-background">
       <Header />
-      <main className="container mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-16">
-        <div className="max-w-6xl mx-auto">
-          {/* Property Images */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-            <div className="h-96 bg-gradient-to-br from-muted to-muted/50 rounded-2xl"></div>
-            <div className="grid grid-cols-2 gap-4">
-              <div className="h-44 bg-gradient-to-br from-muted to-muted/50 rounded-xl"></div>
-              <div className="h-44 bg-gradient-to-br from-muted to-muted/50 rounded-xl"></div>
-              <div className="h-44 bg-gradient-to-br from-muted to-muted/50 rounded-xl"></div>
-              <div className="h-44 bg-gradient-to-br from-muted to-muted/50 rounded-xl"></div>
+      <main className="container mx-auto px-2 sm:px-4 lg:px-8 pt-24 pb-16">
+        {/* Image Gallery */}
+        <PropertyImageGallery images={listing.images} />
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-8">
+          <div className="lg:col-span-2 space-y-8">
+            {/* Title and Info */}
+            <div className="flex flex-wrap items-center gap-3 mb-1">
+              <h1 className="text-3xl font-bold text-foreground">{listing.title}</h1>
+              {listing.verified && (
+                <span className="bg-green-600 text-white text-xs px-2 py-1 rounded-full">Verified</span>
+              )}
+              <span className="text-sm text-muted-foreground">Listed {Math.floor((Date.now() - listing.listedAt) / 86400000)} days ago</span>
+            </div>
+            <div className="flex gap-3 flex-wrap items-center text-muted-foreground text-base mb-3">
+              <span>{listing.city}</span>
+              <span>•</span>
+              <span>{listing.neighborhood}</span>
+            </div>
+            <div className="text-2xl font-bold text-primary mb-4">€{listing.rent}/month</div>
+            <PropertySummary
+              type={listing.type}
+              size={listing.size}
+              rooms={listing.rooms}
+              floor={listing.floor}
+              furnishing={listing.furnishing}
+              moveInDate={listing.moveInDate}
+            />
+            <PropertyAmenities amenities={listing.amenities} />
+            <div>
+              <h2 className="text-xl font-bold mt-6 mb-2">Description</h2>
+              <p className="text-muted-foreground leading-relaxed">{listing.description}</p>
             </div>
           </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Property Details */}
-            <div className="lg:col-span-2">
-              <div className="flex items-center space-x-2 mb-4">
-                <h1 className="text-3xl font-bold text-foreground">{property.title}</h1>
-                {property.verified && (
-                  <div className="bg-green-500 text-white text-xs px-2 py-1 rounded-full">
-                    Verified
-                  </div>
-                )}
-              </div>
-
-              <div className="flex items-center space-x-4 mb-6 text-muted-foreground">
-                <div className="flex items-center space-x-1">
-                  <MapPin className="w-4 h-4" />
-                  <span>{property.area}</span>
-                </div>
-                <div className="flex items-center space-x-1">
-                  <Bed className="w-4 h-4" />
-                  <span>{property.bedrooms} bed</span>
-                </div>
-                <div className="flex items-center space-x-1">
-                  <Bath className="w-4 h-4" />
-                  <span>{property.bathrooms} bath</span>
-                </div>
-                <div className="flex items-center space-x-1">
-                  <Square className="w-4 h-4" />
-                  <span>{property.size}</span>
-                </div>
-              </div>
-
-              <div className="text-3xl font-bold text-primary mb-6">{property.rent}/month</div>
-
-              <div className="mb-8">
-                <h2 className="text-xl font-bold text-foreground mb-4">Description</h2>
-                <p className="text-muted-foreground leading-relaxed">{property.description}</p>
-              </div>
-
-              <div>
-                <h2 className="text-xl font-bold text-foreground mb-4">Amenities</h2>
-                <div className="flex flex-wrap gap-2">
-                  {property.amenities.map((amenity) => (
-                    <span key={amenity} className="bg-muted px-3 py-1 rounded-full text-sm">
-                      {amenity}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {/* Contact Card */}
-            <div className="bg-background rounded-2xl p-6 shadow-lg border border-border h-fit">
-              <div className="text-center mb-6">
-                <div className="w-16 h-16 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center mx-auto mb-4">
-                  <span className="text-white font-bold text-xl">{property.landlord.name[0]}</span>
-                </div>
-                <h3 className="font-bold text-foreground">{property.landlord.name}</h3>
-                <div className="flex items-center justify-center space-x-1 text-sm text-muted-foreground">
-                  <Star className="w-4 h-4 text-yellow-500 fill-current" />
-                  <span>{property.landlord.rating}</span>
-                  <span>•</span>
-                  <span>{property.landlord.properties} properties</span>
-                </div>
-              </div>
-
-              <div className="space-y-3">
-                <Button className="w-full bg-gradient-to-r from-primary to-secondary hover:opacity-90 transition-opacity">
-                  <Phone className="w-5 h-5 mr-2" />
-                  Call Now
-                </Button>
-                <Button variant="outline" className="w-full">
-                  <Mail className="w-5 h-5 mr-2" />
-                  Send Message
-                </Button>
-                <Button variant="outline" className="w-full">
-                  <Calendar className="w-5 h-5 mr-2" />
-                  Schedule Viewing
-                </Button>
-              </div>
+          {/* Sticky Action Panel & Landlord */}
+          <div className="relative h-fit mt-6 lg:mt-0">
+            <div className="lg:sticky lg:top-28 flex flex-col gap-6">
+              <ActionPanel listingId={listing.id} />
+              <LandlordCard landlord={listing.landlord} />
             </div>
           </div>
+        </div>
+
+        {/* Map */}
+        <div className="mt-12 max-w-4xl mx-auto">
+          <h2 className="text-xl font-bold mb-3">Location</h2>
+          <Map center={listing.location} />
+        </div>
+
+        <div className="mt-12">
+          <RecommendedListings listing={listing} />
         </div>
       </main>
       <Footer />
