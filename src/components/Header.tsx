@@ -57,19 +57,19 @@ const Header = () => {
   return (
     <>
       <header className={`sticky top-0 z-50 bg-background/95 backdrop-blur-md border-b border-border transition-shadow duration-200 ${
-        isScrolled ? 'shadow-sm' : ''
+        isScrolled ? 'shadow-md' : ''
       }`}>
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             {/* Left Section - Brand Identity */}
             <div 
-              className="flex items-center space-x-3 cursor-pointer transition-transform duration-200 hover:scale-105 active:scale-95" 
+              className="flex items-center space-x-3 cursor-pointer transition-all duration-200 hover:scale-105 hover:text-primary active:scale-95" 
               onClick={handleLogoClick}
             >
-              <div className="w-8 h-8 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center shadow-sm">
+              <div className="w-8 h-8 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center shadow-sm transition-shadow hover:shadow-md">
                 <span className="text-primary-foreground font-bold text-sm">R</span>
               </div>
-              <span className="text-xl font-bold text-foreground hover:text-primary transition-colors duration-200">
+              <span className="text-xl font-bold text-foreground transition-colors duration-200">
                 RentConnect
               </span>
             </div>
@@ -80,12 +80,12 @@ const Header = () => {
                 <button
                   key={item.label}
                   onClick={() => handleNavClick(item.href)}
-                  className={`text-muted-foreground hover:text-foreground transition-all duration-200 relative group font-medium ${
+                  className={`text-muted-foreground hover:text-foreground transition-all duration-200 relative group font-medium py-2 ${
                     isActivePage(item.href) ? 'text-foreground' : ''
                   }`}
                 >
                   {item.label}
-                  <span className={`absolute -bottom-1 left-0 h-0.5 bg-primary transition-all duration-200 ${
+                  <span className={`absolute bottom-0 left-0 h-0.5 bg-primary transition-all duration-200 ${
                     isActivePage(item.href) ? 'w-full' : 'w-0 group-hover:w-full'
                   }`}></span>
                 </button>
@@ -111,7 +111,7 @@ const Header = () => {
                 </Button>
                 <Button 
                   size="sm" 
-                  className="bg-gradient-to-r from-primary to-secondary hover:opacity-90 transition-all duration-200 shadow-sm font-medium" 
+                  className="bg-gradient-to-r from-primary to-secondary hover:opacity-90 transition-all duration-200 shadow-sm font-medium px-6" 
                   onClick={() => openAuthModal('signup')}
                 >
                   Get Started
@@ -122,7 +122,7 @@ const Header = () => {
               <Button
                 variant="ghost"
                 size="sm"
-                className="md:hidden hover:bg-accent transition-colors"
+                className="md:hidden hover:bg-accent transition-colors p-2"
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
               >
                 {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -132,7 +132,7 @@ const Header = () => {
 
           {/* Mobile Menu */}
           {isMenuOpen && (
-            <div className="md:hidden absolute top-16 left-0 right-0 bg-background border-b border-border shadow-lg animate-fade-in">
+            <div className="md:hidden absolute top-16 left-0 right-0 bg-background/95 backdrop-blur-md border-b border-border shadow-lg animate-in slide-in-from-top-2 duration-200">
               <div className="px-4 py-6 space-y-4">
                 {/* Navigation Items */}
                 {navItems.map((item) => (
@@ -152,21 +152,29 @@ const Header = () => {
                   <div className="flex justify-start">
                     <LanguageSelector />
                   </div>
-                  <Button 
-                    variant="ghost" 
-                    size="sm" 
-                    className="w-full justify-start font-medium" 
-                    onClick={() => openAuthModal('login')}
-                  >
-                    Log In
-                  </Button>
-                  <Button 
-                    size="sm" 
-                    className="w-full bg-gradient-to-r from-primary to-secondary font-medium" 
-                    onClick={() => openAuthModal('signup')}
-                  >
-                    Get Started
-                  </Button>
+                  <div className="space-y-2">
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      className="w-full justify-start font-medium" 
+                      onClick={() => {
+                        openAuthModal('login');
+                        setIsMenuOpen(false);
+                      }}
+                    >
+                      Log In
+                    </Button>
+                    <Button 
+                      size="sm" 
+                      className="w-full bg-gradient-to-r from-primary to-secondary font-medium" 
+                      onClick={() => {
+                        openAuthModal('signup');
+                        setIsMenuOpen(false);
+                      }}
+                    >
+                      Get Started
+                    </Button>
+                  </div>
                 </div>
               </div>
             </div>
