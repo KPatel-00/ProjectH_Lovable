@@ -29,6 +29,9 @@ import HeaderNotificationsButton from "@/components/shared/HeaderNotificationsBu
 import HeaderAvatarMenuDesktop from "@/components/shared/HeaderAvatarMenuDesktop";
 import HeaderAvatarMenuMobileSheet from "@/components/shared/HeaderAvatarMenuMobileSheet";
 import { useSignOut } from "@/hooks/useSignOut";
+import LandlordNavLinks from "./landlord/LandlordNavLinks";
+import { useScrollShadow } from "@/hooks/useScrollShadow";
+import useSkipLinkFocus from "@/hooks/useSkipLinkFocus";
 
 // Avatar dropdown menu items
 const avatarMenu = [
@@ -71,12 +74,7 @@ const LandlordHomePageHeader = () => {
 
   // Styling for scroll shadow
   // Use a state to detect scroll
-  const [scrolled, setScrolled] = React.useState(false);
-  React.useEffect(() => {
-    const handler = () => setScrolled(window.scrollY > 12);
-    window.addEventListener("scroll", handler);
-    return () => window.removeEventListener("scroll", handler);
-  }, []);
+  const [scrolled] = useScrollShadow();
 
   const t = useT();
 
@@ -87,21 +85,25 @@ const LandlordHomePageHeader = () => {
     { name: t("helpCenter"), to: "/help" },
   ];
 
+  // Accessibility: use skip link focus management
+  useSkipLinkFocus();
+
   return (
     <header
       className={`sticky top-0 z-50 bg-background/95 backdrop-blur border-b border-border transition-shadow duration-200 ${scrolled ? "shadow-md" : "shadow-none"}`}
     >
+      <a
+        href="#main-content"
+        className="fixed left-2 top-2 z-[100] px-4 py-2 bg-white text-primary border border-primary rounded transition-transform -translate-y-16 focus:translate-y-0 focus:outline-none focus:ring-2 focus:ring-primary"
+        tabIndex={0}
+      >
+        {t("skipToMainContent") || "Skip to main content"}
+      </a>
       <div className="container mx-auto px-2 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-2">
         {/* --- LEFT: Brand --- */}
         <LandlordHeaderBrand onClick={() => navigate("/landlord/home")} />
         {/* --- CENTER: Navigation Menu --- */}
-        <HeaderNavLinks
-          links={translatedNavLinks}
-          navClassName="hidden md:flex mx-auto flex-1 justify-center items-center gap-2"
-          btnClassName="relative px-4 py-1 font-medium transition-all rounded-sm"
-          activeClassName="text-primary after:absolute after:-bottom-px after:left-1/2 after:-translate-x-1/2 after:w-5/6 after:h-[2px] after:bg-primary after:rounded-full content-['']"
-          inactiveClassName="text-muted-foreground hover:text-primary"
-        />
+        <LandlordNavLinks />
         {/* --- RIGHT: Actions --- */}
         <div className="flex items-center space-x-1">
           {/* Language Selector */}
