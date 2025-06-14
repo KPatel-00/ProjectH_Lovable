@@ -1,4 +1,3 @@
-
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Card, CardHeader, CardContent, CardTitle, CardDescription } from "@/components/ui/card";
@@ -8,6 +7,11 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Line, LineChart, Tooltip, CartesianGrid } from "recharts";
 import { List, FileText, LayoutDashboard, Archive, Repeat } from "lucide-react";
+
+const cardBase =
+  "rounded-2xl border bg-white dark:bg-card px-6 py-5 flex flex-col shadow-sm";
+const statIconBg =
+  "flex items-center justify-center rounded-full w-8 h-8 bg-muted mr-3";
 
 // Demo landlord info (mocked)
 const landlord = {
@@ -138,123 +142,147 @@ const LandlordDashboard = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
+    <div className="min-h-screen bg-[#f7f9fb] dark:bg-background flex flex-col">
       <Header />
-      <main className="container xl:max-w-6xl mx-auto flex-1 px-2 sm:px-6 lg:px-8 pt-20 pb-10">
-        {/* Title & business info */}
-        <div className="mb-7 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-          <div>
-            <h1 className="text-3xl sm:text-4xl font-bold mb-0 text-foreground">Landlord Dashboard</h1>
-            <div className="text-muted-foreground font-medium">{landlord.businessName}</div>
-          </div>
-          <Badge variant="outline" className="mt-2 sm:mt-0">
-            <span className="text-green-700">Verified Account</span>
-          </Badge>
+      <main className="container xl:max-w-6xl mx-auto flex-1 px-2 sm:px-6 lg:px-8 pt-10 pb-10">
+        {/* Heading row */}
+        <div className="mb-9 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+          <h1 className="text-3xl sm:text-4xl font-bold mb-0 text-foreground tracking-tight">Dashboard</h1>
+          <Button
+            className="bg-blue-600 hover:bg-blue-700 text-white rounded-md text-base shadow-sm"
+            onClick={() => navigate("/landlord/listings")}
+          >
+            + Create New Listing
+          </Button>
         </div>
 
         {/* KPI Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-5 mb-9">
-          {dashboardStats.map((stat) => (
-            <Card
-              key={stat.label}
-              className={`flex flex-col border-2 border-transparent shadow-none hover-scale hover:border-primary transition`}
-            >
-              <CardContent className="flex items-center gap-2 pt-6 pb-2">
-                <span className={stat.color + " rounded p-1"}>{stat.icon}</span>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-10">
+          {dashboardStats.map((stat, i) => (
+            <div key={stat.label} className={cardBase + " flex-row items-center"}>
+              <span className={statIconBg + " " + stat.color}>
+                {stat.icon}
+              </span>
+              <div className="flex flex-col">
                 <span className="text-2xl font-bold">{stat.value}</span>
-              </CardContent>
-              <CardHeader className="pb-3 pt-0">
-                <CardDescription className="text-base font-medium">{stat.label}</CardDescription>
-              </CardHeader>
-            </Card>
+                <span className="text-sm text-muted-foreground font-medium mt-1">
+                  {stat.label}
+                </span>
+              </div>
+            </div>
           ))}
         </div>
 
-        {/* Analytics Charts */}
-        <div className="md:grid md:grid-cols-2 gap-6 flex flex-col mb-10">
-          <Card className="mb-6 md:mb-0">
-            <CardHeader>
-              <CardTitle className="text-lg font-semibold">Listing Views Over Time</CardTitle>
-              <CardDescription>
-                Last 7 Months <span className="ml-2 font-semibold text-green-600">+15%</span>
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="h-60">
-              <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={viewsData}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="month" />
-                  <YAxis />
-                  <Tooltip />
-                  <Line type="monotone" dataKey="views" stroke="#2563eb" strokeWidth={2} />
-                </LineChart>
-              </ResponsiveContainer>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg font-semibold">Applications by Listing</CardTitle>
-              <CardDescription>
-                Last 30 Days <span className="ml-2 font-semibold text-green-600">+8%</span>
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="h-60">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={applicationsByListing}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="name" />
-                  <YAxis />
-                  <Tooltip />
-                  <Bar dataKey="apps" fill="#2563eb" radius={[4, 4, 0, 0]} />
-                </BarChart>
-              </ResponsiveContainer>
-            </CardContent>
-          </Card>
+        {/* Listing Performance */}
+        <div>
+          <h2 className="text-lg font-semibold mb-5">Listing Performance</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+            {/* Views Line Chart */}
+            <div className={cardBase + " mb-0"}>
+              <div className="flex items-center mb-1">
+                <div className="text-base font-semibold flex-1">
+                  Listing Views Over Time
+                </div>
+                <span className="text-green-600 font-semibold">+15%</span>
+              </div>
+              <div className="text-xs text-muted-foreground mb-4">Last 30 Days</div>
+              <div className="h-48">
+                <ResponsiveContainer width="100%" height="100%">
+                  <LineChart data={viewsData}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="month" />
+                    <YAxis />
+                    <Tooltip />
+                    <Line type="monotone" dataKey="views" stroke="#2563eb" strokeWidth={2} dot={false} />
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+            {/* Applications Bar Chart */}
+            <div className={cardBase + " mb-0"}>
+              <div className="flex items-center mb-1">
+                <div className="text-base font-semibold flex-1">
+                  Applications by Listing
+                </div>
+                <span className="text-green-600 font-semibold">+8%</span>
+              </div>
+              <div className="text-xs text-muted-foreground mb-4">Last 30 Days</div>
+              <div className="h-48">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={applicationsByListing}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="name" />
+                    <YAxis />
+                    <Tooltip />
+                    <Bar dataKey="apps" fill="#2563eb" radius={[4, 4, 0, 0]} />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Quick Actions */}
-        <div className="flex flex-wrap gap-3 mb-10">
-          {quickActions.map((action) => (
+        <div>
+          <h3 className="text-base font-semibold mb-2">Quick Actions</h3>
+          <div className="flex flex-wrap gap-2 mb-10">
             <Button
-              key={action.label}
-              variant={action.variant}
-              onClick={() => action.route !== "#" && navigate(action.route)}
-              className="flex items-center gap-1"
-              disabled={action.route === "#"}
+              variant="outline"
+              className="rounded-md font-semibold px-5 py-2"
+              onClick={() => navigate("/landlord/listings")}
             >
-              {action.icon}
-              {action.label}
+              Manage Listings
             </Button>
-          ))}
+            <Button
+              variant="outline"
+              className="rounded-md font-semibold px-5 py-2"
+              onClick={() => navigate("/landlord/applications")}
+            >
+              View Applications
+            </Button>
+            <Button
+              variant="secondary"
+              className="rounded-md font-semibold px-5 py-2"
+              disabled
+            >
+              Archive Listing
+            </Button>
+            <Button
+              variant="ghost"
+              className="rounded-md font-semibold px-5 py-2"
+              disabled
+            >
+              Re-publish Listing
+            </Button>
+          </div>
         </div>
 
         {/* Recent Activity Table */}
         <div>
-          <div className="mb-4 flex items-center justify-between">
-            <h2 className="text-xl font-semibold">Recent Activity</h2>
-            <Button size="sm" variant="ghost" onClick={() => navigate("/landlord/listings")}>View All Listings</Button>
-          </div>
-          <div className="overflow-x-auto rounded-lg border bg-card shadow-sm">
-            <table className="min-w-full divide-y divide-border">
+          <h3 className="text-base font-semibold mb-3">Recent Activity</h3>
+          <div className="overflow-x-auto rounded-2xl border bg-white dark:bg-card">
+            <table className="min-w-full divide-y">
               <thead>
-                <tr className="bg-muted">
-                  <th className="px-4 py-2 text-left text-xs font-semibold text-muted-foreground">Listing</th>
-                  <th className="px-4 py-2 text-left text-xs font-semibold text-muted-foreground">Status</th>
-                  <th className="px-4 py-2 text-left text-xs font-semibold text-muted-foreground">Views</th>
-                  <th className="px-4 py-2 text-left text-xs font-semibold text-muted-foreground">Applications</th>
-                  <th className="px-4 py-2 text-left text-xs font-semibold text-muted-foreground">Last Updated</th>
+                <tr className="text-muted-foreground border-b bg-muted">
+                  <th className="px-4 py-3 text-xs font-medium text-left">Listing</th>
+                  <th className="px-4 py-3 text-xs font-medium text-left">Status</th>
+                  <th className="px-4 py-3 text-xs font-medium text-left">Views</th>
+                  <th className="px-4 py-3 text-xs font-medium text-left">Applications</th>
+                  <th className="px-4 py-3 text-xs font-medium text-left">Last Updated</th>
                 </tr>
               </thead>
               <tbody>
                 {recentActivity.map((listing, idx) => (
-                  <tr key={idx} className="hover:bg-muted/50">
-                    <td className="px-4 py-2">{listing.title}</td>
-                    <td className="px-4 py-2">
-                      <span className={`px-2 py-0.5 rounded-full text-xs font-bold ${statusBadge[listing.status]}`}>{listing.status}</span>
+                  <tr key={idx} className="border-b last:border-b-0 hover:bg-muted/50">
+                    <td className="px-4 py-3 text-base">{listing.title}</td>
+                    <td className="px-4 py-3">
+                      <span className={`inline-block px-3 py-0.5 rounded-full text-xs font-semibold ${statusBadge[listing.status]}`}>
+                        {listing.status}
+                      </span>
                     </td>
-                    <td className="px-4 py-2">{listing.views}</td>
-                    <td className="px-4 py-2">{listing.applications}</td>
-                    <td className="px-4 py-2">{listing.lastUpdated}</td>
+                    <td className="px-4 py-3">{listing.views}</td>
+                    <td className="px-4 py-3">{listing.applications}</td>
+                    <td className="px-4 py-3">{listing.lastUpdated}</td>
                   </tr>
                 ))}
               </tbody>
@@ -269,5 +297,4 @@ const LandlordDashboard = () => {
 
 export default LandlordDashboard;
 
-// NOTE: File getting quite long; consider refactoring into components!
-
+// NOTE: This file is now very long! Please consider splitting it into focused components.
