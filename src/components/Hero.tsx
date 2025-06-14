@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -16,13 +15,12 @@ import {
   ArrowRight,
   Phone,
   Building2,
-  // City,  <-- REMOVE THIS, not exported by lucide-react
   User,
   CheckCircle2,
   ChevronLeft,
   ChevronRight,
 } from 'lucide-react';
-import { City as CityIcon } from 'lucide-react'; // <-- Use lowercase city icon import
+import { city as CityIcon } from 'lucide-react'; // FIX: correct icon import
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
