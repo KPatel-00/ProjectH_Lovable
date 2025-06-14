@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import Header from '@/components/Header';
@@ -9,14 +10,13 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { useT } from "@/i18n";
 
 const Listings = () => {
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [filters, setFilters] = useState({
     location: searchParams.get('location') || '',
     propertyType: searchParams.get('propertyType') || '',
     moveInDate: searchParams.get('moveInDate') || ''
   });
 
-  // Add useNavigate for SPA navigation
   const navigate = useNavigate();
 
   const featuredProperties = [
@@ -61,6 +61,23 @@ const Listings = () => {
   const handleSearch = () => {
     // Removed console.log for production
   };
+
+  // Identify if any filter is applied
+  const isFiltering =
+    filters.location ||
+    filters.propertyType ||
+    filters.moveInDate;
+
+  // Reset all filters and remove URL search params
+  const handleResetFilters = () => {
+    setFilters({
+      location: '',
+      propertyType: '',
+      moveInDate: ''
+    });
+    setSearchParams({});
+  };
+
   const t = useT();
 
   return (
@@ -106,6 +123,21 @@ const Listings = () => {
               {t("search")}
             </Button>
           </div>
+          {/* Show Reset Filters Button if any filter is active */}
+          {isFiltering && (
+            <div className="flex mt-4">
+              <Button
+                size="sm"
+                variant="ghost"
+                className="ml-auto px-3 text-destructive border border-border rounded-md hover:bg-destructive/10 transition"
+                onClick={handleResetFilters}
+                tabIndex={0}
+                aria-label="Reset all filters"
+              >
+                {t("resetFilters") || "Reset filters"}
+              </Button>
+            </div>
+          )}
         </div>
 
         {/* Results */}
@@ -119,43 +151,63 @@ const Listings = () => {
         </div>
 
         {/* Property Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {featuredProperties.map((property) => (
-            <div 
-              key={property.id}
-              className={`
-                bg-background rounded-2xl overflow-hidden shadow-lg border border-border
-                hover:shadow-2xl hover:scale-[1.02] transition-all duration-200
-                focus-within:ring-2 focus-within:ring-primary/70 focus-within:outline-none focus-within:scale-[1.01]
-                group cursor-pointer
-              `}
-              tabIndex={0}
-              onClick={() => navigate(`/listing/${property.id}`)}
-              onKeyDown={e => e.key === "Enter" && navigate(`/listing/${property.id}`)}
-            >
-              <div className="h-48 bg-gradient-to-br from-muted to-muted/50 relative">
-                {property.verified && (
-                  <div className="absolute top-3 right-3 bg-green-500 text-white text-xs px-2 py-1 rounded-full">
-                    {t("verified")}
-                  </div>
-                )}
-              </div>
-              <div className="p-4">
-                <div className="flex justify-between items-start mb-2">
-                  <div>
-                    <div className="font-semibold text-foreground">{t(property.type.toLowerCase())}</div>
-                    <div className="text-sm text-muted-foreground">{property.area}</div>
-                  </div>
-                  <div className="text-lg font-bold text-primary">{property.rent}</div>
-                </div>
-                <div className="text-xs text-muted-foreground">
-                  {/* Safe replacement for "listedAgo" with days interpolation */}
-                  {t("listedAgo").replace("{days}", String(property.daysListed))}
-                </div>
-              </div>
+        {featuredProperties.length === 0 ? (
+          <div className="flex flex-col items-center py-16">
+            <img src="/placeholder.svg" className="w-24 h-24 mb-6 opacity-60" />
+            <div className="text-2xl font-semibold mb-2">{t("noResultsFound") || "No results found"}</div>
+            <div className="text-muted-foreground mb-4 text-center">
+              {t("tryChangingFilters") || "Try changing your filters or check back soon."}
             </div>
-          ))}
-        </div>
+            {/* Add Reset Filters in Empty State */}
+            {isFiltering && (
+              <Button
+                variant="ghost"
+                className="mt-2 border border-border text-destructive hover:bg-destructive/10"
+                onClick={handleResetFilters}
+                aria-label="Reset search filters"
+              >
+                {t("resetFilters") || "Reset filters"}
+              </Button>
+            )}
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {featuredProperties.map((property) => (
+              <div 
+                key={property.id}
+                className={`
+                  bg-background rounded-2xl overflow-hidden shadow-lg border border-border
+                  hover:shadow-2xl hover:scale-[1.02] transition-all duration-200
+                  focus-within:ring-2 focus-within:ring-primary/70 focus-within:outline-none focus-within:scale-[1.01]
+                  group cursor-pointer
+                `}
+                tabIndex={0}
+                onClick={() => navigate(`/listing/${property.id}`)}
+                onKeyDown={e => e.key === "Enter" && navigate(`/listing/${property.id}`)}
+              >
+                <div className="h-48 bg-gradient-to-br from-muted to-muted/50 relative">
+                  {property.verified && (
+                    <div className="absolute top-3 right-3 bg-green-500 text-white text-xs px-2 py-1 rounded-full">
+                      {t("verified")}
+                    </div>
+                  )}
+                </div>
+                <div className="p-4">
+                  <div className="flex justify-between items-start mb-2">
+                    <div>
+                      <div className="font-semibold text-foreground">{t(property.type.toLowerCase())}</div>
+                      <div className="text-sm text-muted-foreground">{property.area}</div>
+                    </div>
+                    <div className="text-lg font-bold text-primary">{property.rent}</div>
+                  </div>
+                  <div className="text-xs text-muted-foreground">
+                    {t("listedAgo").replace("{days}", String(property.daysListed))}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </main>
       <Footer />
     </div>
@@ -163,3 +215,4 @@ const Listings = () => {
 };
 
 export default Listings;
+
