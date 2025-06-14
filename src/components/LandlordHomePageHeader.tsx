@@ -33,15 +33,21 @@ const LandlordHomePageHeader = () => {
         </div>
         {/* Landlord nav */}
         <nav className="hidden md:flex space-x-8">
-          <button onClick={() => navigate('/landlord/dashboard')} className="text-muted-foreground hover:text-foreground font-medium">Dashboard</button>
-          <button onClick={() => navigate('/landlord/listings')} className="text-muted-foreground hover:text-foreground font-medium">My Listings</button>
-          <button onClick={() => navigate('/landlord/inbox')} className="text-muted-foreground hover:text-foreground font-medium">Inbox</button>
+          <Button variant="ghost" onClick={() => navigate('/landlord/dashboard')} className="text-muted-foreground hover:text-foreground font-medium">
+            Dashboard
+          </Button>
+          <Button variant="ghost" onClick={() => navigate('/landlord/listings')} className="text-muted-foreground hover:text-foreground font-medium">
+            My Listings
+          </Button>
+          <Button variant="ghost" onClick={() => navigate('/landlord/inbox')} className="text-muted-foreground hover:text-foreground font-medium">
+            Inbox
+          </Button>
         </nav>
         {/* Actions */}
         <div className="flex items-center space-x-3">
           <div className="hidden sm:block"><LanguageSelector /></div>
           <Button size="sm" variant="ghost" className="font-medium">{user.name}</Button>
-          <Button size="sm" variant="ghost" className="md:hidden"><Menu /></Button>
+          <Button size="sm" variant="ghost" className="md:hidden" onClick={() => {/* Open nav menu (not yet implemented) */}}><Menu /></Button>
         </div>
       </div>
     </header>
