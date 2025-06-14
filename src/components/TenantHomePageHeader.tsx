@@ -16,6 +16,7 @@ import { AvatarMenuDropdown } from "@/components/shared/AvatarMenuDropdown";
 import HeaderNotificationsButton from "@/components/shared/HeaderNotificationsButton";
 import HeaderAvatarMenuDesktop from "@/components/shared/HeaderAvatarMenuDesktop";
 import HeaderAvatarMenuMobileSheet from "@/components/shared/HeaderAvatarMenuMobileSheet";
+import { useSignOut } from "@/hooks/useSignOut";
 
 const navLinks = [
   { name: 'Browse Listings', path: '/browse', id: 'browse' },
@@ -64,6 +65,9 @@ const TenantHomePageHeader = () => {
 
   // Sheet content for avatar actions (mobile) - now handled by HeaderAvatarMenuMobileSheet
 
+  // Use global sign out
+  const signOut = useSignOut();
+
   return (
     <header className="sticky top-0 z-50 bg-background/95 backdrop-blur border-b border-border shadow-sm transition-all duration-200">
       <div className="container mx-auto px-2 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-2">
@@ -94,7 +98,6 @@ const TenantHomePageHeader = () => {
             user={user}
             menu={avatarMenu}
             onNavigate={navigate}
-            onSignOut={handleSignOut}
           />
           {/* Hamburger menu + avatar (mobile) */}
           <div className="flex items-center md:hidden gap-1">
@@ -103,7 +106,6 @@ const TenantHomePageHeader = () => {
               avatarMenu={avatarMenu}
               avatarSheetOpen={avatarSheetOpen}
               setAvatarSheetOpen={setAvatarSheetOpen}
-              handleSignOut={handleSignOut}
               navigate={navigate}
               roleLabel="Tenant"
             />

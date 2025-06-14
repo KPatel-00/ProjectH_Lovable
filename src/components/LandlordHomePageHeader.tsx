@@ -28,6 +28,7 @@ import { useT } from "@/i18n";
 import HeaderNotificationsButton from "@/components/shared/HeaderNotificationsButton";
 import HeaderAvatarMenuDesktop from "@/components/shared/HeaderAvatarMenuDesktop";
 import HeaderAvatarMenuMobileSheet from "@/components/shared/HeaderAvatarMenuMobileSheet";
+import { useSignOut } from "@/hooks/useSignOut";
 
 // Avatar dropdown menu items
 const avatarMenu = [
@@ -60,15 +61,8 @@ const LandlordHomePageHeader = () => {
     verified: true,
   };
 
-  const handleSignOut = () => {
-    localStorage.clear();
-    sessionStorage.clear();
-    toast({
-      title: "Signed out",
-      description: "You have been signed out successfully.",
-    });
-    navigate("/");
-  };
+  // Use global sign out
+  const signOut = useSignOut();
 
   const getInitials = (name: string) => {
     if (!name) return "?";
@@ -134,7 +128,6 @@ const LandlordHomePageHeader = () => {
               )
             }))}
             onNavigate={navigate}
-            onSignOut={handleSignOut}
           />
           {/* Hamburger menu + avatar (mobile) */}
           <div className="flex items-center md:hidden gap-1">
@@ -156,7 +149,6 @@ const LandlordHomePageHeader = () => {
               }))}
               avatarSheetOpen={avatarSheetOpen}
               setAvatarSheetOpen={setAvatarSheetOpen}
-              handleSignOut={handleSignOut}
               navigate={navigate}
               roleLabel="Landlord"
             />
