@@ -2,9 +2,9 @@
 import React, { useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Mail, Lock, User, Eye, EyeOff } from 'lucide-react';
+import { X } from 'lucide-react';
+import LoginForm from './auth/LoginForm';
+import SignUpWizard from './auth/SignUpWizard';
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -12,133 +12,67 @@ interface AuthModalProps {
   defaultTab?: 'login' | 'signup';
 }
 
-const AuthModal = ({ isOpen, onClose, defaultTab = 'login' }: AuthModalProps) => {
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+const AuthModal = ({ isOpen, onClose, defaultTab = 'signup' }: AuthModalProps) => {
+  const [activeTab, setActiveTab] = useState<'login' | 'signup'>(defaultTab);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log('Form submitted');
+  const handleClose = () => {
+    setActiveTab('signup'); // Reset to default
     onClose();
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-md">
-        <DialogHeader>
-          <DialogTitle className="text-center text-2xl font-bold">
-            Welcome to RentConnect
-          </DialogTitle>
+    <Dialog open={isOpen} onOpenChange={handleClose}>
+      <DialogContent className="sm:max-w-lg p-0 gap-0">
+        <DialogHeader className="px-6 pt-6 pb-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-3">
+              <div className="w-8 h-8 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center">
+                <span className="text-primary-foreground font-bold text-sm">R</span>
+              </div>
+              <DialogTitle className="text-xl font-bold">
+                Welcome to RentConnect
+              </DialogTitle>
+            </div>
+            <Button variant="ghost" size="sm" onClick={handleClose}>
+              <X className="w-4 h-4" />
+            </Button>
+          </div>
         </DialogHeader>
         
-        <Tabs defaultValue={defaultTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="login">Log In</TabsTrigger>
-            <TabsTrigger value="signup">Sign Up</TabsTrigger>
-          </TabsList>
-          
-          <TabsContent value="login" className="space-y-4">
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="relative">
-                <Mail className="absolute left-3 top-3 w-5 h-5 text-muted-foreground" />
-                <Input 
-                  type="email" 
-                  placeholder="Email address" 
-                  className="pl-10"
-                  required 
-                />
-              </div>
-              <div className="relative">
-                <Lock className="absolute left-3 top-3 w-5 h-5 text-muted-foreground" />
-                <Input 
-                  type={showPassword ? "text" : "password"}
-                  placeholder="Password" 
-                  className="pl-10 pr-10"
-                  required 
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-3 text-muted-foreground hover:text-foreground"
-                >
-                  {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-                </button>
-              </div>
-              <Button type="submit" className="w-full bg-gradient-to-r from-primary to-secondary hover:opacity-90 transition-opacity">
-                Log In
-              </Button>
-            </form>
-            <div className="text-center">
-              <a href="#" className="text-sm text-primary hover:underline">
-                Forgot your password?
-              </a>
-            </div>
-          </TabsContent>
-          
-          <TabsContent value="signup" className="space-y-4">
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="relative">
-                <User className="absolute left-3 top-3 w-5 h-5 text-muted-foreground" />
-                <Input 
-                  type="text" 
-                  placeholder="Full name" 
-                  className="pl-10"
-                  required 
-                />
-              </div>
-              <div className="relative">
-                <Mail className="absolute left-3 top-3 w-5 h-5 text-muted-foreground" />
-                <Input 
-                  type="email" 
-                  placeholder="Email address" 
-                  className="pl-10"
-                  required 
-                />
-              </div>
-              <div className="relative">
-                <Lock className="absolute left-3 top-3 w-5 h-5 text-muted-foreground" />
-                <Input 
-                  type={showPassword ? "text" : "password"}
-                  placeholder="Password" 
-                  className="pl-10 pr-10"
-                  required 
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-3 text-muted-foreground hover:text-foreground"
-                >
-                  {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-                </button>
-              </div>
-              <div className="relative">
-                <Lock className="absolute left-3 top-3 w-5 h-5 text-muted-foreground" />
-                <Input 
-                  type={showConfirmPassword ? "text" : "password"}
-                  placeholder="Confirm password" 
-                  className="pl-10 pr-10"
-                  required 
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  className="absolute right-3 top-3 text-muted-foreground hover:text-foreground"
-                >
-                  {showConfirmPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-                </button>
-              </div>
-              <Button type="submit" className="w-full bg-gradient-to-r from-primary to-secondary hover:opacity-90 transition-opacity">
-                Sign Up
-              </Button>
-            </form>
-            <div className="text-center text-xs text-muted-foreground">
-              By signing up, you agree to our{' '}
-              <a href="#" className="text-primary hover:underline">Terms of Service</a>
-              {' '}and{' '}
-              <a href="#" className="text-primary hover:underline">Privacy Policy</a>
-            </div>
-          </TabsContent>
-        </Tabs>
+        {/* Toggle Tabs */}
+        <div className="px-6 pb-4">
+          <div className="bg-muted p-1 rounded-full flex">
+            <button
+              onClick={() => setActiveTab('signup')}
+              className={`flex-1 py-2 px-4 text-sm font-medium rounded-full transition-all ${
+                activeTab === 'signup'
+                  ? 'bg-background text-foreground shadow-sm'
+                  : 'text-muted-foreground hover:text-foreground'
+              }`}
+            >
+              Sign Up
+            </button>
+            <button
+              onClick={() => setActiveTab('login')}
+              className={`flex-1 py-2 px-4 text-sm font-medium rounded-full transition-all ${
+                activeTab === 'login'
+                  ? 'bg-background text-foreground shadow-sm'
+                  : 'text-muted-foreground hover:text-foreground'
+              }`}
+            >
+              Log In
+            </button>
+          </div>
+        </div>
+
+        {/* Content */}
+        <div className="px-6 pb-6">
+          {activeTab === 'signup' ? (
+            <SignUpWizard onClose={handleClose} onSwitchToLogin={() => setActiveTab('login')} />
+          ) : (
+            <LoginForm onClose={handleClose} onSwitchToSignUp={() => setActiveTab('signup')} />
+          )}
+        </div>
       </DialogContent>
     </Dialog>
   );

@@ -9,7 +9,7 @@ const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [authModal, setAuthModal] = useState<{ isOpen: boolean; tab: 'login' | 'signup' }>({
     isOpen: false,
-    tab: 'login'
+    tab: 'signup'
   });
   const navigate = useNavigate();
 
@@ -30,7 +30,7 @@ const Header = () => {
   };
 
   const closeAuthModal = () => {
-    setAuthModal({ isOpen: false, tab: 'login' });
+    setAuthModal({ isOpen: false, tab: 'signup' });
   };
 
   return (
@@ -74,7 +74,7 @@ const Header = () => {
                   Log In
                 </Button>
                 <Button size="sm" className="bg-gradient-to-r from-primary to-secondary hover:opacity-90 transition-opacity" onClick={() => openAuthModal('signup')}>
-                  Sign Up
+                  Get Started
                 </Button>
               </div>
 
@@ -112,7 +112,7 @@ const Header = () => {
                     Log In
                   </Button>
                   <Button size="sm" className="w-full bg-gradient-to-r from-primary to-secondary" onClick={() => openAuthModal('signup')}>
-                    Sign Up
+                    Get Started
                   </Button>
                 </div>
               </div>
