@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Menu } from 'lucide-react';
@@ -57,7 +56,7 @@ const LandingPageHeader = () => {
         Skip to main content
       </a>
       <header className="sticky top-0 z-50 bg-background/95 backdrop-blur-md border-b border-border transition-shadow duration-200">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+        <div className="container mx-auto px-2 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <BrandLogo showText={true} showRoleTag={false} onClick={() => navigate("/")} />
           {/* Nav (desktop only) */}
           <HeaderNavLinks
@@ -68,7 +67,7 @@ const LandingPageHeader = () => {
             activeClassName="text-foreground underline underline-offset-4"
           />
           {/* Actions */}
-          <div className="flex items-center space-x-3">
+          <div className="flex items-center space-x-2 sm:space-x-3">
             <div className="hidden sm:block"><LanguageSelector /></div>
             <Button
               size="sm"
@@ -97,7 +96,10 @@ const LandingPageHeader = () => {
                   <Menu />
                 </Button>
               </SheetTrigger>
-              <SheetContent side="right" className="p-0 pt-2 w-72 max-w-full flex flex-col">
+              <SheetContent side="right"
+                className="p-0 pt-2 w-full min-w-0 max-w-xs sm:w-72 max-w-full flex flex-col"
+                style={{ maxWidth: '100vw', width: '100vw', minWidth: 0 }}
+              >
                 {/* Logo at top of drawer */}
                 <div className="px-5 pt-1 pb-6 border-b flex items-center">
                   <BrandLogo showText={true} showRoleTag={false} onClick={() => {navigate("/"); setSheetOpen(false);}} />

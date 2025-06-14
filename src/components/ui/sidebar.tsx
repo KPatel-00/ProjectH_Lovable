@@ -196,19 +196,23 @@ const Sidebar = React.forwardRef<
           <SheetContent
             data-sidebar="sidebar"
             data-mobile="true"
-            className="w-[--sidebar-width] bg-sidebar p-0 text-sidebar-foreground [&>button]:hidden"
-            style={
-              {
-                "--sidebar-width": SIDEBAR_WIDTH_MOBILE,
-              } as React.CSSProperties
-            }
+            // Add w-full max-w-xs/overflow support for <400px
+            className="w-full min-w-0 max-w-xs bg-sidebar p-0 text-sidebar-foreground [&>button]:hidden"
+            style={{
+              maxWidth: '100vw',
+              width: '100vw',
+              minWidth: 0,
+              padding: 0,
+            }}
             side={side}
           >
-            <div className="flex h-full w-full flex-col">{children}</div>
+            <div className="flex h-full w-full flex-col overflow-y-auto px-0 py-2">{children}</div>
           </SheetContent>
         </Sheet>
       )
     }
+
+    // No change to desktop layout
 
     return (
       <div

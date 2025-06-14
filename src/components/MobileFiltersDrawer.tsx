@@ -24,11 +24,14 @@ const amenities = [
 const MobileFiltersDrawer: React.FC<Props> = ({ open, setOpen, filters, setFilters, onApply }) => {
   return (
     <Drawer open={open} onOpenChange={setOpen}>
-      <DrawerContent>
+      <DrawerContent
+        className="w-full max-w-full min-w-0 px-2 sm:px-4"
+        style={{ maxWidth: '100vw', minWidth: 0 }}
+      >
         <DrawerHeader>
           <DrawerTitle>Filters</DrawerTitle>
         </DrawerHeader>
-        <div className="flex flex-col gap-4 px-4 pb-4">
+        <div className="flex flex-col gap-4 px-2 sm:px-4 pb-4">
           <div>
             <div className="font-semibold mb-2">Amenities</div>
             <div className="flex flex-col gap-2">
