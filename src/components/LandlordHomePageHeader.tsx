@@ -19,6 +19,8 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 import BrandLogo from "@/components/shared/BrandLogo";
 import HeaderNavLinks from "@/components/shared/HeaderNavLinks";
+import { AvatarMenuDropdown } from "@/components/shared/AvatarMenuDropdown";
+import { toast } from "@/components/ui/use-toast";
 
 // Avatar dropdown menu items
 const avatarMenu = [
@@ -52,11 +54,12 @@ const LandlordHomePageHeader = () => {
   };
 
   const handleSignOut = () => {
-    // Clear session/localStorage to improve security if used for tokens
     localStorage.clear();
     sessionStorage.clear();
-    // TODO: implement real signout logic with backend/auth provider
-    alert("Signed out!");
+    toast({
+      title: "Signed out",
+      description: "You have been signed out successfully.",
+    });
     navigate("/");
   };
 
@@ -179,36 +182,12 @@ const LandlordHomePageHeader = () => {
           </Button>
           {/* Avatar Dropdown (desktop) */}
           <div className="hidden md:block">
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button size="icon" variant="ghost" className="rounded-full aspect-square" type="button">
-                  <Avatar>
-                    {user.avatarUrl ?
-                      <AvatarImage src={user.avatarUrl} alt={user.name} /> :
-                      <AvatarFallback>{getInitials(user.name)}</AvatarFallback>}
-                  </Avatar>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56 z-[99] bg-background border">
-                <div className="p-4 pb-2 border-b">
-                  <div className="font-bold">{user.name}</div>
-                  <div className="text-xs text-muted-foreground">{user.email}</div>
-                </div>
-                <DropdownMenuSeparator />
-                {avatarMenu.map(item =>
-                  <DropdownMenuItem
-                    key={item.label}
-                    onClick={() => navigate(item.path)}
-                  >
-                    <item.icon className="mr-2 h-4 w-4" /> {item.label}
-                  </DropdownMenuItem>
-                )}
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={handleSignOut} className="text-destructive">
-                  <LogOut className="mr-2 h-4 w-4" /> Log Out
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <AvatarMenuDropdown
+              user={user}
+              menu={avatarMenu}
+              onNavigate={navigate}
+              onSignOut={handleSignOut}
+            />
           </div>
           {/* Hamburger menu + avatar (mobile) */}
           <div className="flex items-center md:hidden gap-1">

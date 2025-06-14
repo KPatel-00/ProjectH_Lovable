@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { Badge } from "@/components/ui/badge";
@@ -38,7 +37,11 @@ const RecentListingsCard: React.FC<Props> = ({
       </div>
     )}
     {listings.length === 0 ? (
-      <div className="py-4 text-sm text-muted-foreground text-center">No listings yet.</div>
+      <div className="py-8 flex flex-col items-center text-center text-muted-foreground">
+        <img src="/placeholder.svg" alt="" className="w-14 h-14 mb-2 opacity-70" />
+        <div className="font-semibold mb-1">No recent listings</div>
+        <div className="text-xs">You haven&apos;t listed any properties yet.</div>
+      </div>
     ) : (
       <ul className="flex flex-col gap-4">
         {listings.slice(0, 3).map(listing => (
