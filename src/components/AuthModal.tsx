@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import { X } from 'lucide-react';
 import LoginForm from './auth/LoginForm';
 import SignUpWizard from './auth/SignUpWizard';
 
@@ -29,18 +28,13 @@ const AuthModal = ({ isOpen, onClose, defaultTab = 'signup' }: AuthModalProps) =
     <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogContent className="sm:max-w-lg p-0 gap-0">
         <DialogHeader className="px-6 pt-6 pb-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center">
-                <span className="text-primary-foreground font-bold text-sm">R</span>
-              </div>
-              <DialogTitle className="text-xl font-bold">
-                Welcome to RentConnect
-              </DialogTitle>
+          <div className="flex items-center space-x-3">
+            <div className="w-8 h-8 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center">
+              <span className="text-primary-foreground font-bold text-sm">R</span>
             </div>
-            <Button variant="ghost" size="sm" onClick={handleClose}>
-              <X className="w-4 h-4" />
-            </Button>
+            <DialogTitle className="text-xl font-bold">
+              Welcome to RentConnect
+            </DialogTitle>
           </div>
         </DialogHeader>
         
