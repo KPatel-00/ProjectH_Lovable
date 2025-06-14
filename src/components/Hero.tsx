@@ -225,6 +225,21 @@ const Hero = () => {
     }
   ];
 
+  const landlordStats = [
+    {
+      icon: "chart-bar",
+      text: "93% of listings get leads within 72 hours"
+    },
+    {
+      icon: "chart-bar",
+      text: "70% of landlords find a tenant under a week"
+    },
+    {
+      icon: "chart-bar",
+      text: "Over 2,000 verified landlords"
+    },
+  ];
+
   // Ref: amount of cards visible per screen
   const visibleCities = () => {
     if (window.innerWidth < 640) return 2;
@@ -360,6 +375,7 @@ const Hero = () => {
         >
           {/* --- TENANT PATH --- */}
           {selectedAudience === 'tenant' && (
+            
             <div key="tenant" className="w-full">
               {/* Why Choose Us */}
               <div className="text-center mb-10">
@@ -531,6 +547,7 @@ const Hero = () => {
                 </p>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                   {landlordFeatures.map((feature) => (
+                    
                     <div
                       key={feature.title}
                       className="bg-background rounded-2xl p-6 shadow-lg border border-border hover:shadow-xl transition-all duration-300 hover:scale-105 group relative"
@@ -550,8 +567,39 @@ const Hero = () => {
                 </div>
               </div>
 
+              {/* --- STATS BAR, NEW SECTION --- */}
+              <div className="flex flex-col md:flex-row justify-center items-center gap-4 mb-16">
+                {landlordStats.map((stat, idx) => (
+                  <div
+                    key={stat.text}
+                    className="inline-flex items-center bg-background rounded-full px-6 py-3 shadow-lg border border-border"
+                    style={{ minWidth: "280px", whiteSpace: "nowrap" }}
+                  >
+                    {/* ChartBar icon from allowed set. */}
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="w-5 h-5 text-primary mr-2"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={2}
+                    >
+                      <rect x="3" y="12" width="3" height="6" rx="1" className="fill-primary/10" />
+                      <rect x="9" y="8" width="3" height="10" rx="1" className="fill-primary/20" />
+                      <rect x="15" y="4" width="3" height="14" rx="1" className="fill-primary/30" />
+                      <rect x="21" y="2" width="0" height="0" style={{ fill: "none" }}/>
+                    </svg>
+                    <span className="font-semibold text-foreground">
+                      {stat.text}
+                    </span>
+                  </div>
+                ))}
+              </div>
+              {/* --- END STATS BAR --- */}
+
               {/* How to List Video */}
               <div className="mb-16 text-center">
+                
                 <h2 className="text-3xl font-bold mb-8">See How Easy It Is</h2>
                 <div className="max-w-2xl mx-auto">
                   <div className="relative bg-gradient-to-br from-muted to-muted/50 rounded-2xl overflow-hidden aspect-video cursor-pointer group">
@@ -567,8 +615,7 @@ const Hero = () => {
                   </div>
                 </div>
               </div>
-
-              {/* Call to Action */}
+              
               <div className="mb-16 text-center">
                 <div className="bg-gradient-to-r from-primary to-secondary rounded-2xl p-8 text-white">
                   <h2 className="text-3xl font-bold mb-4">Ready to List Your Property?</h2>
