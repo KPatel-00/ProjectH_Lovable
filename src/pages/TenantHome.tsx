@@ -29,7 +29,7 @@ const mockWishlistProperties = [
     price: "€1,200 / month",
     city: "Berlin, Mitte",
     status: "New Message",
-    statusType: "danger",
+    statusType: "danger" as "danger",
   },
   {
     id: 102,
@@ -40,7 +40,7 @@ const mockWishlistProperties = [
     price: "€2,500 / month",
     city: "Berlin, Prenzlauer Berg",
     status: "Status Updated",
-    statusType: "success",
+    statusType: "success" as "success",
   },
   {
     id: 103,
@@ -62,6 +62,8 @@ const mockRecommendations = [
     area: 85,
     price: "€1,800 / month",
     city: "Berlin, Friedrichshain",
+    location: "Berlin, Friedrichshain",
+    bookmarked: false,
   },
   {
     id: 12,
@@ -71,6 +73,8 @@ const mockRecommendations = [
     area: 150,
     price: "€3,200 / month",
     city: "Berlin, Charlottenburg",
+    location: "Berlin, Charlottenburg",
+    bookmarked: false,
   },
   {
     id: 13,
@@ -80,6 +84,8 @@ const mockRecommendations = [
     area: 70,
     price: "€1,500 / month",
     city: "Berlin, Schöneberg",
+    location: "Berlin, Schöneberg",
+    bookmarked: false,
   },
 ];
 
