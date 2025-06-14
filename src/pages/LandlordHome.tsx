@@ -15,45 +15,13 @@ import { useNavigate } from "react-router-dom";
 import { useT } from "@/i18n";
 import ErrorBanner from "@/components/ErrorBanner";
 import { toast } from "@/hooks/use-toast";
-
-// DEMO DATA
-const landlord = {
-  firstName: "Alex",
-  businessName: "Prime Rentals",
-  verified: true,
-  uid: "landlord-demo-1"
-};
-
-const metrics = [
-  { labelKey: "activeListings", value: 4 },
-  { labelKey: "applicationsPending", value: 2 },
-  { labelKey: "totalViews", value: 129 }
-];
-
-const recentListings = [
-  { id: 1, title: "Modern 2BR Apartment", status: "Active", views: 73, lastUpdated: "2024-06-09" },
-  { id: 2, title: "Cozy Studio Center", status: "Pending", views: 36, lastUpdated: "2024-06-05" },
-  { id: 3, title: "Family Home", status: "Inactive", views: 20, lastUpdated: "2024-06-02" }
-];
-
-const recentApplications = [
-  { id: 1, applicantName: "Emma Becker", listingTitle: "Modern 2BR Apartment", date: "2024-06-10" },
-  { id: 2, applicantName: "Lucas Schulz", listingTitle: "Cozy Studio Center", date: "2024-06-08" },
-  { id: 3, applicantName: "Nina Graf", listingTitle: "Family Home", date: "2024-06-06" }
-];
-
-const FAKE_API_FAIL_RATE = 0.22; // 22% simulate error
-
-const fakeFetchLandlordData = async () => {
-  await new Promise(res => setTimeout(res, 1100));
-  if (Math.random() < FAKE_API_FAIL_RATE) throw new Error("Failed to fetch landlord dashboard. Please try again.");
-  return {
-    landlord,
-    metrics,
-    recentListings,
-    recentApplications
-  };
-};
+import {
+  landlord,
+  metrics,
+  recentListings,
+  recentApplications,
+  fakeFetchLandlordData,
+} from "@/mocks/landlordMockData";
 
 const LandlordHome = () => {
   const navigate = useNavigate();
