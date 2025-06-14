@@ -1,13 +1,12 @@
-
 import React, { useState } from "react";
 import { LayoutDashboard, List, FileText, LogOut, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const NAV_ITEMS = [
-  { label: "Dashboard", icon: <LayoutDashboard className="w-4 h-4 mr-2" />, key: "dashboard" },
-  { label: "Listings", icon: <List className="w-4 h-4 mr-2" />, key: "listings" },
-  { label: "Applications", icon: <FileText className="w-4 h-4 mr-2" />, key: "applications" },
+  { label: "Dashboard", icon: <LayoutDashboard className="w-4 h-4 mr-2" />, key: "dashboard", path: "/landlord/dashboard" },
+  { label: "Listings", icon: <List className="w-4 h-4 mr-2" />, key: "listings", path: "/landlord/dashboard/mylistings" },
+  { label: "Applications", icon: <FileText className="w-4 h-4 mr-2" />, key: "applications", path: "/landlord/dashboard/applications" },
 ];
 
 type Props = {
@@ -18,6 +17,15 @@ type Props = {
 
 export default function LandlordDashboardLayout({ children, section, setSection }: Props) {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // Determine current section by route path
+  const activeKey =
+    location.pathname.endsWith("/mylistings")
+      ? "listings"
+      : location.pathname.endsWith("/applications")
+      ? "applications"
+      : "dashboard";
 
   return (
     <div className="min-h-screen flex bg-[#f7f9fb]">
@@ -51,11 +59,11 @@ export default function LandlordDashboardLayout({ children, section, setSection 
               <button
                 key={item.key}
                 className={`flex items-center px-6 py-3 w-full text-left rounded-none font-medium hover:bg-blue-50 transition ${
-                  section === item.key
+                  activeKey === item.key
                     ? "bg-blue-50 text-blue-700"
                     : "text-muted-foreground"
                 }`}
-                onClick={() => setSection(item.key)}
+                onClick={() => navigate(item.path)}
               >
                 {item.icon}
                 {item.label}
@@ -78,4 +86,3 @@ export default function LandlordDashboardLayout({ children, section, setSection 
     </div>
   );
 }
-
