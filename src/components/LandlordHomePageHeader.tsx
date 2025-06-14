@@ -1,9 +1,16 @@
 
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Menu } from 'lucide-react';
+import { Menu, User, LayoutDashboard, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import LanguageSelector from '@/components/LanguageSelector';
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+} from "@/components/ui/dropdown-menu";
 
 const LandlordHomePageHeader = () => {
   const navigate = useNavigate();
@@ -15,6 +22,13 @@ const LandlordHomePageHeader = () => {
     businessName: 'Prime Rentals',
     role: 'Landlord',
     verified: true,
+  };
+
+  // Placeholder signout handler
+  const handleSignOut = () => {
+    // TODO: implement real signout logic
+    alert('Signed out!');
+    navigate('/');
   };
 
   return (
@@ -46,7 +60,26 @@ const LandlordHomePageHeader = () => {
         {/* Actions */}
         <div className="flex items-center space-x-3">
           <div className="hidden sm:block"><LanguageSelector /></div>
-          <Button size="sm" variant="ghost" className="font-medium">{user.name}</Button>
+          {/* Dropdown for user profile */}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button size="sm" variant="ghost" className="font-medium">
+                {user.name}
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem onClick={() => navigate('/landlord/profile')}>
+                <User className="mr-2 h-4 w-4" /> My Profile
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => navigate('/landlord/dashboard')}>
+                <LayoutDashboard className="mr-2 h-4 w-4" /> Dashboard
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={handleSignOut}>
+                <LogOut className="mr-2 h-4 w-4" /> Sign Out
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
           <Button size="sm" variant="ghost" className="md:hidden" onClick={() => {/* Open nav menu (not yet implemented) */}}><Menu /></Button>
         </div>
       </div>
