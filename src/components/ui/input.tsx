@@ -1,9 +1,17 @@
+
 import * as React from "react"
 
 import { cn } from "@/lib/utils"
 
 const Input = React.forwardRef<HTMLInputElement, React.ComponentProps<"input">>(
   ({ className, type, ...props }, ref) => {
+    // If no aria-label or aria-labelledby and there's a placeholder, use placeholder as label for screen readers
+    const ariaLabel =
+      !props["aria-label"] &&
+      !props["aria-labelledby"] &&
+      typeof props.placeholder === "string"
+        ? props.placeholder
+        : props["aria-label"];
     return (
       <input
         type={type}
@@ -12,6 +20,7 @@ const Input = React.forwardRef<HTMLInputElement, React.ComponentProps<"input">>(
           className
         )}
         ref={ref}
+        aria-label={ariaLabel}
         {...props}
       />
     )
