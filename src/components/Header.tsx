@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Menu, X, User, LogOut, UserRound } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -16,9 +16,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 const Header = () => {
-  // Simulate authentication (Replace with actual auth logic later)
   const [isAuthenticated, setIsAuthenticated] = useState(true);
-  // Simulated user info
   const user = {
     name: 'Anna',
     email: 'anna.tenant@example.com',
@@ -30,7 +28,6 @@ const Header = () => {
     isOpen: false,
     tab: 'signup'
   });
-  const [isScrolled, setIsScrolled] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -39,16 +36,6 @@ const Header = () => {
     { label: 'List Property', href: '/list-property' },
     { label: 'Help Center', href: '/contact' }
   ];
-
-  // Handle scroll effect for sticky header
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   const handleNavClick = (href: string) => {
     navigate(href);
@@ -72,7 +59,6 @@ const Header = () => {
     return location.pathname === href;
   };
 
-  // Simulate sign-out
   const handleSignOut = () => {
     setIsAuthenticated(false);
     navigate('/');
@@ -80,201 +66,179 @@ const Header = () => {
 
   return (
     <>
-      <header className={`sticky top-0 z-50 bg-background/95 backdrop-blur-md border-b border-border transition-shadow duration-200 ${
-        isScrolled ? 'shadow-md' : ''
-      }`}>
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            {/* Left Section - Brand Identity */}
-            <div 
-              className="flex items-center space-x-3 cursor-pointer transition-all duration-200 hover:scale-105 hover:text-primary active:scale-95" 
-              onClick={handleLogoClick}
-            >
-              <div className="w-8 h-8 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center shadow-sm transition-shadow hover:shadow-md">
-                <span className="text-primary-foreground font-bold text-sm">R</span>
-              </div>
-              <span className="text-xl font-bold text-foreground transition-colors duration-200">
-                RentConnect
-              </span>
-            </div>
+      <header className="w-full border-b border-gray-200 bg-white font-sans">
+        <div className="container mx-auto flex items-center justify-between h-16 px-0 max-w-5xl">
+          {/* Minimal Brand (clickable) */}
+          <span 
+            className="flex items-center gap-2 cursor-pointer select-none"
+            onClick={handleLogoClick}
+            tabIndex={0}
+          >
+            <span className="text-lg font-bold tracking-tight text-black">
+              RentConnect
+            </span>
+          </span>
 
-            {/* Center Section - Navigation Menu */}
-            <nav className="hidden md:flex items-center space-x-8">
+          {/* Minimalist Navigation */}
+          <nav className="hidden md:flex items-center gap-10">
+            {navItems.map((item) => (
+              <button
+                key={item.label}
+                onClick={() => handleNavClick(item.href)}
+                className={`bg-transparent border-0 px-0 py-1 font-medium text-base ${
+                  isActivePage(item.href)
+                    ? 'text-accent font-semibold'
+                    : 'text-gray-600 hover:text-black'
+                }`}
+                style={{ outline: 'none' }}
+                tabIndex={0}
+              >
+                {item.label}
+              </button>
+            ))}
+          </nav>
+
+          {/* User Actions */}
+          <div className="flex items-center gap-4">
+            {/* Language selector can remain very minimalist or be removed if desired */}
+            <div className="hidden sm:block">
+              <LanguageSelector />
+            </div>
+            {isAuthenticated ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" size="icon" className="rounded-full p-0 hover:bg-transparent focus-visible:ring-0">
+                    <Avatar>
+                      {user.avatarUrl ? (
+                        <AvatarImage src={user.avatarUrl} alt={user.name} />
+                      ) : (
+                        <AvatarFallback className="text-black bg-gray-200">{user.name[0]}</AvatarFallback>
+                      )}
+                    </Avatar>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-44 border border-gray-200 bg-white px-0 py-1">
+                  <DropdownMenuLabel className="px-3 py-2 font-semibold text-black">
+                    <span>{user.name}</span>
+                    <span className="block text-xs font-normal text-gray-500">{user.email}</span>
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={() => navigate('/profile')} className="px-3 py-2 text-black hover:bg-gray-100">
+                    <UserRound className="w-4 h-4 mr-2" /> My Profile
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => navigate('/profile/applications')} className="px-3 py-2 text-black hover:bg-gray-100">
+                    <User className="w-4 h-4 mr-2" /> My Applications
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={handleSignOut} className="px-3 py-2 text-red-600 hover:bg-gray-100">
+                    <LogOut className="w-4 h-4 mr-2" /> Sign Out
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <div className="hidden sm:flex items-center gap-2">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="font-medium text-black hover:text-accent"
+                  onClick={() => openAuthModal('login')}
+                >
+                  Log In
+                </Button>
+                <Button
+                  size="sm"
+                  className="font-medium text-white bg-accent hover:bg-accent"
+                  onClick={() => openAuthModal('signup')}
+                >
+                  Get Started
+                </Button>
+              </div>
+            )}
+            {/* Mobile Menu */}
+            <Button
+              variant="ghost"
+              size="sm"
+              className="md:hidden p-1.5 hover:bg-gray-100"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+            >
+              {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </Button>
+          </div>
+        </div>
+        {isMenuOpen && (
+          <div className="md:hidden absolute left-0 right-0 bg-white border-b border-gray-200 py-4">
+            <div className="flex flex-col gap-4 px-6">
               {navItems.map((item) => (
                 <button
                   key={item.label}
                   onClick={() => handleNavClick(item.href)}
-                  className={`text-muted-foreground hover:text-foreground transition-all duration-200 relative group font-medium py-2 ${
-                    isActivePage(item.href) ? 'text-foreground' : ''
+                  className={`text-base bg-transparent border-0 px-0 py-1 text-left ${
+                    isActivePage(item.href)
+                      ? 'text-accent font-semibold'
+                      : 'text-gray-600 hover:text-black'
                   }`}
                 >
                   {item.label}
-                  <span className={`absolute bottom-0 left-0 h-0.5 bg-primary transition-all duration-200 ${
-                    isActivePage(item.href) ? 'w-full' : 'w-0 group-hover:w-full'
-                  }`}></span>
                 </button>
               ))}
-            </nav>
-
-            {/* Right Section - Actions */}
-            <div className="flex items-center space-x-3">
-              {/* Language Selector - Hidden on small screens */}
-              <div className="hidden sm:block">
+              <div className="flex flex-col gap-2 pt-2">
+                {isAuthenticated ? (
+                  <>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="text-black text-left px-0"
+                      onClick={() => { navigate('/profile'); setIsMenuOpen(false); }}
+                    >
+                      My Profile
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="text-black text-left px-0"
+                      onClick={() => { navigate('/profile/applications'); setIsMenuOpen(false); }}
+                    >
+                      My Applications
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="text-red-600 text-left px-0"
+                      onClick={() => { handleSignOut(); setIsMenuOpen(false); }}
+                    >
+                      Sign Out
+                    </Button>
+                  </>
+                ) : (
+                  <>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="text-black text-left px-0"
+                      onClick={() => { openAuthModal('login'); setIsMenuOpen(false); }}
+                    >
+                      Log In
+                    </Button>
+                    <Button
+                      size="sm"
+                      className="text-white bg-accent px-0"
+                      onClick={() => { openAuthModal('signup'); setIsMenuOpen(false); }}
+                    >
+                      Get Started
+                    </Button>
+                  </>
+                )}
+              </div>
+              <div className="pt-2">
                 <LanguageSelector />
               </div>
-              {isAuthenticated ? (
-                // --- Tenant Authenticated Header ---
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="icon" className="rounded-full">
-                      <Avatar>
-                        {user.avatarUrl ? (
-                          <AvatarImage src={user.avatarUrl} alt={user.name} />
-                        ) : (
-                          <AvatarFallback>{user.name[0]}</AvatarFallback>
-                        )}
-                      </Avatar>
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end" className="w-48">
-                    <DropdownMenuLabel className="flex flex-col">
-                      <span className="font-semibold">{user.name}</span>
-                      <span className="text-xs font-normal text-muted-foreground">{user.email}</span>
-                    </DropdownMenuLabel>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem onClick={() => navigate('/profile')}>
-                      <UserRound className="w-4 h-4 mr-2" /> My Profile
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => navigate('/profile/applications')}>
-                      <User className="w-4 h-4 mr-2" /> My Applications
-                    </DropdownMenuItem>
-                    {/* Optionally: Add more account menu items here */}
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem onClick={handleSignOut} className="text-destructive">
-                      <LogOut className="w-4 h-4 mr-2" /> Sign Out
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              ) : (
-                // --- Guest / Not Authenticated ---
-                <div className="hidden sm:flex items-center space-x-2">
-                  <Button 
-                    variant="ghost" 
-                    size="sm" 
-                    onClick={() => openAuthModal('login')}
-                    className="font-medium hover:text-primary transition-colors"
-                  >
-                    Log In
-                  </Button>
-                  <Button 
-                    size="sm" 
-                    className="bg-gradient-to-r from-primary to-secondary hover:opacity-90 transition-all duration-200 shadow-sm font-medium px-6" 
-                    onClick={() => openAuthModal('signup')}
-                  >
-                    Get Started
-                  </Button>
-                </div>
-              )}
-
-              {/* Mobile Menu Button */}
-              <Button
-                variant="ghost"
-                size="sm"
-                className="md:hidden hover:bg-accent transition-colors p-2"
-                onClick={() => setIsMenuOpen(!isMenuOpen)}
-              >
-                {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-              </Button>
             </div>
           </div>
-
-          {/* Mobile Menu */}
-          {isMenuOpen && (
-            <div className="md:hidden absolute top-16 left-0 right-0 bg-background/95 backdrop-blur-md border-b border-border shadow-lg animate-in slide-in-from-top-2 duration-200">
-              <div className="px-4 py-6 space-y-4">
-                {/* Navigation Items */}
-                {navItems.map((item) => (
-                  <button
-                    key={item.label}
-                    onClick={() => handleNavClick(item.href)}
-                    className={`block text-muted-foreground hover:text-foreground transition-colors duration-200 w-full text-left py-2 font-medium ${
-                      isActivePage(item.href) ? 'text-foreground border-l-2 border-primary pl-3' : ''
-                    }`}
-                  >
-                    {item.label}
-                  </button>
-                ))}
-                
-                {/* Mobile Actions */}
-                <div className="pt-4 border-t border-border space-y-3">
-                  <div className="flex justify-start">
-                    <LanguageSelector />
-                  </div>
-                  {isAuthenticated ? (
-                    <div className="pt-3">
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" size="sm" className="w-full justify-start font-medium">
-                            <Avatar className="mr-2 w-6 h-6">
-                              <AvatarFallback>{user.name[0]}</AvatarFallback>
-                            </Avatar>
-                            {user.name}
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="start" className="w-48">
-                          <DropdownMenuItem onClick={() => navigate('/profile')}>
-                            <UserRound className="w-4 h-4 mr-2" /> My Profile
-                          </DropdownMenuItem>
-                          <DropdownMenuItem onClick={() => navigate('/profile/applications')}>
-                            <User className="w-4 h-4 mr-2" /> My Applications
-                          </DropdownMenuItem>
-                          <DropdownMenuSeparator />
-                          <DropdownMenuItem onClick={handleSignOut} className="text-destructive">
-                            <LogOut className="w-4 h-4 mr-2" /> Sign Out
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </div>
-                  ) : (
-                    <div className="space-y-2">
-                      <Button 
-                        variant="ghost" 
-                        size="sm" 
-                        className="w-full justify-start font-medium" 
-                        onClick={() => {
-                          openAuthModal('login');
-                          setIsMenuOpen(false);
-                        }}
-                      >
-                        Log In
-                      </Button>
-                      <Button 
-                        size="sm" 
-                        className="w-full bg-gradient-to-r from-primary to-secondary font-medium" 
-                        onClick={() => {
-                          openAuthModal('signup');
-                          setIsMenuOpen(false);
-                        }}
-                      >
-                        Get Started
-                      </Button>
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
+        )}
       </header>
-
-      <AuthModal 
-        isOpen={authModal.isOpen} 
-        onClose={closeAuthModal} 
-        defaultTab={authModal.tab} 
-      />
+      <AuthModal isOpen={authModal.isOpen} onClose={closeAuthModal} defaultTab={authModal.tab} />
     </>
   );
 };
 
 export default Header;
-
