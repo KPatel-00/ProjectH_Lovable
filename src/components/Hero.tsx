@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -15,12 +16,14 @@ import {
   ArrowRight,
   Phone,
   Building2,
-  City,
+  // City,  <-- REMOVE THIS, not exported by lucide-react
   User,
   CheckCircle2,
   ChevronLeft,
   ChevronRight,
 } from 'lucide-react';
+import { City as CityIcon } from 'lucide-react'; // <-- Use lowercase city icon import
+
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -30,7 +33,7 @@ const popularCities = [
     name: 'Berlin',
     subtitle: 'Startup hub',
     image: 'https://images.unsplash.com/photo-1605810230434-7631ac76ec81?auto=format&fit=crop&w=600&q=80',
-    icon: City,
+    icon: CityIcon, // Use the imported CityIcon
   },
   {
     name: 'Munich',
