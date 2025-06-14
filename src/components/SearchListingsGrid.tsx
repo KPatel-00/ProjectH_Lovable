@@ -1,4 +1,3 @@
-
 import React from "react";
 import ListingCard from "@/components/ListingCard";
 import { useNavigate } from "react-router-dom";
@@ -49,7 +48,7 @@ const SearchListingsGrid: React.FC<SearchListingsGridProps> = ({
             <ListingCard
               image={l.image}
               title={l.title}
-              rent={l.rent}
+              rent={String(l.rent)}
               city={l.city}
               verified={l.verified}
               status={l.status}
@@ -71,4 +70,3 @@ const SearchListingsGrid: React.FC<SearchListingsGridProps> = ({
 };
 
 export default SearchListingsGrid;
-
