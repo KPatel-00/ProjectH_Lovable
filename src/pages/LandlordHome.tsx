@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -14,6 +13,8 @@ import { Button } from "@/components/ui/button";
 import { LayoutDashboard } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useT } from "@/i18n";
+import ErrorBanner from "@/components/ErrorBanner";
+import { toast } from "@/hooks/use-toast";
 
 // DEMO DATA
 const landlord = {
@@ -41,14 +42,49 @@ const recentApplications = [
   { id: 3, applicantName: "Nina Graf", listingTitle: "Family Home", date: "2024-06-06" }
 ];
 
+const FAKE_API_FAIL_RATE = 0.22; // 22% simulate error
+
+const fakeFetchLandlordData = async () => {
+  await new Promise(res => setTimeout(res, 1100));
+  if (Math.random() < FAKE_API_FAIL_RATE) throw new Error("Failed to fetch landlord dashboard. Please try again.");
+  return {
+    landlord,
+    metrics,
+    recentListings,
+    recentApplications
+  };
+};
+
 const LandlordHome = () => {
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(true);
+  const [state, setState] = useState<{
+    loading: boolean;
+    error: string | null;
+    data: null | {
+      landlord: typeof landlord;
+      metrics: typeof metrics;
+      recentListings: typeof recentListings;
+      recentApplications: typeof recentApplications;
+    }
+  }>({ loading: true, error: null, data: null });
   const t = useT();
 
+  const fetchData = () => {
+    setState({ loading: true, error: null, data: null });
+    fakeFetchLandlordData()
+      .then(data => setState({ loading: false, error: null, data }))
+      .catch(err => {
+        setState({ loading: false, error: err.message || "Unknown error", data: null });
+        toast({
+          title: t("error") || "Error",
+          description: err.message || "Failed to load data.",
+        });
+      });
+  };
+
   useEffect(() => {
-    const tmo = setTimeout(() => setLoading(false), 900);
-    return () => clearTimeout(tmo);
+    fetchData();
+    // eslint-disable-next-line
   }, []);
 
   return (
@@ -56,21 +92,24 @@ const LandlordHome = () => {
       <Header />
       {/* Main Content */}
       <main className="flex-1 w-full max-w-3xl mx-auto px-3 md:px-0 pt-12 pb-20 flex flex-col">
+        {state.error && (
+          <ErrorBanner message={state.error} onRetry={fetchData} className="mt-2" />
+        )}
         {/* Header */}
-        {loading
+        {state.loading
           ? <LandlordWelcomeBannerSkeleton />
-          : <LandlordWelcomeBanner
-              name={landlord.firstName}
-              business={landlord.businessName}
-              verified={landlord.verified}
+          : state.data && <LandlordWelcomeBanner
+              name={state.data.landlord.firstName}
+              business={state.data.landlord.businessName}
+              verified={state.data.landlord.verified}
             />
         }
 
         {/* Stat Cards */}
         <div className="mb-8">
-          {loading
+          {state.loading
             ? <StatCardsSkeleton />
-            : <StatCards stats={metrics.map(m => ({ label: t(m.labelKey), value: m.value }))} />
+            : state.data && <StatCards stats={state.data.metrics.map(m => ({ label: t(m.labelKey), value: m.value }))} />
           }
         </div>
 
@@ -85,10 +124,10 @@ const LandlordHome = () => {
               {t("viewAll")}
             </button>
           </div>
-          {loading
+          {state.loading
             ? <RecentListingsCardSkeleton />
-            : <RecentListingsCard
-                listings={recentListings}
+            : state.data && <RecentListingsCard
+                listings={state.data.recentListings}
                 showHeader={false}
                 className="border-none shadow-none bg-transparent"
               />
@@ -106,10 +145,10 @@ const LandlordHome = () => {
               {t("viewAll")}
             </button>
           </div>
-          {loading
+          {state.loading
             ? <RecentApplicationsCardSkeleton />
-            : <RecentApplicationsCard
-                applications={recentApplications}
+            : state.data && <RecentApplicationsCard
+                applications={state.data.recentApplications}
                 showHeader={false}
                 className="border-none shadow-none bg-transparent"
               />

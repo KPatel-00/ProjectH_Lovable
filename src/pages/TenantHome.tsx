@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -20,6 +19,8 @@ import TenantExploreCitiesSkeleton from "@/components/tenant/TenantExploreCities
 import TenantTrustSupport from "@/components/tenant/TenantTrustSupport";
 import TenantTrustSupportSkeleton from "@/components/tenant/TenantTrustSupportSkeleton";
 import { useT } from "@/i18n";
+import ErrorBanner from "@/components/ErrorBanner";
+import { toast } from "@/hooks/use-toast";
 
 // Mock Data
 const mockUser = {
@@ -129,13 +130,46 @@ const mockCities = [
   }
 ];
 
+const FAKE_API_FAIL_RATE_TENANT = 0.17;
+
+const fakeFetchTenantData = async () => {
+  await new Promise(res => setTimeout(res, 900));
+  if (Math.random() < FAKE_API_FAIL_RATE_TENANT) throw new Error("Failed to load tenant dashboard. Please try again.");
+  return {
+    mockUser,
+    mockQuickStats,
+    mockSavedListings,
+    mockRecommended,
+    mockApplications,
+    mockMessages,
+    mockCities,
+  };
+};
+
 const TenantHome = () => {
-  const [loading, setLoading] = useState(true);
+  const [state, setState] = useState<{
+    loading: boolean;
+    error: string | null;
+    data: null | any;
+  }>({ loading: true, error: null, data: null });
   const t = useT();
 
+  const fetchData = () => {
+    setState({ loading: true, error: null, data: null });
+    fakeFetchTenantData()
+      .then(d => setState({ loading: false, error: null, data: d }))
+      .catch(err => {
+        setState({ loading: false, error: err.message || "Unknown error", data: null });
+        toast({
+          title: t("error") || "Error",
+          description: err.message || "Failed to load data.",
+        });
+      });
+  };
+
   useEffect(() => {
-    const tmo = setTimeout(() => setLoading(false), 850);
-    return () => clearTimeout(tmo);
+    fetchData();
+    // eslint-disable-next-line
   }, []);
 
   return (
@@ -145,34 +179,35 @@ const TenantHome = () => {
         <div className="container mx-auto max-w-5xl px-2 py-4 sm:py-8 flex-1 flex flex-col gap-6">
           <TenantSearchBarSticky />
 
-          {loading ? <TenantWelcomeBannerSkeleton /> :
-            <TenantWelcomeBanner
-              firstName={mockUser.firstName}
-            />
+          {state.error && (
+            <ErrorBanner message={state.error} onRetry={fetchData} className="mt-2" />
+          )}
+          {state.loading ? <TenantWelcomeBannerSkeleton /> :
+            <TenantWelcomeBanner firstName={state.data.mockUser.firstName} />
           }
-          {loading ? <TenantQuickStatsSkeleton /> :
+          {state.loading ? <TenantQuickStatsSkeleton /> :
             <TenantQuickStats
-              saved={mockQuickStats.saved}
-              applications={mockQuickStats.applications}
-              messages={mockQuickStats.messages}
+              saved={state.data.mockQuickStats.saved}
+              applications={state.data.mockQuickStats.applications}
+              messages={state.data.mockQuickStats.messages}
             />
           }
-          {loading ? <TenantSavedListingsSkeleton /> :
-            <TenantSavedListings listings={mockSavedListings} />
+          {state.loading ? <TenantSavedListingsSkeleton /> :
+            <TenantSavedListings listings={state.data.mockSavedListings} />
           }
-          {loading ? <TenantRecommendedSkeleton /> :
-            <TenantRecommended listings={mockRecommended} />
+          {state.loading ? <TenantRecommendedSkeleton /> :
+            <TenantRecommended listings={state.data.mockRecommended} />
           }
-          {loading ? <TenantStatsSummarySkeleton /> :
-            <TenantApplicationStatuses applications={mockApplications} />
+          {state.loading ? <TenantStatsSummarySkeleton /> :
+            <TenantApplicationStatuses applications={state.data.mockApplications} />
           }
-          {loading ? <TenantMessagesPreviewSkeleton /> :
-            <TenantMessagesPreview messages={mockMessages} />
+          {state.loading ? <TenantMessagesPreviewSkeleton /> :
+            <TenantMessagesPreview messages={state.data.mockMessages} />
           }
-          {loading ? <TenantExploreCitiesSkeleton /> :
-            <TenantExploreCities cities={mockCities} />
+          {state.loading ? <TenantExploreCitiesSkeleton /> :
+            <TenantExploreCities cities={state.data.mockCities} />
           }
-          {loading ? <TenantTrustSupportSkeleton /> :
+          {state.loading ? <TenantTrustSupportSkeleton /> :
             <TenantTrustSupport />
           }
         </div>
