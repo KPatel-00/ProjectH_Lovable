@@ -1,20 +1,21 @@
+
 import * as React from "react"
 import { cva, type VariantProps } from "class-variance-authority"
 
 import { cn } from "@/lib/utils"
 
+// Add success/danger variants for clear minimalist feedback
 const badgeVariants = cva(
-  "inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
+  // Flat, small, minimal rounded; only uses fill and accent color for important badge types
+  "inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold transition-colors border",
   {
     variants: {
       variant: {
-        default:
-          "border-transparent bg-primary text-primary-foreground hover:bg-primary/80",
-        secondary:
-          "border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80",
-        destructive:
-          "border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80",
-        outline: "text-foreground",
+        default: "bg-accent text-white border-transparent", // Primary blue
+        secondary: "bg-muted text-foreground border-border",
+        success: "bg-emerald-600 text-white border-transparent", // Bold green
+        danger: "bg-red-600 text-white border-transparent", // Bold red
+        outline: "bg-transparent text-foreground border-border",
       },
     },
     defaultVariants: {
