@@ -50,7 +50,10 @@ const LandlordHomePageHeader = () => {
   };
 
   const handleSignOut = () => {
-    // TODO: implement real signout logic
+    // Clear session/localStorage to improve security if used for tokens
+    localStorage.clear();
+    sessionStorage.clear();
+    // TODO: implement real signout logic with backend/auth provider
     alert("Signed out!");
     navigate("/");
   };
@@ -89,6 +92,7 @@ const LandlordHomePageHeader = () => {
                 ${isActive ? "bg-primary/10 text-primary" : "text-muted-foreground hover:bg-accent"}`
             }
             onClick={() => setSheetOpen(false)}
+            type="button"
           >
             {l.name}
           </NavLink>
@@ -120,6 +124,7 @@ const LandlordHomePageHeader = () => {
             variant="ghost"
             className="justify-start gap-2 rounded-none px-6"
             onClick={() => { setAvatarSheetOpen(false); navigate(item.path); }}
+            type="button"
           >
             <item.icon className="w-4 h-4" />
             {item.label}
@@ -130,6 +135,7 @@ const LandlordHomePageHeader = () => {
           variant="ghost"
           className="justify-start gap-2 rounded-none px-6 text-destructive"
           onClick={() => { setAvatarSheetOpen(false); handleSignOut(); }}
+          type="button"
         >
           <LogOut className="w-4 h-4" />
           Log Out
@@ -152,6 +158,8 @@ const LandlordHomePageHeader = () => {
         <div
           className="flex items-center space-x-3 cursor-pointer hover:scale-105 hover:text-primary transition-all duration-200"
           onClick={() => navigate("/landlord/home")}
+          role="button"
+          tabIndex={0}
         >
           <div className="w-8 h-8 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center shadow-sm">
             <span className="text-primary-foreground font-bold text-sm">R</span>
@@ -172,6 +180,7 @@ const LandlordHomePageHeader = () => {
                 hover:text-primary
                 ${isActive ? "after:absolute after:-bottom-px after:left-1/2 after:-translate-x-1/2 after:w-5/6 after:h-[2px] after:bg-primary after:rounded-full content-['']" : ""}`
               }
+              type="button"
             >
               {l.name}
             </NavLink>
@@ -190,6 +199,7 @@ const LandlordHomePageHeader = () => {
             aria-label="Notifications"
             onClick={() => navigate("/notifications")}
             className="relative"
+            type="button"
           >
             <Bell className="w-5 h-5" />
           </Button>
@@ -197,7 +207,7 @@ const LandlordHomePageHeader = () => {
           <div className="hidden md:block">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button size="icon" variant="ghost" className="rounded-full aspect-square">
+                <Button size="icon" variant="ghost" className="rounded-full aspect-square" type="button">
                   <Avatar>
                     {user.avatarUrl ?
                       <AvatarImage src={user.avatarUrl} alt={user.name} /> :
@@ -231,7 +241,7 @@ const LandlordHomePageHeader = () => {
             {/* Avatar sheet trigger */}
             <Sheet open={avatarSheetOpen} onOpenChange={setAvatarSheetOpen}>
               <SheetTrigger asChild>
-                <Button size="icon" variant="ghost" className="rounded-full aspect-square">
+                <Button size="icon" variant="ghost" className="rounded-full aspect-square" type="button">
                   <Avatar>
                     {user.avatarUrl ?
                       <AvatarImage src={user.avatarUrl} alt={user.name} /> :
@@ -243,7 +253,7 @@ const LandlordHomePageHeader = () => {
             </Sheet>
             <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
               <SheetTrigger asChild>
-                <Button size="icon" variant="ghost" className="ml-1">
+                <Button size="icon" variant="ghost" className="ml-1" type="button">
                   <Menu className="w-6 h-6" />
                 </Button>
               </SheetTrigger>
@@ -257,4 +267,3 @@ const LandlordHomePageHeader = () => {
 };
 
 export default LandlordHomePageHeader;
-
