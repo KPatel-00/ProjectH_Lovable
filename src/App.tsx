@@ -14,6 +14,7 @@ import TenantHome from "./pages/TenantHome";
 import LandlordHome from "./pages/LandlordHome";
 import Search from "./pages/Search";
 import RentalApplicationPage from "./pages/RentalApplication";
+import LandlordListings from "./pages/LandlordListings";
 
 const queryClient = new QueryClient();
 
@@ -32,6 +33,7 @@ const App: React.FC = () => (
           <Route path="/apply/:listingId" element={<RentalApplicationPage />} />
           <Route path="/tenant/home" element={<TenantHome />} />
           <Route path="/landlord/home" element={<LandlordHome />} />
+          <Route path="/landlord/listings" element={<LandlordListings />} />
           <Route path="/search" element={<Search />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
