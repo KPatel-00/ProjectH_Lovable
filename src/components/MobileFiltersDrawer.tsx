@@ -25,11 +25,14 @@ const MobileFiltersDrawer: React.FC<Props> = ({ open, setOpen, filters, setFilte
   return (
     <Drawer open={open} onOpenChange={setOpen}>
       <DrawerContent
+        aria-label="Filters"
+        aria-modal="true"
+        role="dialog"
         className="w-full max-w-full min-w-0 px-2 sm:px-4"
         style={{ maxWidth: '100vw', minWidth: 0 }}
       >
         <DrawerHeader>
-          <DrawerTitle>Filters</DrawerTitle>
+          <DrawerTitle id="filters-title">Filters</DrawerTitle>
         </DrawerHeader>
         <div className="flex flex-col gap-4 px-2 sm:px-4 pb-4">
           <div>
