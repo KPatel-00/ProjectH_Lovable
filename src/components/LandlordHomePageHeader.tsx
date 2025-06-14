@@ -24,6 +24,7 @@ import { toast } from "@/components/ui/use-toast";
 import LandlordHeaderBrand from "@/components/LandlordHeaderBrand";
 import LandlordHeaderMobileMenu from "@/components/LandlordHeaderMobileMenu";
 import LandlordHeaderMobileAvatar from "@/components/LandlordHeaderMobileAvatar";
+import { useT } from "@/i18n";
 
 // Avatar dropdown menu items
 const avatarMenu = [
@@ -80,18 +81,25 @@ const LandlordHomePageHeader = () => {
     return () => window.removeEventListener("scroll", handler);
   }, []);
 
+  const t = useT();
+
+  // map navLinks with translation
+  const translatedNavLinks = [
+    { name: t("dashboard"), to: "/landlord/dashboard" },
+    { name: t("myListings"), to: "/landlord/dashboard/mylistings" },
+    { name: t("helpCenter"), to: "/help" },
+  ];
+
   return (
     <header
-      className={`sticky top-0 z-50 bg-background/95 backdrop-blur border-b border-border transition-shadow duration-200 ${
-        scrolled ? "shadow-md" : "shadow-none"
-      }`}
+      className={`sticky top-0 z-50 bg-background/95 backdrop-blur border-b border-border transition-shadow duration-200 ${scrolled ? "shadow-md" : "shadow-none"}`}
     >
       <div className="container mx-auto px-2 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-2">
         {/* --- LEFT: Brand --- */}
         <LandlordHeaderBrand onClick={() => navigate("/landlord/home")} />
         {/* --- CENTER: Navigation Menu --- */}
         <HeaderNavLinks
-          links={navLinks}
+          links={translatedNavLinks}
           navClassName="hidden md:flex mx-auto flex-1 justify-center items-center gap-2"
           btnClassName="relative px-4 py-1 font-medium transition-all rounded-sm"
           activeClassName="text-primary after:absolute after:-bottom-px after:left-1/2 after:-translate-x-1/2 after:w-5/6 after:h-[2px] after:bg-primary after:rounded-full content-['']"
@@ -107,7 +115,7 @@ const LandlordHomePageHeader = () => {
           <Button
             size="icon"
             variant="ghost"
-            aria-label="Notifications"
+            aria-label={t("notifications")}
             onClick={() => navigate("/notifications")}
             className="relative"
             type="button"
@@ -118,7 +126,20 @@ const LandlordHomePageHeader = () => {
           <div className="hidden md:block">
             <AvatarMenuDropdown
               user={user}
-              menu={avatarMenu}
+              menu={avatarMenu.map(item => ({
+                ...item,
+                label: t(
+                  item.label === "Profile"
+                    ? "profile"
+                    : item.label === "Dashboard"
+                    ? "dashboard"
+                    : item.label === "My Listings"
+                    ? "myListings"
+                    : item.label === "Settings"
+                    ? "settings"
+                    : item.label
+                )
+              }))}
               onNavigate={navigate}
               onSignOut={handleSignOut}
             />
@@ -138,7 +159,20 @@ const LandlordHomePageHeader = () => {
               </SheetTrigger>
               <LandlordHeaderMobileAvatar
                 user={user}
-                avatarMenu={avatarMenu}
+                avatarMenu={avatarMenu.map(item => ({
+                  ...item,
+                  label: t(
+                    item.label === "Profile"
+                      ? "profile"
+                      : item.label === "Dashboard"
+                      ? "dashboard"
+                      : item.label === "My Listings"
+                      ? "myListings"
+                      : item.label === "Settings"
+                      ? "settings"
+                      : item.label
+                  )
+                }))}
                 setAvatarSheetOpen={setAvatarSheetOpen}
                 handleSignOut={handleSignOut}
                 navigate={navigate}
@@ -150,7 +184,7 @@ const LandlordHomePageHeader = () => {
                   <Menu className="w-6 h-6" />
                 </Button>
               </SheetTrigger>
-              <LandlordHeaderMobileMenu navLinks={navLinks} />
+              <LandlordHeaderMobileMenu navLinks={translatedNavLinks} />
             </Sheet>
           </div>
         </div>

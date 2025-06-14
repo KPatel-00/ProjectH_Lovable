@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Globe, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -9,16 +8,21 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { useLanguage } from '@/hooks/useLanguage';
+import { useT } from "@/i18n";
+import { toast } from "@/components/ui/use-toast";
 
 const LanguageSelector = () => {
   const { selectedLanguage, setLanguage, languages } = useLanguage();
+  const t = useT();
 
   const currentLanguage = languages.find(lang => lang.code === selectedLanguage);
 
   const handleLanguageChange = (languageCode: string) => {
     setLanguage(languageCode);
-    console.log('Language changed to:', languageCode);
-    // If your app supports actual i18n, trigger it here!
+    toast({
+      title: t("languageChanged"),
+      description: `${languages.find(l => l.code === languageCode)?.name}`,
+    });
   };
 
   return (
