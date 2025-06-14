@@ -1,6 +1,5 @@
 
 import React from "react";
-import { useNavigate } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import UserWelcomeBanner from "@/components/landlord/UserWelcomeBanner";
@@ -8,8 +7,9 @@ import StatCards from "@/components/landlord/StatCards";
 import RecentListingsCard from "@/components/landlord/RecentListingsCard";
 import RecentApplicationsCard from "@/components/landlord/RecentApplicationsCard";
 import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 
-// Demo/mock data
+// DEMO DATA
 const landlord = {
   firstName: "Alex",
   businessName: "Prime Rentals",
@@ -41,28 +41,60 @@ const LandlordHome = () => {
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <Header />
-      <main className="container mx-auto flex-1 px-2 py-8 md:px-0 flex flex-col justify-between">
+      <main className="flex-1 w-full max-w-3xl mx-auto px-3 md:px-0 pt-8 pb-12 flex flex-col gap-7">
+        {/* 1. Header */}
         <UserWelcomeBanner
           name={landlord.firstName}
           business={landlord.businessName}
           verified={landlord.verified}
         />
+
+        {/* 2. Stat Cards */}
         <StatCards stats={metrics} />
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+
+        {/* 3. Recent Listings Section */}
+        <section className="bg-card rounded-2xl shadow-md px-0 py-0 md:p-0 mb-2">
+          <div className="flex items-center justify-between px-5 pt-5 pb-2">
+            <h2 className="font-semibold text-lg">Recent Listings</h2>
+            <button
+              className="text-xs text-primary hover:underline font-medium transition"
+              onClick={() => navigate("/landlord/dashboard", { state: { section: "listings" } })}
+            >
+              View All
+            </button>
+          </div>
           <RecentListingsCard
             listings={recentListings}
             onViewAll={() => navigate("/landlord/dashboard", { state: { section: "listings" } })}
+            showHeader={false}
+            className="border-none shadow-none bg-transparent"
           />
+        </section>
+
+        {/* 4. Recent Applications Section */}
+        <section className="bg-card rounded-2xl shadow-md px-0 py-0 md:p-0">
+          <div className="flex items-center justify-between px-5 pt-5 pb-2">
+            <h2 className="font-semibold text-lg">Recent Applications</h2>
+            <button
+              className="text-xs text-primary hover:underline font-medium transition"
+              onClick={() => navigate("/landlord/dashboard", { state: { section: "applications" } })}
+            >
+              View All
+            </button>
+          </div>
           <RecentApplicationsCard
             applications={recentApplications}
             onViewAll={() => navigate("/landlord/dashboard", { state: { section: "applications" } })}
+            showHeader={false}
+            className="border-none shadow-none bg-transparent"
           />
-        </div>
-        <div className="w-full max-w-md mx-auto sticky bottom-2 z-20">
+        </section>
+
+        {/* 5. CTA Button */}
+        <div className="w-full sticky bottom-0 z-20 px-0 pt-3 mt-8 bg-background flex items-center justify-center">
           <Button
-            className="w-full text-lg font-semibold py-3 rounded-md shadow-lg hover:scale-105 hover:bg-primary transition-all duration-150"
+            className="w-full max-w-md mx-auto text-lg font-semibold py-4 rounded-xl shadow-lg bg-gradient-to-tr from-primary to-secondary text-white hover:scale-[1.03] hover:shadow-xl hover:bg-primary transition-all duration-150"
             onClick={() => navigate("/landlord/dashboard")}
-            variant="outline"
           >
             📊 Open Full Dashboard
           </Button>

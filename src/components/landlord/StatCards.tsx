@@ -15,18 +15,24 @@ interface Stat {
 interface Props {
   stats: Stat[];
 }
-
 const StatCards: React.FC<Props> = ({ stats }) => (
-  <section className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-7">
+  <section className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
     {stats.map((stat) => (
       <div
         key={stat.label}
-        className="flex items-center gap-4 bg-card rounded-xl shadow-sm hover:shadow-md transition-shadow px-4 py-3"
+        className="flex items-center gap-4 bg-card rounded-2xl border shadow group hover:shadow-lg transition-all duration-150 px-5 py-4 cursor-pointer"
+        tabIndex={0}
+        aria-label={stat.label}
       >
-        {statIcons[stat.label]}
+        <div className="bg-muted rounded-full p-2 flex items-center justify-center transition-colors group-hover:bg-primary/10">
+          {statIcons[stat.label]}
+        </div>
         <div>
-          <div className="text-2xl font-bold">{stat.value}</div>
-          <div className="text-xs text-muted-foreground truncate max-w-[100px]" title={stat.label}>
+          <div className="text-3xl font-bold">{stat.value}</div>
+          <div
+            className="text-xs text-muted-foreground truncate max-w-[100px]"
+            title={stat.label}
+          >
             {stat.label}
           </div>
         </div>
