@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -15,11 +16,7 @@ import LandlordHome from "./pages/LandlordHome";
 import Search from "./pages/Search";
 import RentalApplicationPage from "./pages/RentalApplication";
 import LandlordListings from "./pages/LandlordListings";
-import LandlordApplications from "./pages/LandlordApplications";
 import LandlordDashboard from "./pages/LandlordDashboard";
-import DashboardHome from "./components/landlord/DashboardHome";
-import ListingsSection from "./components/landlord/ListingsSection";
-import ApplicationsSection from "./components/landlord/ApplicationsSection";
 
 const queryClient = new QueryClient();
 
@@ -40,11 +37,8 @@ const App: React.FC = () => (
           <Route path="/landlord/home" element={<LandlordHome />} />
           <Route path="/landlord/listings" element={<LandlordListings />} />
           <Route path="/search" element={<Search />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="/landlord/applications" element={<LandlordApplications />} />
-          <Route path="/landlord/dashboard" element={<DashboardHome />} />
-          <Route path="/landlord/dashboard/mylistings" element={<ListingsSection />} />
-          <Route path="/landlord/dashboard/applications" element={<ApplicationsSection />} />
+          {/* Only use nested routing for dashboard */}
+          <Route path="/landlord/dashboard/*" element={<LandlordDashboard />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

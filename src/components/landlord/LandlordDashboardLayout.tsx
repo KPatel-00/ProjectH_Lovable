@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+
+import React from "react";
 import { LayoutDashboard, List, FileText, LogOut, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate, useLocation } from "react-router-dom";
 
 const NAV_ITEMS = [
-  { label: "Dashboard", icon: <LayoutDashboard className="w-4 h-4 mr-2" />, key: "dashboard", path: "/landlord/dashboard" },
-  { label: "Listings", icon: <List className="w-4 h-4 mr-2" />, key: "listings", path: "/landlord/dashboard/mylistings" },
+  { label: "Analytics", icon: <LayoutDashboard className="w-4 h-4 mr-2" />, key: "dashboard", path: "/landlord/dashboard" },
+  { label: "My Listings", icon: <List className="w-4 h-4 mr-2" />, key: "listings", path: "/landlord/dashboard/mylistings" },
   { label: "Applications", icon: <FileText className="w-4 h-4 mr-2" />, key: "applications", path: "/landlord/dashboard/applications" },
 ];
 
@@ -32,7 +33,7 @@ export default function LandlordDashboardLayout({ children, section, setSection 
       {/* Sidebar */}
       <aside className="w-64 shrink-0 border-r bg-white flex flex-col justify-between">
         <div>
-          {/* Back to Home Button */}
+          {/* Close Dashboard Button */}
           <div className="px-6 py-4 border-b">
             <Button
               variant="ghost"
@@ -40,7 +41,7 @@ export default function LandlordDashboardLayout({ children, section, setSection 
               onClick={() => navigate("/landlord/home")}
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
-              Back to Home
+              Close Dashboard
             </Button>
           </div>
           {/* Brand/Header */}
@@ -63,7 +64,9 @@ export default function LandlordDashboardLayout({ children, section, setSection 
                     ? "bg-blue-50 text-blue-700"
                     : "text-muted-foreground"
                 }`}
-                onClick={() => navigate(item.path)}
+                onClick={() => {
+                  setSection(item.key);
+                }}
               >
                 {item.icon}
                 {item.label}
