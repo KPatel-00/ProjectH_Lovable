@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -15,6 +16,7 @@ import LandlordHome from "./pages/LandlordHome";
 import Search from "./pages/Search";
 import RentalApplicationPage from "./pages/RentalApplication";
 import LandlordDashboard from "./pages/LandlordDashboard";
+import { I18nProvider } from "./hooks/useI18n"; // Add this import
 
 // Remove LandlordListings import
 // import LandlordListings from "./pages/LandlordListings";
@@ -23,29 +25,32 @@ const queryClient = new QueryClient();
 
 const App: React.FC = () => (
   <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/listings" element={<Listings />} />
-          <Route path="/list-property" element={<ListProperty />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/listing/:id" element={<PropertyDetail />} />
-          <Route path="/apply/:listingId" element={<RentalApplicationPage />} />
-          <Route path="/tenant/home" element={<TenantHome />} />
-          <Route path="/landlord/home" element={<LandlordHome />} />
-          {/* Removed redundant /landlord/listings route */}
-          {/* <Route path="/landlord/listings" element={<LandlordListings />} /> */}
-          <Route path="/search" element={<Search />} />
-          {/* Only use nested routing for dashboard */}
-          <Route path="/landlord/dashboard/*" element={<LandlordDashboard />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
+    <I18nProvider>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/listings" element={<Listings />} />
+            <Route path="/list-property" element={<ListProperty />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/listing/:id" element={<PropertyDetail />} />
+            <Route path="/apply/:listingId" element={<RentalApplicationPage />} />
+            <Route path="/tenant/home" element={<TenantHome />} />
+            <Route path="/landlord/home" element={<LandlordHome />} />
+            {/* Removed redundant /landlord/listings route */}
+            {/* <Route path="/landlord/listings" element={<LandlordListings />} /> */}
+            <Route path="/search" element={<Search />} />
+            {/* Only use nested routing for dashboard */}
+            <Route path="/landlord/dashboard/*" element={<LandlordDashboard />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </TooltipProvider>
+    </I18nProvider>
   </QueryClientProvider>
 );
 
 export default App;
+
