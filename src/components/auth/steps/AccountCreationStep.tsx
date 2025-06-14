@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
 import { User, Mail, Lock, Eye, EyeOff } from 'lucide-react';
 import { SignUpData } from '../SignUpWizard';
+import { toast } from '@/hooks/use-toast';
 
 interface AccountCreationStepProps {
   data: SignUpData;
@@ -24,6 +25,12 @@ const AccountCreationStep = ({ data, updateData, onNext, onSwitchToLogin }: Acco
       return;
     }
     setShowTermsError(false);
+
+    toast({
+      title: "Account Created",
+      description: `Welcome, ${data.firstName} – verify your email to continue.`,
+    });
+
     onNext();
   };
 
@@ -38,7 +45,6 @@ const AccountCreationStep = ({ data, updateData, onNext, onSwitchToLogin }: Acco
     <div className="space-y-6">
       <div className="text-center">
         <h3 className="text-lg font-semibold mb-2">Create Your Account</h3>
-        {/* Step 1 of 4 [REMOVED] */}
       </div>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="grid grid-cols-2 gap-3">

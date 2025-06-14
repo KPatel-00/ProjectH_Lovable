@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Mail, Lock, Eye, EyeOff } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { toast } from '@/hooks/use-toast';
 
 interface LoginFormProps {
   onClose: () => void;
@@ -21,9 +22,12 @@ const LoginForm = ({ onClose, onSwitchToSignUp }: LoginFormProps) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Login attempt:', formData);
-    // TODO: Implement actual login logic
+    // ... Authenticate here ...
     onClose();
+    toast({
+      title: "Successfully logged in!",
+      description: `Welcome back, ${formData.email}`,
+    });
     // Redirect according to role
     if (formData.role === 'landlord') {
       navigate('/landlord/home');
@@ -117,4 +121,3 @@ const LoginForm = ({ onClose, onSwitchToSignUp }: LoginFormProps) => {
 };
 
 export default LoginForm;
-

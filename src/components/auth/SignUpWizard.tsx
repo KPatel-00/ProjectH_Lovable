@@ -56,9 +56,13 @@ const SignUpWizard = ({ onClose, onSwitchToLogin }: SignUpWizardProps) => {
   };
 
   const handleComplete = () => {
-    console.log('Sign up completed:', signUpData);
+    import('@/hooks/use-toast').then(({ toast }) => {
+      toast({
+        title: "Sign up successful",
+        description: "Your account has been created!",
+      })
+    });
     onClose();
-    // Redirect based on role
     if (signUpData.role === 'landlord') {
       navigate('/landlord/home');
     } else {
@@ -66,7 +70,6 @@ const SignUpWizard = ({ onClose, onSwitchToLogin }: SignUpWizardProps) => {
     }
   };
 
-  // Render dots at the top as a progress indicator
   const renderProgressDots = () => (
     <div className="flex justify-center items-center mb-4 mt-1">
       {DOTS.map((dot, idx) => (
