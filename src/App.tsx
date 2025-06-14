@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -11,6 +10,7 @@ import ListProperty from "./pages/ListProperty";
 import Contact from "./pages/Contact";
 import PropertyDetail from "./pages/PropertyDetail";
 import NotFound from "./pages/NotFound";
+import TenantHome from "./pages/TenantHome";
 
 const queryClient = new QueryClient();
 
@@ -26,6 +26,7 @@ const App: React.FC = () => (
           <Route path="/list-property" element={<ListProperty />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/listing/:id" element={<PropertyDetail />} />
+          <Route path="/tenant/home" element={<TenantHome />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
