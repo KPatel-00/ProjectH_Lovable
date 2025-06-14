@@ -132,6 +132,21 @@ const valuePoints = [
   },
 ];
 
+const landlordStats = [
+  {
+    icon: BarChart3,
+    text: "93% of listings get leads within 72 hours"
+  },
+  {
+    icon: Users,
+    text: "70% of landlords find a tenant under a week"
+  },
+  {
+    icon: CheckCircle2,
+    text: "Over 2,000 verified landlords"
+  },
+];
+
 const Hero = () => {
   const [selectedAudience, setSelectedAudience] = useState('tenant');
   const [searchFilters, setSearchFilters] = useState({
@@ -225,22 +240,6 @@ const Hero = () => {
     }
   ];
 
-  const landlordStats = [
-    {
-      icon: "chart-bar",
-      text: "93% of listings get leads within 72 hours"
-    },
-    {
-      icon: "chart-bar",
-      text: "70% of landlords find a tenant under a week"
-    },
-    {
-      icon: "chart-bar",
-      text: "Over 2,000 verified landlords"
-    },
-  ];
-
-  // Ref: amount of cards visible per screen
   const visibleCities = () => {
     if (window.innerWidth < 640) return 2;
     if (window.innerWidth < 1024) return 4;
@@ -443,22 +442,8 @@ const Hero = () => {
                 </div>
               </div>
 
-              {/* Platform Stats */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16 text-center">
-                <div className="p-6 bg-background rounded-2xl shadow-lg border border-border">
-                  <div className="text-3xl font-bold text-primary mb-2">60+</div>
-                  <div className="text-muted-foreground">Cities Covered</div>
-                </div>
-                <div className="p-6 bg-background rounded-2xl shadow-lg border border-border">
-                  <div className="text-3xl font-bold text-primary mb-2">5,000+</div>
-                  <div className="text-muted-foreground">Properties Listed</div>
-                </div>
-                <div className="p-6 bg-background rounded-2xl shadow-lg border border-border">
-                  <div className="text-3xl font-bold text-primary mb-2">2,000+</div>
-                  <div className="text-muted-foreground">Verified Landlords</div>
-                </div>
-              </div>
-
+              {/* REMOVE Platform Stats (stats pills) from tenant section */}
+              
               {/* Popular Cities */}
               <div className="mb-16">
                 <h2 className="text-3xl font-bold text-center mb-8">Explore Top Cities</h2>
@@ -567,7 +552,7 @@ const Hero = () => {
                 </div>
               </div>
 
-              {/* --- STATS BAR, NEW SECTION --- */}
+              {/* --- STATS BAR, UPDATED ICONS --- */}
               <div className="flex flex-col md:flex-row justify-center items-center gap-4 mb-16">
                 {landlordStats.map((stat, idx) => (
                   <div
@@ -575,20 +560,7 @@ const Hero = () => {
                     className="inline-flex items-center bg-background rounded-full px-6 py-3 shadow-lg border border-border"
                     style={{ minWidth: "280px", whiteSpace: "nowrap" }}
                   >
-                    {/* ChartBar icon from allowed set. */}
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="w-5 h-5 text-primary mr-2"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      strokeWidth={2}
-                    >
-                      <rect x="3" y="12" width="3" height="6" rx="1" className="fill-primary/10" />
-                      <rect x="9" y="8" width="3" height="10" rx="1" className="fill-primary/20" />
-                      <rect x="15" y="4" width="3" height="14" rx="1" className="fill-primary/30" />
-                      <rect x="21" y="2" width="0" height="0" style={{ fill: "none" }}/>
-                    </svg>
+                    <stat.icon className="w-5 h-5 text-primary mr-2" />
                     <span className="font-semibold text-foreground">
                       {stat.text}
                     </span>
