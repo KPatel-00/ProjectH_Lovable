@@ -1,12 +1,30 @@
 
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, User, LogOut, UserRound } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import AuthModal from '@/components/AuthModal';
 import LanguageSelector from '@/components/LanguageSelector';
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuLabel,
+} from '@/components/ui/dropdown-menu';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 const Header = () => {
+  // Simulate authentication (Replace with actual auth logic later)
+  const [isAuthenticated, setIsAuthenticated] = useState(true);
+  // Simulated user info
+  const user = {
+    name: 'Anna',
+    email: 'anna.tenant@example.com',
+    avatarUrl: '',
+  };
+
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [authModal, setAuthModal] = useState<{ isOpen: boolean; tab: 'login' | 'signup' }>({
     isOpen: false,
@@ -54,6 +72,12 @@ const Header = () => {
     return location.pathname === href;
   };
 
+  // Simulate sign-out
+  const handleSignOut = () => {
+    setIsAuthenticated(false);
+    navigate('/');
+  };
+
   return (
     <>
       <header className={`sticky top-0 z-50 bg-background/95 backdrop-blur-md border-b border-border transition-shadow duration-200 ${
@@ -98,25 +122,59 @@ const Header = () => {
               <div className="hidden sm:block">
                 <LanguageSelector />
               </div>
-
-              {/* Auth Buttons - Hidden on small screens */}
-              <div className="hidden sm:flex items-center space-x-2">
-                <Button 
-                  variant="ghost" 
-                  size="sm" 
-                  onClick={() => openAuthModal('login')}
-                  className="font-medium hover:text-primary transition-colors"
-                >
-                  Log In
-                </Button>
-                <Button 
-                  size="sm" 
-                  className="bg-gradient-to-r from-primary to-secondary hover:opacity-90 transition-all duration-200 shadow-sm font-medium px-6" 
-                  onClick={() => openAuthModal('signup')}
-                >
-                  Get Started
-                </Button>
-              </div>
+              {isAuthenticated ? (
+                // --- Tenant Authenticated Header ---
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" size="icon" className="rounded-full">
+                      <Avatar>
+                        {user.avatarUrl ? (
+                          <AvatarImage src={user.avatarUrl} alt={user.name} />
+                        ) : (
+                          <AvatarFallback>{user.name[0]}</AvatarFallback>
+                        )}
+                      </Avatar>
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-48">
+                    <DropdownMenuLabel className="flex flex-col">
+                      <span className="font-semibold">{user.name}</span>
+                      <span className="text-xs font-normal text-muted-foreground">{user.email}</span>
+                    </DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem onClick={() => navigate('/profile')}>
+                      <UserRound className="w-4 h-4 mr-2" /> My Profile
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => navigate('/profile/applications')}>
+                      <User className="w-4 h-4 mr-2" /> My Applications
+                    </DropdownMenuItem>
+                    {/* Optionally: Add more account menu items here */}
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem onClick={handleSignOut} className="text-destructive">
+                      <LogOut className="w-4 h-4 mr-2" /> Sign Out
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              ) : (
+                // --- Guest / Not Authenticated ---
+                <div className="hidden sm:flex items-center space-x-2">
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    onClick={() => openAuthModal('login')}
+                    className="font-medium hover:text-primary transition-colors"
+                  >
+                    Log In
+                  </Button>
+                  <Button 
+                    size="sm" 
+                    className="bg-gradient-to-r from-primary to-secondary hover:opacity-90 transition-all duration-200 shadow-sm font-medium px-6" 
+                    onClick={() => openAuthModal('signup')}
+                  >
+                    Get Started
+                  </Button>
+                </div>
+              )}
 
               {/* Mobile Menu Button */}
               <Button
@@ -152,29 +210,56 @@ const Header = () => {
                   <div className="flex justify-start">
                     <LanguageSelector />
                   </div>
-                  <div className="space-y-2">
-                    <Button 
-                      variant="ghost" 
-                      size="sm" 
-                      className="w-full justify-start font-medium" 
-                      onClick={() => {
-                        openAuthModal('login');
-                        setIsMenuOpen(false);
-                      }}
-                    >
-                      Log In
-                    </Button>
-                    <Button 
-                      size="sm" 
-                      className="w-full bg-gradient-to-r from-primary to-secondary font-medium" 
-                      onClick={() => {
-                        openAuthModal('signup');
-                        setIsMenuOpen(false);
-                      }}
-                    >
-                      Get Started
-                    </Button>
-                  </div>
+                  {isAuthenticated ? (
+                    <div className="pt-3">
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button variant="ghost" size="sm" className="w-full justify-start font-medium">
+                            <Avatar className="mr-2 w-6 h-6">
+                              <AvatarFallback>{user.name[0]}</AvatarFallback>
+                            </Avatar>
+                            {user.name}
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="start" className="w-48">
+                          <DropdownMenuItem onClick={() => navigate('/profile')}>
+                            <UserRound className="w-4 h-4 mr-2" /> My Profile
+                          </DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => navigate('/profile/applications')}>
+                            <User className="w-4 h-4 mr-2" /> My Applications
+                          </DropdownMenuItem>
+                          <DropdownMenuSeparator />
+                          <DropdownMenuItem onClick={handleSignOut} className="text-destructive">
+                            <LogOut className="w-4 h-4 mr-2" /> Sign Out
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </div>
+                  ) : (
+                    <div className="space-y-2">
+                      <Button 
+                        variant="ghost" 
+                        size="sm" 
+                        className="w-full justify-start font-medium" 
+                        onClick={() => {
+                          openAuthModal('login');
+                          setIsMenuOpen(false);
+                        }}
+                      >
+                        Log In
+                      </Button>
+                      <Button 
+                        size="sm" 
+                        className="w-full bg-gradient-to-r from-primary to-secondary font-medium" 
+                        onClick={() => {
+                          openAuthModal('signup');
+                          setIsMenuOpen(false);
+                        }}
+                      >
+                        Get Started
+                      </Button>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -192,3 +277,4 @@ const Header = () => {
 };
 
 export default Header;
+
