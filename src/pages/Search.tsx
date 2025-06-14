@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
-import { useSearchParams, useNavigate } from "react-router-dom";
+import React, { useState, useRef, useEffect } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Home, Search as SearchIcon, MapPin, Calendar, ChevronDown, SlidersHorizontal } from "lucide-react";
@@ -8,7 +8,6 @@ import ListingCard from "@/components/ListingCard";
 import SearchSidebarFilters from "@/components/SearchSidebarFilters";
 import MobileFiltersDrawer from "@/components/MobileFiltersDrawer";
 import { Slider } from "@/components/ui/slider";
-
 const MOCK_LISTINGS = Array.from({ length: 15 }).map((_, i) => ({
   id: i + 1,
   image: "/placeholder.svg",
@@ -39,137 +38,43 @@ const DEFAULT_PRICE = [500, 2500];
 
 const PAGE_SIZE = 9;
 
-const parseSearchParams = (params: URLSearchParams) => {
-  const obj: any = {
-    location: params.get("location") || "",
-    // CHANGE: propertyType now defaults to "all"
-    propertyType: params.get("propertyType") || "all",
-    price: [Number(params.get("minPrice")) || DEFAULT_PRICE[0], Number(params.get("maxPrice")) || DEFAULT_PRICE[1]],
-    bedrooms: params.get("bedrooms") || "Any",
-    moveInDate: params.get("moveInDate") || "",
-    verifiedOnly: params.get("verifiedOnly") === "true",
-    furnished: params.get("furnished") === "true",
-    petFriendly: params.get("petFriendly") === "true",
-    parking: params.get("parking") === "true",
-    balcony: params.get("balcony") === "true",
-    sort: params.get("sort") || SORT_OPTIONS[0].value
-  };
-  return obj;
-};
-
-const getFilteredListings = (filters: any, listings: any[]) => {
-  // Filtering logic - mock
-  return listings.filter(listing => {
-    if (
-      filters.location &&
-      !listing.city.toLowerCase().includes(filters.location.toLowerCase())
-    )
-      return false;
-    // Only filter by propertyType if not "all"
-    if (
-      filters.propertyType &&
-      filters.propertyType !== "all" &&
-      listing.title.toLowerCase().indexOf(filters.propertyType.toLowerCase()) === -1
-    )
-      return false;
-    if (
-      filters.verifiedOnly &&
-      !listing.verified
-    )
-      return false;
-    if (
-      listing.rent < filters.price[0] ||
-      listing.rent > filters.price[1]
-    )
-      return false;
-    // For this demo, we just use 'Apartment' as property type in title
-    if (filters.bedrooms !== "Any") {
-      // Not implemented for demo
-    }
-    if (filters.furnished && Math.random() < 0.3) return false;
-    if (filters.petFriendly && Math.random() < 0.3) return false;
-    if (filters.parking && Math.random() < 0.3) return false;
-    if (filters.balcony && Math.random() < 0.3) return false;
-    return true;
-  });
-};
+import SearchFiltersBar from "@/components/SearchFiltersBar";
+import { useSearchFilters } from "@/hooks/useSearchFilters";
 
 const Search = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const navigate = useNavigate();
-  const [filters, setFilters] = useState(() => parseSearchParams(searchParams));
+  const {
+    filters,
+    setFilters,
+    handleSearch,
+    isFiltering,
+    handleReset,
+  } = useSearchFilters({ submitUrl: "/search" });
+
   const [showMobileFilters, setShowMobileFilters] = useState(false);
-  const [displayed, setDisplayed] = useState(PAGE_SIZE);
+  const [displayed, setDisplayed] = useState(9); // PAGE_SIZE
   const [listings, setListings] = useState<any[]>([]);
   const isFirstLoad = useRef(true);
 
-  useEffect(() => {
-    setFilters(parseSearchParams(searchParams));
-  }, [searchParams]);
-
+  // Move original filtering logic here, using shared filters:
   useEffect(() => {
     // Filtering logic - mock
-    const filtered = getFilteredListings(filters, MOCK_LISTINGS);
-    setListings(filtered);
-    setDisplayed(PAGE_SIZE);
-  }, [filters]);
-
-  // Add a helper to check if any search filter is currently applied:
-  const isFiltering = React.useMemo(() => {
-    // Ignore default price/bedrooms/sort, focus on user-applied filters
-    return !!(
-      filters.location ||
-      (filters.propertyType && filters.propertyType !== "all") ||
-      filters.price[0] !== 500 ||
-      filters.price[1] !== 2500 ||
-      (filters.bedrooms && filters.bedrooms !== "Any") ||
-      filters.moveInDate ||
-      filters.verifiedOnly ||
-      filters.furnished ||
-      filters.petFriendly ||
-      filters.parking ||
-      filters.balcony
-    );
-  }, [filters]);
-
-  const handleResetFilters = () => {
-    setFilters({
-      location: "",
-      propertyType: "all",
-      price: [500, 2500],
-      bedrooms: "Any",
-      moveInDate: "",
-      verifiedOnly: false,
-      furnished: false,
-      petFriendly: false,
-      parking: false,
-      balcony: false,
-      sort: SORT_OPTIONS[0].value,
+    const filtered = MOCK_LISTINGS.filter(listing => {
+      if (
+        filters.location &&
+        !listing.city.toLowerCase().includes(filters.location.toLowerCase())
+      )
+        return false;
+      if (
+        filters.propertyType &&
+        filters.propertyType !== "all" &&
+        listing.title.toLowerCase().indexOf(filters.propertyType.toLowerCase()) === -1
+      )
+        return false;
+      return true;
     });
-    setSearchParams({});
-  };
-
-  const handleFilterChange = (updates: any) => setFilters(f => ({ ...f, ...updates }));
-
-  const handleSearch = () => {
-    const params = new URLSearchParams();
-    if (filters.location) params.set("location", filters.location);
-    // Only set propertyType if not "all"
-    if (filters.propertyType && filters.propertyType !== "all")
-      params.set("propertyType", filters.propertyType);
-    if (filters.price[0]) params.set("minPrice", String(filters.price[0]));
-    if (filters.price[1]) params.set("maxPrice", String(filters.price[1]));
-    if (filters.bedrooms && filters.bedrooms !== "Any") params.set("bedrooms", String(filters.bedrooms));
-    if (filters.moveInDate) params.set("moveInDate", filters.moveInDate);
-    if (filters.verifiedOnly) params.set("verifiedOnly", "true");
-    if (filters.furnished) params.set("furnished", "true");
-    if (filters.petFriendly) params.set("petFriendly", "true");
-    if (filters.parking) params.set("parking", "true");
-    if (filters.balcony) params.set("balcony", "true");
-    if (filters.sort) params.set("sort", filters.sort);
-
-    navigate(`/search?${params.toString()}`);
-  };
+    setListings(filtered);
+    setDisplayed(9);
+  }, [filters]);
 
   const handleBookmark = (id: number) => {
     setListings(ls =>
@@ -181,100 +86,29 @@ const Search = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Sticky Topbar Filters */}
-      <div className="sticky top-0 z-30 bg-background/95 border-b border-border backdrop-blur pb-1">
-        <div className="max-w-7xl mx-auto flex items-center px-4 py-2 gap-2 lg:gap-3">
-          <div className="relative flex-1 min-w-[120px]">
-            <MapPin className="absolute left-2 top-3 w-4 h-4 text-muted-foreground" />
-            <Input
-              placeholder="Enter city, area, or zip code"
-              className="pl-8 h-10"
-              value={filters.location}
-              onChange={e => handleFilterChange({ location: e.target.value })}
-              onKeyDown={e => (e.key === "Enter" ? handleSearch() : undefined)}
-            />
-          </div>
-          <Select
-            // propertyType value (use "all" for unfiltered)
-            value={filters.propertyType}
-            onValueChange={v => handleFilterChange({ propertyType: v })}
+      {/* NEW: Shared Filters bar */}
+      <SearchFiltersBar
+        filters={filters}
+        setFilters={setFilters}
+        onSubmit={handleSearch}
+        showMoveInDate={true}
+      />
+      {isFiltering && (
+        <div className="flex mt-2 mb-4">
+          <button
+            className="ml-auto px-3 py-2 text-destructive text-sm border border-border rounded-md hover:bg-destructive/10 transition"
+            onClick={handleReset}
+            tabIndex={0}
+            aria-label="Reset search filters"
+            type="button"
           >
-            <SelectTrigger className="h-10 min-w-[128px]">
-              <Home className="w-4 h-4 mr-1" />
-              <SelectValue placeholder="Property Type" />
-            </SelectTrigger>
-            <SelectContent>
-              {/* Changed "All Types" to value="all" */}
-              <SelectItem value="all">All Types</SelectItem>
-              {PROPERTY_TYPES.map(pt => (
-                <SelectItem key={pt.value} value={pt.value}>{pt.label}</SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-          <div className="flex items-center min-w-[120px] w-44">
-            <span className="mr-2 text-xs text-muted-foreground">€</span>
-            <Slider
-              min={300}
-              max={4000}
-              step={25}
-              value={filters.price}
-              onValueChange={vals => handleFilterChange({ price: vals })}
-              className="w-full h-2"
-            />
-            <span className="ml-2 text-xs">{`${filters.price[0]}–${filters.price[1]} €/mo`}</span>
-          </div>
-          <Select
-            value={String(filters.bedrooms)}
-            onValueChange={v => handleFilterChange({ bedrooms: v })}
-          >
-            <SelectTrigger className="h-10 min-w-[90px]">
-              <ChevronDown className="w-3 h-3 mr-1" />
-              <SelectValue placeholder="Bedrooms" />
-            </SelectTrigger>
-            <SelectContent>
-              {BEDROOMS.map(b => (
-                <SelectItem key={b} value={String(b)}>{b}</SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-          <div className="relative min-w-[124px]">
-            <Calendar className="absolute left-2 top-3 w-4 h-4 text-muted-foreground" />
-            <Input
-              type="month"
-              className="pl-8 h-10"
-              placeholder="Choose move-in date"
-              value={filters.moveInDate}
-              onChange={e => handleFilterChange({ moveInDate: e.target.value })}
-            />
-          </div>
-          <Button
-            variant="outline"
-            className="lg:hidden"
-            size="icon"
-            onClick={() => setShowMobileFilters(true)}
-            title="More filters"
-          >
-            <SlidersHorizontal />
-          </Button>
-          <Button size="lg" onClick={handleSearch} className="ml-2 min-w-[110px]">
-            <SearchIcon className="w-4 h-4 mr-1" />
-            Search
-          </Button>
-          {isFiltering && (
-            <Button size="sm" variant="ghost" className="ml-2 px-3 border border-border rounded-md text-destructive hover:bg-destructive/10 transition"
-              onClick={handleResetFilters}
-              tabIndex={0}
-              aria-label="Reset all filters"
-            >
-              Reset filters
-            </Button>
-          )}
+            Reset filters
+          </button>
         </div>
-      </div>
-
+      )}
       <div className="flex max-w-7xl mx-auto w-full pt-8 pb-16 gap-4">
         {/* Sidebar (desktop) */}
-        <SearchSidebarFilters filters={filters} setFilters={handleFilterChange} />
+        <SearchSidebarFilters filters={filters} setFilters={setFilters} />
         {/* Listings Grid */}
         <main className="flex-1 min-w-0">
           {listings.length === 0 ? (
@@ -284,14 +118,13 @@ const Search = () => {
               <div className="text-muted-foreground mb-4 text-center">
                 Try changing your filters or check back soon.
               </div>
-              <Button
-                variant="ghost"
-                className="mt-2 border border-border text-destructive hover:bg-destructive/10"
-                onClick={handleResetFilters}
+              <button
+                className="mt-2 border border-border text-destructive hover:bg-destructive/10 px-4 py-2 rounded"
+                onClick={handleReset}
                 aria-label="Reset search filters"
               >
                 Reset filters
-              </Button>
+              </button>
             </div>
           ) : (
             <>
@@ -313,16 +146,14 @@ const Search = () => {
                       status={l.status}
                       bookmarked={l.bookmarked}
                       onBookmark={() => handleBookmark(l.id)}
-                      onClick={() => navigate(`/listing/${l.id}`)}
+                      onClick={() => useNavigate(`/listing/${l.id}`)}
                     />
                   </div>
                 ))}
               </div>
               {displayed < listings.length && (
                 <div className="flex justify-center mt-8">
-                  <Button onClick={() => setDisplayed(d => d + PAGE_SIZE)}>
-                    Load More
-                  </Button>
+                  <button onClick={() => setDisplayed(d => d + 9)} className="px-4 py-2 rounded bg-secondary">Load More</button>
                 </div>
               )}
             </>
@@ -333,7 +164,7 @@ const Search = () => {
         open={showMobileFilters}
         setOpen={setShowMobileFilters}
         filters={filters}
-        setFilters={handleFilterChange}
+        setFilters={setFilters}
         onApply={handleSearch}
       />
     </div>
@@ -341,3 +172,4 @@ const Search = () => {
 };
 
 export default Search;
+// NOTE: This file exceeds 300 lines and should be refactored into smaller modules soon!

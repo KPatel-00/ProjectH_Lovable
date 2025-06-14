@@ -1,22 +1,26 @@
-import React, { useState, useEffect } from 'react';
-import { useSearchParams, useNavigate } from 'react-router-dom';
+import React from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 import { Search, MapPin, Home, Calendar, Filter } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useT } from "@/i18n";
+import SearchFiltersBar from "@/components/SearchFiltersBar";
+import { useSearchFilters } from "@/hooks/useSearchFilters";
 
 const Listings = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const [filters, setFilters] = useState({
-    location: searchParams.get('location') || '',
-    propertyType: searchParams.get('propertyType') || '',
-    moveInDate: searchParams.get('moveInDate') || ''
-  });
+  const t = useT();
 
-  const navigate = useNavigate();
+  const {
+    filters,
+    setFilters,
+    handleSearch,
+    isFiltering,
+    handleReset,
+    searchParams
+  } = useSearchFilters({ submitUrl: "/listings" });
 
   const featuredProperties = [
     {
@@ -57,105 +61,64 @@ const Listings = () => {
     }
   ];
 
-  const handleSearch = () => {
-    // Removed console.log for production
+  const navigate = useNavigate();
+
+  const handleCityClick = (cityName: string) => {
+    navigate(`/listings?location=${encodeURIComponent(cityName)}`);
   };
 
-  // Identify if any filter is applied
-  const isFiltering =
-    filters.location ||
-    filters.propertyType ||
-    filters.moveInDate;
-
-  // Reset all filters and remove URL search params
-  const handleResetFilters = () => {
-    setFilters({
-      location: '',
-      propertyType: '',
-      moveInDate: ''
-    });
-    setSearchParams({});
+  const handlePropertyClick = (propertyId: number) => {
+    navigate(`/listing/${propertyId}`);
   };
 
-  const t = useT();
+  const handleCTAClick = (action: string) => {
+    switch (action) {
+      case 'list-property':
+        navigate('/list-property');
+        break;
+      case 'contact-support':
+        navigate('/contact');
+        break;
+      case 'view-all':
+        navigate('/listings');
+        break;
+      default:
+        console.log(`Action: ${action}`);
+    }
+  };
+
+  // Utility for cities per page (passed down)
+  const visibleCities = () => {
+    if (window.innerWidth < 640) return 2;
+    if (window.innerWidth < 1024) return 4;
+    return 6;
+  };
 
   return (
     <div className="min-h-screen bg-background">
       <Header />
       <main className="container mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-16">
         {/* Search Filters */}
-        <div className="bg-background rounded-2xl p-6 shadow-xl border border-border mb-8" aria-label="Filter listings">
-          <form
-            className="grid grid-cols-1 md:grid-cols-4 gap-4"
-            onSubmit={e => {
-              e.preventDefault();
-              handleSearch();
-            }}
-          >
-            <div className="relative">
-              <MapPin className="absolute left-3 top-3 w-5 h-5 text-muted-foreground" aria-hidden="true" />
-              <Input 
-                placeholder={t("cityAreaZip") || "Enter city, area, or zip code"}
-                className="pl-10 h-12"
-                value={filters.location}
-                onChange={(e) => setFilters({ ...filters, location: e.target.value })}
-                aria-label={t("cityAreaZip") || "Location"}
-                name="location"
-                autoComplete="address-level2"
-              />
-            </div>
-            <Select value={filters.propertyType} onValueChange={(value) => setFilters({ ...filters, propertyType: value })}>
-              <SelectTrigger className="h-12" aria-label={t("propertyType") || "Property Type"}>
-                <Home className="w-4 h-4 mr-2" aria-hidden="true" />
-                <SelectValue placeholder={t("propertyType") || "Property Type"} />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="apartment">{t("apartment")}</SelectItem>
-                <SelectItem value="house">{t("house")}</SelectItem>
-                <SelectItem value="wg">{t("wgRoom")}</SelectItem>
-                <SelectItem value="studio">{t("studio")}</SelectItem>
-              </SelectContent>
-            </Select>
-            <div className="relative">
-              <Calendar className="absolute left-3 top-3 w-5 h-5 text-muted-foreground" aria-hidden="true" />
-              <Input 
-                type="month" 
-                className="pl-10 h-12"
-                placeholder={t("moveInDate") || "Choose move-in date"}
-                value={filters.moveInDate}
-                onChange={(e) => setFilters({ ...filters, moveInDate: e.target.value })}
-                aria-label={t("moveInDate") || "Move-in date"}
-                name="moveInDate"
-              />
-            </div>
-            <Button
-              size="lg"
-              className="h-12 bg-gradient-to-r from-primary to-secondary hover:opacity-90 transition-opacity focus-visible:ring-4 focus-visible:ring-primary focus-visible:ring-offset-2"
-              onClick={handleSearch}
-              aria-label={t("search") || "Search"}
-              type="submit"
+        <SearchFiltersBar
+          filters={filters}
+          setFilters={setFilters}
+          onSubmit={handleSearch}
+          showMoveInDate={true}
+        />
+        {/* Show Reset Filters Button if any filter is active */}
+        {isFiltering && (
+          <div className="flex mt-4">
+            <button
+              className="ml-auto px-3 py-2 text-destructive text-sm border border-border rounded-md hover:bg-destructive/10 transition focus-visible:ring-2 focus-visible:ring-destructive/60"
+              onClick={handleReset}
+              tabIndex={0}
+              aria-label={t("resetFilters") || "Reset all filters"}
+              type="button"
             >
-              <Search className="w-5 h-5 mr-2" aria-hidden="true" />
-              {t("search")}
-            </Button>
-          </form>
-          {/* Show Reset Filters Button if any filter is active */}
-          {isFiltering && (
-            <div className="flex mt-4">
-              <Button
-                size="sm"
-                variant="ghost"
-                className="ml-auto px-3 text-destructive border border-border rounded-md hover:bg-destructive/10 transition focus-visible:ring-2 focus-visible:ring-destructive/60"
-                onClick={handleResetFilters}
-                tabIndex={0}
-                aria-label={t("resetFilters") || "Reset all filters"}
-                type="button"
-              >
-                {t("resetFilters") || "Reset filters"}
-              </Button>
-            </div>
-          )}
-        </div>
+              {t("resetFilters") || "Reset filters"}
+            </button>
+          </div>
+        )}
 
         {/* Results */}
         <div className="mb-8">
@@ -180,7 +143,7 @@ const Listings = () => {
               <Button
                 variant="ghost"
                 className="mt-2 border border-border text-destructive hover:bg-destructive/10 focus-visible:ring-2 focus-visible:ring-destructive/60"
-                onClick={handleResetFilters}
+                onClick={handleReset}
                 aria-label={t("resetFilters") || "Reset search filters"}
                 type="button"
               >
@@ -256,3 +219,5 @@ const Listings = () => {
 };
 
 export default Listings;
+// NOTE: This file exceeds 250 lines and is becoming too large.
+// Consider refactoring into smaller components soon!
