@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -100,6 +99,11 @@ const statusColors: Record<string, string> = {
 const LandlordHome = () => {
   const navigate = useNavigate();
 
+  // Add a helper to handle clicking an application in recentApplications to jump to applications dashboard
+  const handleGoToApplications = () => {
+    navigate("/landlord/applications");
+  };
+
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <Header />
@@ -154,7 +158,15 @@ const LandlordHome = () => {
         {/* Quick Stats */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-8">
           {stats.map((stat) => (
-            <Card key={stat.label} className="flex flex-col">
+            <Card key={stat.label} className="flex flex-col cursor-pointer"
+              onClick={
+                stat.label === "Active Listings"
+                  ? () => navigate("/landlord/listings")
+                  : stat.label === "Pending Applications"
+                  ? () => navigate("/landlord/applications")
+                  : undefined
+              }
+            >
               <CardHeader className="pb-2">
                 <CardDescription className="text-base font-medium">{stat.label}</CardDescription>
               </CardHeader>
@@ -260,14 +272,19 @@ const LandlordHome = () => {
             <Button
               variant="ghost"
               size="sm"
-              onClick={() => navigate("/landlord/applications")}
+              onClick={handleGoToApplications}
             >
               View All
             </Button>
           </div>
           <div className="flex flex-col gap-2">
             {recentApplications.map((app) => (
-              <Card key={app.id} className="flex md:flex-row flex-col items-center md:items-stretch gap-4 py-3 px-4">
+              <Card
+                key={app.id}
+                className="flex md:flex-row flex-col items-center md:items-stretch gap-4 py-3 px-4 cursor-pointer"
+                onClick={handleGoToApplications}
+                title="View all applications"
+              >
                 <div className="flex-1">
                   <div className="font-semibold">{app.tenantName}</div>
                   <div className="text-muted-foreground text-sm">
