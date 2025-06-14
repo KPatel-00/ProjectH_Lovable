@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React from 'react';
 import { Globe, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
@@ -8,21 +8,17 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { useLanguage } from '@/hooks/useLanguage';
 
 const LanguageSelector = () => {
-  const [selectedLanguage, setSelectedLanguage] = useState('en');
-
-  const languages = [
-    { code: 'en', name: 'English', flag: '🇬🇧' },
-    { code: 'de', name: 'Deutsch', flag: '🇩🇪' },
-  ];
+  const { selectedLanguage, setLanguage, languages } = useLanguage();
 
   const currentLanguage = languages.find(lang => lang.code === selectedLanguage);
 
   const handleLanguageChange = (languageCode: string) => {
-    setSelectedLanguage(languageCode);
+    setLanguage(languageCode);
     console.log('Language changed to:', languageCode);
-    // TODO: Implement actual language switching logic
+    // If your app supports actual i18n, trigger it here!
   };
 
   return (
