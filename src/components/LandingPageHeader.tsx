@@ -23,19 +23,58 @@ const LandingPageHeader = () => {
         </div>
         {/* Nav */}
         <nav className="hidden md:flex space-x-8">
-          <button onClick={() => navigate('/listings')} className="text-muted-foreground hover:text-foreground font-medium">Browse Listings</button>
-          <button onClick={() => navigate('/list-property')} className="text-muted-foreground hover:text-foreground font-medium">List Property</button>
-          <button onClick={() => navigate('/contact')} className="text-muted-foreground hover:text-foreground font-medium">Help Center</button>
+          <Button
+            variant="ghost"
+            onClick={() => navigate('/listings')}
+            className="text-muted-foreground hover:text-foreground font-medium"
+          >
+            Browse Listings
+          </Button>
+          <Button
+            variant="ghost"
+            onClick={() => navigate('/list-property')}
+            className="text-muted-foreground hover:text-foreground font-medium"
+          >
+            List Property
+          </Button>
+          <Button
+            variant="ghost"
+            onClick={() => navigate('/contact')}
+            className="text-muted-foreground hover:text-foreground font-medium"
+          >
+            Help Center
+          </Button>
         </nav>
         {/* Actions */}
         <div className="flex items-center space-x-3">
           <div className="hidden sm:block"><LanguageSelector /></div>
-          <Button size="sm" variant="ghost" className="font-medium">Log In</Button>
-          <Button size="sm" className="bg-gradient-to-r from-primary to-secondary font-medium px-6">Get Started</Button>
-          <Button size="sm" variant="ghost" className="md:hidden"><Menu /></Button>
+          <Button
+            size="sm"
+            variant="ghost"
+            className="font-medium"
+            onClick={() => navigate('/login')}
+          >
+            Log In
+          </Button>
+          <Button
+            size="sm"
+            className="bg-gradient-to-r from-primary to-secondary font-medium px-6"
+            onClick={() => navigate('/list-property')}
+          >
+            Get Started
+          </Button>
+          <Button
+            size="sm"
+            variant="ghost"
+            className="md:hidden"
+            onClick={() => {/* Open nav menu (not yet implemented) */}}
+          >
+            <Menu />
+          </Button>
         </div>
       </div>
     </header>
   );
 };
 export default LandingPageHeader;
+
