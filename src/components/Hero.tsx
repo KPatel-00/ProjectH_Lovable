@@ -20,7 +20,6 @@ import {
   ChevronLeft,
   ChevronRight,
 } from 'lucide-react';
-import { city as CityIcon } from 'lucide-react'; // FIX: correct icon import
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -31,7 +30,7 @@ const popularCities = [
     name: 'Berlin',
     subtitle: 'Startup hub',
     image: 'https://images.unsplash.com/photo-1605810230434-7631ac76ec81?auto=format&fit=crop&w=600&q=80',
-    icon: CityIcon, // Use the imported CityIcon
+    icon: Building2, // Use an available icon
   },
   {
     name: 'Munich',
