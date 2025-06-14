@@ -9,7 +9,7 @@ interface Props {
   verified: boolean;
 }
 const UserWelcomeBanner: React.FC<Props> = ({ name, business, verified }) => (
-  <section className="flex items-center gap-5 mb-2 p-6 rounded-xl bg-white shadow-md border">
+  <section className="flex items-center gap-5 mb-8 px-6 py-5 rounded-2xl bg-white shadow-md animate-fade-in">
     <Avatar className="h-16 w-16 text-2xl">
       <AvatarFallback className="bg-primary text-primary-foreground font-bold text-3xl">
         {name[0]}
@@ -17,11 +17,11 @@ const UserWelcomeBanner: React.FC<Props> = ({ name, business, verified }) => (
     </Avatar>
     <div className="flex flex-col gap-1">
       <div className="flex items-center gap-2">
-        <span className="text-2xl md:text-3xl font-bold leading-tight text-gray-900">
-          Welcome, {name}
+        <span className="text-2xl font-bold leading-tight text-gray-900">
+          Welcome back, {name}
         </span>
         {verified && (
-          <ShieldCheck className="text-green-600 w-6 h-6" aria-label="Verified" />
+          <ShieldCheck className="text-green-600 w-5 h-5" aria-label="Verified" />
         )}
       </div>
       {business && (
@@ -37,3 +37,4 @@ const UserWelcomeBanner: React.FC<Props> = ({ name, business, verified }) => (
 );
 
 export default UserWelcomeBanner;
+

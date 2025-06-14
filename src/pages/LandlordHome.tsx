@@ -42,23 +42,26 @@ const LandlordHome = () => {
   return (
     <div className="min-h-screen flex flex-col bg-neutral-50">
       <Header />
-      <main className="flex-1 w-full max-w-3xl mx-auto px-3 md:px-0 pt-12 pb-16 flex flex-col gap-8 items-stretch">
-        {/* 1. Welcome Header */}
+      {/* Main Content */}
+      <main className="flex-1 w-full max-w-3xl mx-auto px-3 md:px-0 pt-12 pb-20 flex flex-col">
+        {/* Header */}
         <UserWelcomeBanner
           name={landlord.firstName}
           business={landlord.businessName}
           verified={landlord.verified}
         />
 
-        {/* 2. Stat Cards */}
-        <StatCards stats={metrics} />
+        {/* Stat Cards */}
+        <div className="mb-8">
+          <StatCards stats={metrics} />
+        </div>
 
-        {/* 3. Recent Listings Section */}
-        <section className="bg-white rounded-xl shadow-md px-0 py-0 md:p-0">
-          <div className="flex items-center justify-between px-6 pt-6 pb-3">
-            <h2 className="font-semibold text-lg md:text-xl">Recent Listings</h2>
+        {/* Recent Listings */}
+        <section className="mb-8">
+          <div className="flex justify-between items-center mb-4 px-1">
+            <h2 className="text-lg font-semibold text-gray-900">Recent Listings</h2>
             <button
-              className="text-xs md:text-sm text-primary hover:underline font-medium transition"
+              className="text-sm font-medium text-primary hover:underline transition"
               onClick={() => navigate("/landlord/dashboard", { state: { section: "listings" } })}
             >
               View All
@@ -66,18 +69,17 @@ const LandlordHome = () => {
           </div>
           <RecentListingsCard
             listings={recentListings}
-            onViewAll={() => navigate("/landlord/dashboard", { state: { section: "listings" } })}
             showHeader={false}
             className="border-none shadow-none bg-transparent"
           />
         </section>
 
-        {/* 4. Recent Applications Section */}
-        <section className="bg-white rounded-xl shadow-md px-0 py-0 md:p-0">
-          <div className="flex items-center justify-between px-6 pt-6 pb-3">
-            <h2 className="font-semibold text-lg md:text-xl">Recent Applications</h2>
+        {/* Recent Applications */}
+        <section className="mb-8">
+          <div className="flex justify-between items-center mb-4 px-1">
+            <h2 className="text-lg font-semibold text-gray-900">Recent Applications</h2>
             <button
-              className="text-xs md:text-sm text-primary hover:underline font-medium transition"
+              className="text-sm font-medium text-primary hover:underline transition"
               onClick={() => navigate("/landlord/dashboard", { state: { section: "applications" } })}
             >
               View All
@@ -85,16 +87,15 @@ const LandlordHome = () => {
           </div>
           <RecentApplicationsCard
             applications={recentApplications}
-            onViewAll={() => navigate("/landlord/dashboard", { state: { section: "applications" } })}
             showHeader={false}
             className="border-none shadow-none bg-transparent"
           />
         </section>
 
-        {/* 5. CTA Button */}
-        <div className="sticky bottom-0 z-20 w-full flex items-center justify-center mt-6 md:mt-8">
+        {/* CTA: Open Full Dashboard */}
+        <div className="sticky bottom-0 z-20 w-full flex items-center justify-center">
           <Button
-            className="w-full md:w-fit mx-auto text-base md:text-lg font-semibold py-4 rounded-xl shadow-lg bg-primary text-primary-foreground hover:scale-105 hover:shadow-xl transition-all duration-150 px-8 flex items-center gap-2"
+            className="w-full md:w-fit mx-auto text-base md:text-lg font-semibold py-4 rounded-xl shadow-lg bg-primary text-primary-foreground hover:scale-105 hover:shadow-xl transition-all duration-150 px-8 flex items-center gap-2 animate-scale-in"
             onClick={() => navigate("/landlord/dashboard")}
           >
             <LayoutDashboard className="w-6 h-6" />
