@@ -40,6 +40,8 @@ const PAGE_SIZE = 9;
 
 import SearchFiltersBar from "@/components/SearchFiltersBar";
 import { useSearchFilters } from "@/hooks/useSearchFilters";
+import NoResultsMessage from "@/components/NoResultsMessage";
+import SearchListingsGrid from "@/components/SearchListingsGrid";
 
 const Search = () => {
   const {
@@ -113,56 +115,14 @@ const Search = () => {
         {/* Listings Grid */}
         <main className="flex-1 min-w-0">
           {listings.length === 0 ? (
-            <div className="flex flex-col items-center py-16">
-              <img src="/placeholder.svg" className="w-24 h-24 mb-6 opacity-60" />
-              <div className="text-2xl font-semibold mb-2">No results found</div>
-              <div className="text-muted-foreground mb-4 text-center">
-                Try changing your filters or check back soon.
-              </div>
-              <button
-                className="mt-2 border border-border text-destructive hover:bg-destructive/10 px-4 py-2 rounded"
-                onClick={handleReset}
-                aria-label="Reset search filters"
-              >
-                Reset filters
-              </button>
-            </div>
+            <NoResultsMessage onReset={handleReset} showReset={true} />
           ) : (
-            <>
-              <ul className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5" aria-label="Search results">
-                {listings.slice(0, displayed).map(l => (
-                  <li
-                    key={l.id}
-                    tabIndex={0}
-                    className={`group outline-none ring-offset-2 rounded-xl transition-all bg-background
-                      hover:scale-[1.02] hover:shadow-xl focus:scale-[1.01] focus:ring-2 focus:ring-primary/60
-                    `}
-                    onClick={() => navigate(`/listing/${l.id}`)}
-                    onKeyDown={e => {
-                      if (e.key === "Enter") navigate(`/listing/${l.id}`);
-                    }}
-                    aria-label={`${l.verified ? "Verified " : ""}${l.title} in ${l.city}, €${l.rent}/mo`}
-                    role="button"
-                  >
-                    <ListingCard
-                      image={l.image}
-                      title={l.title}
-                      rent={l.rent}
-                      city={l.city}
-                      verified={l.verified}
-                      status={l.status}
-                      bookmarked={l.bookmarked}
-                      onBookmark={() => handleBookmark(l.id)}
-                    />
-                  </li>
-                ))}
-              </ul>
-              {displayed < listings.length && (
-                <div className="flex justify-center mt-8">
-                  <button onClick={() => setDisplayed(d => d + 9)} className="px-4 py-2 rounded bg-secondary">Load More</button>
-                </div>
-              )}
-            </>
+            <SearchListingsGrid
+              listings={listings}
+              displayed={displayed}
+              onBookmark={handleBookmark}
+              onLoadMore={() => setDisplayed(d => d + 9)}
+            />
           )}
         </main>
       </div>
