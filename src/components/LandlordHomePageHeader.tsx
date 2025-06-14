@@ -25,6 +25,9 @@ import LandlordHeaderBrand from "@/components/LandlordHeaderBrand";
 import LandlordHeaderMobileMenu from "@/components/LandlordHeaderMobileMenu";
 import LandlordHeaderMobileAvatar from "@/components/LandlordHeaderMobileAvatar";
 import { useT } from "@/i18n";
+import HeaderNotificationsButton from "@/components/shared/HeaderNotificationsButton";
+import HeaderAvatarMenuDesktop from "@/components/shared/HeaderAvatarMenuDesktop";
+import HeaderAvatarMenuMobileSheet from "@/components/shared/HeaderAvatarMenuMobileSheet";
 
 // Avatar dropdown menu items
 const avatarMenu = [
@@ -112,21 +115,32 @@ const LandlordHomePageHeader = () => {
             <LanguageSelector />
           </div>
           {/* Notifications */}
-          <Button
-            size="icon"
-            variant="ghost"
-            aria-label={t("notifications")}
-            onClick={() => navigate("/notifications")}
-            className="relative"
-            type="button"
-          >
-            <Bell className="w-5 h-5" />
-          </Button>
+          <HeaderNotificationsButton ariaLabel={t("notifications")} />
           {/* Avatar Dropdown (desktop) */}
-          <div className="hidden md:block">
-            <AvatarMenuDropdown
+          <HeaderAvatarMenuDesktop
+            user={user}
+            menu={avatarMenu.map(item => ({
+              ...item,
+              label: t(
+                item.label === "Profile"
+                  ? "profile"
+                  : item.label === "Dashboard"
+                  ? "dashboard"
+                  : item.label === "My Listings"
+                  ? "myListings"
+                  : item.label === "Settings"
+                  ? "settings"
+                  : item.label
+              )
+            }))}
+            onNavigate={navigate}
+            onSignOut={handleSignOut}
+          />
+          {/* Hamburger menu + avatar (mobile) */}
+          <div className="flex items-center md:hidden gap-1">
+            <HeaderAvatarMenuMobileSheet
               user={user}
-              menu={avatarMenu.map(item => ({
+              avatarMenu={avatarMenu.map(item => ({
                 ...item,
                 label: t(
                   item.label === "Profile"
@@ -140,44 +154,12 @@ const LandlordHomePageHeader = () => {
                     : item.label
                 )
               }))}
-              onNavigate={navigate}
-              onSignOut={handleSignOut}
+              avatarSheetOpen={avatarSheetOpen}
+              setAvatarSheetOpen={setAvatarSheetOpen}
+              handleSignOut={handleSignOut}
+              navigate={navigate}
+              roleLabel="Landlord"
             />
-          </div>
-          {/* Hamburger menu + avatar (mobile) */}
-          <div className="flex items-center md:hidden gap-1">
-            {/* Avatar sheet trigger */}
-            <Sheet open={avatarSheetOpen} onOpenChange={setAvatarSheetOpen}>
-              <SheetTrigger asChild>
-                <Button size="icon" variant="ghost" className="rounded-full aspect-square" type="button">
-                  <Avatar>
-                    {user.avatarUrl ?
-                      <AvatarImage src={user.avatarUrl} alt={user.name} /> :
-                      <AvatarFallback>{getInitials(user.name)}</AvatarFallback>}
-                  </Avatar>
-                </Button>
-              </SheetTrigger>
-              <LandlordHeaderMobileAvatar
-                user={user}
-                avatarMenu={avatarMenu.map(item => ({
-                  ...item,
-                  label: t(
-                    item.label === "Profile"
-                      ? "profile"
-                      : item.label === "Dashboard"
-                      ? "dashboard"
-                      : item.label === "My Listings"
-                      ? "myListings"
-                      : item.label === "Settings"
-                      ? "settings"
-                      : item.label
-                  )
-                }))}
-                setAvatarSheetOpen={setAvatarSheetOpen}
-                handleSignOut={handleSignOut}
-                navigate={navigate}
-              />
-            </Sheet>
             <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
               <SheetTrigger asChild>
                 <Button size="icon" variant="ghost" className="ml-1" type="button">

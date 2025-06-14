@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Menu, Bell, User, LogOut, UsersRound, FileText, HelpCircle } from 'lucide-react';
@@ -14,6 +13,9 @@ import BrandLogo from "@/components/shared/BrandLogo";
 import HeaderNavLinks from "@/components/shared/HeaderNavLinks";
 import { toast } from '@/components/ui/use-toast';
 import { AvatarMenuDropdown } from "@/components/shared/AvatarMenuDropdown";
+import HeaderNotificationsButton from "@/components/shared/HeaderNotificationsButton";
+import HeaderAvatarMenuDesktop from "@/components/shared/HeaderAvatarMenuDesktop";
+import HeaderAvatarMenuMobileSheet from "@/components/shared/HeaderAvatarMenuMobileSheet";
 
 const navLinks = [
   { name: 'Browse Listings', path: '/browse', id: 'browse' },
@@ -27,7 +29,6 @@ const avatarMenu = [
   { label: "My Applications", icon: FileText, path: "/applications" },
   { label: "Settings", icon: HelpCircle, path: "/settings" },
 ];
-
 const TenantHomePageHeader = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -61,51 +62,7 @@ const TenantHomePageHeader = () => {
     return name.split(" ").map((n) => n[0]).join("").toUpperCase();
   };
 
-  // Sheet content for avatar actions (mobile)
-  const avatarSheet = (
-    <SheetContent side="right" className="w-full max-w-xs p-0 flex flex-col">
-      <div className="px-6 py-4 flex items-center gap-3 border-b">
-        <Avatar>
-          {user.avatarUrl ? (
-            <AvatarImage src={user.avatarUrl} alt={user.name} />
-          ) : (
-            <AvatarFallback>{getInitials(user.name)}</AvatarFallback>
-          )}
-        </Avatar>
-        <div>
-          <div className="font-bold">{user.name}</div>
-          <div className="text-xs text-muted-foreground">{user.email}</div>
-        </div>
-      </div>
-      <div className="flex-1 flex flex-col mt-2">
-        {avatarMenu.map((item) => (
-          <Button
-            key={item.label}
-            variant="ghost"
-            className="justify-start gap-2 rounded-none px-6"
-            onClick={() => { setAvatarSheetOpen(false); navigate(item.path); }}
-            type="button"
-          >
-            <item.icon className="w-4 h-4" />
-            {item.label}
-          </Button>
-        ))}
-        <hr className="my-2" />
-        <Button
-          variant="ghost"
-          className="justify-start gap-2 rounded-none px-6 text-destructive"
-          onClick={() => { setAvatarSheetOpen(false); handleSignOut(); }}
-          type="button"
-        >
-          <LogOut className="w-4 h-4" />
-          Log Out
-        </Button>
-      </div>
-      <div className="px-6 py-2 text-xs text-muted-foreground border-t">
-        RentConnect · Tenant
-      </div>
-    </SheetContent>
-  );
+  // Sheet content for avatar actions (mobile) - now handled by HeaderAvatarMenuMobileSheet
 
   return (
     <header className="sticky top-0 z-50 bg-background/95 backdrop-blur border-b border-border shadow-sm transition-all duration-200">
@@ -131,39 +88,25 @@ const TenantHomePageHeader = () => {
             <LanguageSelector />
           </div>
           {/* Notifications */}
-          <Button
-            size="icon"
-            variant="ghost"
-            aria-label="Notifications"
-            onClick={() => navigate('/notifications')}
-            className="relative"
-            type="button"
-          >
-            <Bell className="w-5 h-5" />
-          </Button>
+          <HeaderNotificationsButton />
           {/* Avatar Dropdown (desktop) */}
-          <div className="hidden md:block">
-            <AvatarMenuDropdown
-              user={user}
-              menu={avatarMenu}
-              onNavigate={navigate}
-              onSignOut={handleSignOut}
-            />
-          </div>
+          <HeaderAvatarMenuDesktop
+            user={user}
+            menu={avatarMenu}
+            onNavigate={navigate}
+            onSignOut={handleSignOut}
+          />
           {/* Hamburger menu + avatar (mobile) */}
           <div className="flex items-center md:hidden gap-1">
-            <Sheet open={avatarSheetOpen} onOpenChange={setAvatarSheetOpen}>
-              <SheetTrigger asChild>
-                <Button size="icon" variant="ghost" className="rounded-full aspect-square" type="button">
-                  <Avatar>
-                    {user.avatarUrl ?
-                      <AvatarImage src={user.avatarUrl} alt={user.name} /> :
-                      <AvatarFallback>{getInitials(user.name)}</AvatarFallback>}
-                  </Avatar>
-                </Button>
-              </SheetTrigger>
-              {avatarSheet}
-            </Sheet>
+            <HeaderAvatarMenuMobileSheet
+              user={user}
+              avatarMenu={avatarMenu}
+              avatarSheetOpen={avatarSheetOpen}
+              setAvatarSheetOpen={setAvatarSheetOpen}
+              handleSignOut={handleSignOut}
+              navigate={navigate}
+              roleLabel="Tenant"
+            />
             <Sheet open={mobileNavOpen} onOpenChange={setMobileNavOpen}>
               <SheetTrigger asChild>
                 <Button size="icon" variant="ghost" className="ml-1">
@@ -199,4 +142,3 @@ const TenantHomePageHeader = () => {
 };
 
 export default TenantHomePageHeader;
-
