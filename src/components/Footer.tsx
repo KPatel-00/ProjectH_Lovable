@@ -1,63 +1,100 @@
-
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Globe, Facebook, Twitter, Instagram, Linkedin, Mail, Phone, MapPin } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-
 const Footer = () => {
   const navigate = useNavigate();
-
-  const footerSections = [
-    {
-      title: 'Platform',
-      links: [
-        { label: 'Browse Listings', href: '/listings' },
-        { label: 'List Property', href: '/list-property' },
-        { label: 'How It Works', href: '#' },
-        { label: 'Pricing', href: '#' },
-        { label: 'Mobile App', href: '#' }
-      ]
-    },
-    {
-      title: 'Support',
-      links: [
-        { label: 'Help Center', href: '/contact' },
-        { label: 'Contact Us', href: '/contact' },
-        { label: 'Safety Tips', href: '#' },
-        { label: 'Report Issue', href: '#' },
-        { label: 'Community Guidelines', href: '#' }
-      ]
-    },
-    {
-      title: 'Company',
-      links: [
-        { label: 'About Us', href: '#' },
-        { label: 'Careers', href: '#' },
-        { label: 'Press', href: '#' },
-        { label: 'Investor Relations', href: '#' },
-        { label: 'Blog', href: '#' }
-      ]
-    },
-    {
-      title: 'Legal',
-      links: [
-        { label: 'Terms of Service', href: '#' },
-        { label: 'Privacy Policy', href: '#' },
-        { label: 'Cookie Policy', href: '#' },
-        { label: 'Accessibility', href: '#' },
-        { label: 'Sitemap', href: '#' }
-      ]
-    }
-  ];
-
-  const socialLinks = [
-    { icon: Facebook, href: 'https://facebook.com', label: 'Facebook' },
-    { icon: Twitter, href: 'https://twitter.com', label: 'Twitter' },
-    { icon: Instagram, href: 'https://instagram.com', label: 'Instagram' },
-    { icon: Linkedin, href: 'https://linkedin.com', label: 'LinkedIn' }
-  ];
-
+  const footerSections = [{
+    title: 'Platform',
+    links: [{
+      label: 'Browse Listings',
+      href: '/listings'
+    }, {
+      label: 'List Property',
+      href: '/list-property'
+    }, {
+      label: 'How It Works',
+      href: '#'
+    }, {
+      label: 'Pricing',
+      href: '#'
+    }, {
+      label: 'Mobile App',
+      href: '#'
+    }]
+  }, {
+    title: 'Support',
+    links: [{
+      label: 'Help Center',
+      href: '/contact'
+    }, {
+      label: 'Contact Us',
+      href: '/contact'
+    }, {
+      label: 'Safety Tips',
+      href: '#'
+    }, {
+      label: 'Report Issue',
+      href: '#'
+    }, {
+      label: 'Community Guidelines',
+      href: '#'
+    }]
+  }, {
+    title: 'Company',
+    links: [{
+      label: 'About Us',
+      href: '#'
+    }, {
+      label: 'Careers',
+      href: '#'
+    }, {
+      label: 'Press',
+      href: '#'
+    }, {
+      label: 'Investor Relations',
+      href: '#'
+    }, {
+      label: 'Blog',
+      href: '#'
+    }]
+  }, {
+    title: 'Legal',
+    links: [{
+      label: 'Terms of Service',
+      href: '#'
+    }, {
+      label: 'Privacy Policy',
+      href: '#'
+    }, {
+      label: 'Cookie Policy',
+      href: '#'
+    }, {
+      label: 'Accessibility',
+      href: '#'
+    }, {
+      label: 'Sitemap',
+      href: '#'
+    }]
+  }];
+  const socialLinks = [{
+    icon: Facebook,
+    href: 'https://facebook.com',
+    label: 'Facebook'
+  }, {
+    icon: Twitter,
+    href: 'https://twitter.com',
+    label: 'Twitter'
+  }, {
+    icon: Instagram,
+    href: 'https://instagram.com',
+    label: 'Instagram'
+  }, {
+    icon: Linkedin,
+    href: 'https://linkedin.com',
+    label: 'LinkedIn'
+  }];
   const handleLinkClick = (href: string) => {
     if (href.startsWith('http')) {
       window.open(href, '_blank', 'noopener,noreferrer');
@@ -65,38 +102,14 @@ const Footer = () => {
       navigate(href);
     }
   };
-
   const handleNewsletterSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log('Newsletter subscription submitted');
   };
-
-  return (
-    <footer className="bg-background border-t border-border">
+  return <footer className="bg-background border-t border-border">
       {/* Newsletter Section */}
       <div className="border-b border-border">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
-          <div className="max-w-4xl mx-auto text-center">
-            <h3 className="text-2xl sm:text-3xl font-bold text-foreground mb-4">
-              Stay Updated with RentConnect
-            </h3>
-            <p className="text-muted-foreground mb-8 max-w-2xl mx-auto">
-              Get the latest property listings, market insights, and platform updates delivered to your inbox.
-            </p>
-            
-            <form onSubmit={handleNewsletterSubmit} className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
-              <Input
-                type="email"
-                placeholder="Enter your email"
-                className="h-12 flex-1"
-                required
-              />
-              <Button type="submit" className="h-12 px-8 bg-gradient-to-r from-primary to-secondary hover:opacity-90 transition-opacity">
-                Subscribe
-              </Button>
-            </form>
-          </div>
-        </div>
+        
       </div>
 
       {/* Main Footer Content */}
@@ -131,39 +144,25 @@ const Footer = () => {
             </div>
 
             <div className="flex space-x-4">
-              {socialLinks.map((social) => (
-                <button
-                  key={social.label}
-                  onClick={() => handleLinkClick(social.href)}
-                  className="w-10 h-10 bg-muted rounded-lg flex items-center justify-center text-muted-foreground hover:bg-primary hover:text-primary-foreground transition-all duration-200 hover:scale-110"
-                  aria-label={social.label}
-                >
+              {socialLinks.map(social => <button key={social.label} onClick={() => handleLinkClick(social.href)} className="w-10 h-10 bg-muted rounded-lg flex items-center justify-center text-muted-foreground hover:bg-primary hover:text-primary-foreground transition-all duration-200 hover:scale-110" aria-label={social.label}>
                   <social.icon className="w-5 h-5" />
-                </button>
-              ))}
+                </button>)}
             </div>
           </div>
 
           {/* Footer Links */}
-          {footerSections.map((section) => (
-            <div key={section.title} className="space-y-4">
+          {footerSections.map(section => <div key={section.title} className="space-y-4">
               <h4 className="font-semibold text-foreground text-lg">
                 {section.title}
               </h4>
               <ul className="space-y-3">
-                {section.links.map((link) => (
-                  <li key={link.label}>
-                    <button
-                      onClick={() => handleLinkClick(link.href)}
-                      className="text-muted-foreground hover:text-foreground transition-colors duration-200 hover:underline text-left"
-                    >
+                {section.links.map(link => <li key={link.label}>
+                    <button onClick={() => handleLinkClick(link.href)} className="text-muted-foreground hover:text-foreground transition-colors duration-200 hover:underline text-left">
                       {link.label}
                     </button>
-                  </li>
-                ))}
+                  </li>)}
               </ul>
-            </div>
-          ))}
+            </div>)}
         </div>
       </div>
 
@@ -196,8 +195,6 @@ const Footer = () => {
           </div>
         </div>
       </div>
-    </footer>
-  );
+    </footer>;
 };
-
 export default Footer;
