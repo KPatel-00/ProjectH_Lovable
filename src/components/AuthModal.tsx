@@ -1,7 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
 import LoginForm from './auth/LoginForm';
 import SignUpWizard from './auth/SignUpWizard';
 
@@ -11,16 +10,19 @@ interface AuthModalProps {
   defaultTab?: 'login' | 'signup';
 }
 
-const AuthModal = ({ isOpen, onClose, defaultTab = 'signup' }: AuthModalProps) => {
+const COMPANY_NAME = "RentConnect";
+
+const AuthModal = ({ isOpen, onClose, defaultTab = 'login' }: AuthModalProps) => {
+  // Default to login tab as per instruction
   const [activeTab, setActiveTab] = useState<'login' | 'signup'>(defaultTab);
 
-  // Update activeTab when defaultTab changes
+  // Respond to modal triggers for tab switching
   useEffect(() => {
     setActiveTab(defaultTab);
   }, [defaultTab]);
 
   const handleClose = () => {
-    setActiveTab('signup'); // Reset to default
+    setActiveTab('login'); // Reset default to login for modal reopening
     onClose();
   };
 
@@ -33,24 +35,14 @@ const AuthModal = ({ isOpen, onClose, defaultTab = 'signup' }: AuthModalProps) =
               <span className="text-primary-foreground font-bold text-sm">R</span>
             </div>
             <DialogTitle className="text-xl font-bold">
-              Welcome to RentConnect
+              Welcome to {COMPANY_NAME}
             </DialogTitle>
           </div>
         </DialogHeader>
         
-        {/* Toggle Tabs */}
+        {/* Top pill-style toggle: Log In on left (default), Sign Up on right */}
         <div className="px-6 pb-4">
           <div className="bg-muted p-1 rounded-full flex">
-            <button
-              onClick={() => setActiveTab('signup')}
-              className={`flex-1 py-2 px-4 text-sm font-medium rounded-full transition-all ${
-                activeTab === 'signup'
-                  ? 'bg-background text-foreground shadow-sm'
-                  : 'text-muted-foreground hover:text-foreground'
-              }`}
-            >
-              Sign Up
-            </button>
             <button
               onClick={() => setActiveTab('login')}
               className={`flex-1 py-2 px-4 text-sm font-medium rounded-full transition-all ${
@@ -58,13 +50,25 @@ const AuthModal = ({ isOpen, onClose, defaultTab = 'signup' }: AuthModalProps) =
                   ? 'bg-background text-foreground shadow-sm'
                   : 'text-muted-foreground hover:text-foreground'
               }`}
+              tabIndex={0}
             >
               Log In
+            </button>
+            <button
+              onClick={() => setActiveTab('signup')}
+              className={`flex-1 py-2 px-4 text-sm font-medium rounded-full transition-all ${
+                activeTab === 'signup'
+                  ? 'bg-background text-foreground shadow-sm'
+                  : 'text-muted-foreground hover:text-foreground'
+              }`}
+              tabIndex={0}
+            >
+              Sign Up
             </button>
           </div>
         </div>
 
-        {/* Content */}
+        {/* Modal body */}
         <div className="px-6 pb-6">
           {activeTab === 'signup' ? (
             <SignUpWizard onClose={handleClose} onSwitchToLogin={() => setActiveTab('login')} />
@@ -78,3 +82,4 @@ const AuthModal = ({ isOpen, onClose, defaultTab = 'signup' }: AuthModalProps) =
 };
 
 export default AuthModal;
+
