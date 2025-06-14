@@ -54,6 +54,7 @@ const Search = () => {
   const [displayed, setDisplayed] = useState(9); // PAGE_SIZE
   const [listings, setListings] = useState<any[]>([]);
   const isFirstLoad = useRef(true);
+  const navigate = useNavigate();
 
   // Move original filtering logic here, using shared filters:
   useEffect(() => {
@@ -146,7 +147,7 @@ const Search = () => {
                       status={l.status}
                       bookmarked={l.bookmarked}
                       onBookmark={() => handleBookmark(l.id)}
-                      onClick={() => useNavigate(`/listing/${l.id}`)}
+                      onClick={() => navigate(`/listing/${l.id}`)}
                     />
                   </div>
                 ))}
