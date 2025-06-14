@@ -261,10 +261,12 @@ const PropertyDetail: React.FC = () => {
         </div>
 
         {/* Map */}
+        {/* 
         <div className="mt-12 max-w-4xl mx-auto">
           <h2 className="text-xl font-bold mb-3">Location</h2>
           <Map center={listing.location} />
         </div>
+        */}
 
         <div className="mt-12">
           <RecommendedListings listing={listing} />
