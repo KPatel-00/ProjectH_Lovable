@@ -1,5 +1,4 @@
-
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import LoginForm from './auth/LoginForm';
 import SignUpWizard from './auth/SignUpWizard';
@@ -17,14 +16,32 @@ const AuthModal = ({ isOpen, onClose, defaultTab = "login" }: AuthModalProps) =>
   const [activeTab, setActiveTab] = useState<'login' | 'signup'>(defaultTab);
   const t = useT();
   const { language } = useI18n();
+  const openerButtonRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     setActiveTab(defaultTab);
   }, [defaultTab]);
 
+  // Capture the element that opens the modal for focus restoration
+  useEffect(() => {
+    if (isOpen) {
+      // Find the element with [data-authmodal-opener] if any
+      const opener = document.querySelector('[data-authmodal-opener]');
+      if (opener && opener instanceof HTMLElement) {
+        openerButtonRef.current = opener;
+      } else {
+        openerButtonRef.current = document.activeElement as HTMLElement;
+      }
+    }
+  }, [isOpen]);
+
   const handleClose = () => {
     setActiveTab('login');
     onClose();
+    // Restore keyboard focus to the opener element
+    setTimeout(() => {
+      openerButtonRef.current?.focus();
+    }, 75);
   };
 
   // DEBUG: log whenever modal renders and which language
@@ -111,4 +128,3 @@ const AuthModal = ({ isOpen, onClose, defaultTab = "login" }: AuthModalProps) =>
 };
 
 export default AuthModal;
-

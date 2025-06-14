@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -14,24 +14,47 @@ interface AccountCreationStepProps {
   onSwitchToLogin: () => void;
 }
 
-const AccountCreationStep = ({ data, updateData, onNext, onSwitchToLogin }: AccountCreationStepProps) => {
+const AccountCreationStep = ({
+  data,
+  updateData,
+  onNext,
+  onSwitchToLogin,
+}: AccountCreationStepProps) => {
   const [showPassword, setShowPassword] = useState(false);
   const [showTermsError, setShowTermsError] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [signupError, setSignupError] = useState("");
+  const firstNameRef = useRef<HTMLInputElement>(null);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    setSignupError("");
     if (!data.agreeToTerms) {
       setShowTermsError(true);
       return;
     }
     setShowTermsError(false);
+    setIsSubmitting(true);
 
-    toast({
-      title: "Account Created",
-      description: `Welcome, ${data.firstName} – verify your email to continue.`,
-    });
-
-    onNext();
+    // Simulate signup failure for demo: error if email is 'already@used.com'
+    setTimeout(() => {
+      setIsSubmitting(false);
+      if (data.email === "already@used.com") {
+        setSignupError("An account with this email already exists.");
+        toast({
+          title: "Sign up failed",
+          description: "An account with this email already exists.",
+          variant: "destructive"
+        });
+        firstNameRef.current?.focus();
+        return;
+      }
+      toast({
+        title: "Account Created",
+        description: `Welcome, ${data.firstName} – verify your email to continue.`,
+      });
+      onNext();
+    }, 900);
   };
 
   const handleInputChange = (field: keyof SignUpData, value: any) => {
@@ -46,32 +69,33 @@ const AccountCreationStep = ({ data, updateData, onNext, onSwitchToLogin }: Acco
       <div className="text-center">
         <h3 className="text-lg font-semibold mb-2">Create Your Account</h3>
       </div>
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-4" aria-describedby={signupError || showTermsError ? "signup-error" : undefined}>
         <div className="grid grid-cols-2 gap-3">
           <div className="relative">
             <User className="absolute left-3 top-3 w-5 h-5 text-muted-foreground" />
-            <Input 
-              type="text" 
-              placeholder="First name" 
+            <Input
+              ref={firstNameRef}
+              type="text"
+              placeholder="First name"
               className="pl-10"
               value={data.firstName}
               onChange={(e) => handleInputChange('firstName', e.target.value)}
-              required 
+              required
+              autoFocus
             />
           </div>
           <div className="relative">
             <User className="absolute left-3 top-3 w-5 h-5 text-muted-foreground" />
-            <Input 
-              type="text" 
-              placeholder="Last name" 
+            <Input
+              type="text"
+              placeholder="Last name"
               className="pl-10"
               value={data.lastName}
               onChange={(e) => handleInputChange('lastName', e.target.value)}
-              required 
+              required
             />
           </div>
         </div>
-
         <div className="space-y-2">
           <label className="text-sm font-medium">I am a:</label>
           <div className="relative flex rounded-full border border-primary/40 bg-white w-full overflow-hidden transition-all">
@@ -124,29 +148,30 @@ const AccountCreationStep = ({ data, updateData, onNext, onSwitchToLogin }: Acco
         </div>
         <div className="relative">
           <Mail className="absolute left-3 top-3 w-5 h-5 text-muted-foreground" />
-          <Input 
-            type="email" 
-            placeholder="Email address" 
+          <Input
+            type="email"
+            placeholder="Email address"
             className="pl-10"
             value={data.email}
             onChange={(e) => handleInputChange('email', e.target.value)}
-            required 
+            required
           />
         </div>
         <div className="relative">
           <Lock className="absolute left-3 top-3 w-5 h-5 text-muted-foreground" />
-          <Input 
+          <Input
             type={showPassword ? "text" : "password"}
-            placeholder="Password" 
+            placeholder="Password"
             className="pl-10 pr-10"
             value={data.password}
             onChange={(e) => handleInputChange('password', e.target.value)}
-            required 
+            required
           />
           <button
             type="button"
             onClick={() => setShowPassword(!showPassword)}
             className="absolute right-3 top-3 text-muted-foreground hover:text-foreground"
+            aria-label={showPassword ? "Hide password" : "Show password"}
           >
             {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
           </button>
@@ -166,18 +191,24 @@ const AccountCreationStep = ({ data, updateData, onNext, onSwitchToLogin }: Acco
             </label>
           </div>
           {showTermsError && (
-            <p className="text-sm text-destructive flex items-center space-x-1">
+            <p className="text-sm text-destructive flex items-center space-x-1" id="signup-error">
               <span>⚠️</span>
               <span>You must agree to the Terms of Service to continue.</span>
             </p>
           )}
+          {signupError && (
+            <p className="text-sm text-destructive flex items-center space-x-1" id="signup-error" aria-live="assertive">
+              <span>⚠️</span>
+              <span>{signupError}</span>
+            </p>
+          )}
         </div>
-        <Button 
-          type="submit" 
+        <Button
+          type="submit"
           className="w-full bg-gradient-to-r from-primary to-secondary hover:opacity-90 transition-opacity"
-          disabled={!data.agreeToTerms}
+          disabled={!data.agreeToTerms || isSubmitting}
         >
-          Create Account
+          {isSubmitting ? "Creating Account..." : "Create Account"}
         </Button>
       </form>
       <div className="text-center text-sm text-muted-foreground">
@@ -191,3 +222,4 @@ const AccountCreationStep = ({ data, updateData, onNext, onSwitchToLogin }: Acco
 };
 
 export default AccountCreationStep;
+

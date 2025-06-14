@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Mail, Lock, Eye, EyeOff } from 'lucide-react';
@@ -16,24 +16,46 @@ const LoginForm = ({ onClose, onSwitchToSignUp }: LoginFormProps) => {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
-    role: 'tenant', // default to tenant, user can select landlord for demo
+    role: 'tenant',
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [loginError, setLoginError] = useState("");
   const navigate = useNavigate();
+  const firstInputRef = useRef<HTMLInputElement>(null);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // ... Authenticate here ...
-    onClose();
-    toast({
-      title: "Successfully logged in!",
-      description: `Welcome back, ${formData.email}`,
-    });
-    // Redirect according to role
-    if (formData.role === 'landlord') {
-      navigate('/landlord/home');
-    } else {
-      navigate('/tenant/home');
-    }
+    setIsSubmitting(true);
+    setLoginError("");
+    // Simulate login: if password === 'fail' trigger error
+    setTimeout(() => {
+      setIsSubmitting(false);
+      if (
+        formData.email === "fail@example.com" ||
+        formData.password === "fail"
+      ) {
+        setLoginError("Incorrect email or password.");
+        toast({
+          title: "Login failed",
+          description: "Incorrect email or password.",
+          variant: "destructive",
+        });
+        // Focus email input for retry UX
+        firstInputRef.current?.focus();
+        return;
+      }
+      onClose();
+      toast({
+        title: "Successfully logged in!",
+        description: `Welcome back, ${formData.email}`,
+      });
+      // Redirect according to role
+      if (formData.role === 'landlord') {
+        navigate('/landlord/home');
+      } else {
+        navigate('/tenant/home');
+      }
+    }, 900);
   };
 
   const handleInputChange = (field: string, value: string) => {
@@ -42,19 +64,20 @@ const LoginForm = ({ onClose, onSwitchToSignUp }: LoginFormProps) => {
 
   return (
     <div className="space-y-6">
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-4" aria-describedby={loginError ? "login-error" : undefined}>
         <div className="relative">
           <Mail className="absolute left-3 top-3 w-5 h-5 text-muted-foreground" />
           <Input 
+            ref={firstInputRef}
             type="email" 
             placeholder="Email address" 
             className="pl-10"
             value={formData.email}
             onChange={(e) => handleInputChange('email', e.target.value)}
             required 
+            autoFocus
           />
         </div>
-        
         <div className="relative">
           <Lock className="absolute left-3 top-3 w-5 h-5 text-muted-foreground" />
           <Input 
@@ -69,12 +92,13 @@ const LoginForm = ({ onClose, onSwitchToSignUp }: LoginFormProps) => {
             type="button"
             onClick={() => setShowPassword(!showPassword)}
             className="absolute right-3 top-3 text-muted-foreground hover:text-foreground"
+            tabIndex={0}
+            aria-label={showPassword ? "Hide password" : "Show password"}
           >
             {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
           </button>
         </div>
-
-        {/* Role selection for demo (can be removed/replaced with backend logic) */}
+        {/* Role selection for demo */}
         <div className="flex space-x-4">
           <label className="flex items-center space-x-2">
             <input
@@ -99,12 +123,25 @@ const LoginForm = ({ onClose, onSwitchToSignUp }: LoginFormProps) => {
             <span className="text-sm">Landlord</span>
           </label>
         </div>
-
-        <Button type="submit" className="w-full bg-gradient-to-r from-primary to-secondary hover:opacity-90 transition-opacity">
-          Log In
+        {loginError && (
+          <div
+            id="login-error"
+            className="text-destructive text-sm bg-destructive/10 border border-destructive rounded px-3 py-2 flex items-center gap-2"
+            tabIndex={-1}
+            aria-live="assertive"
+          >
+            <span aria-hidden="true">⚠️</span>
+            <span>{loginError}</span>
+          </div>
+        )}
+        <Button
+          type="submit"
+          className="w-full bg-gradient-to-r from-primary to-secondary hover:opacity-90 transition-opacity"
+          disabled={isSubmitting}
+        >
+          {isSubmitting ? "Logging in..." : "Log In"}
         </Button>
       </form>
-
       <div className="text-center space-y-3">
         <a href="#" className="text-sm text-primary hover:underline">
           Forgot your password?
@@ -121,3 +158,4 @@ const LoginForm = ({ onClose, onSwitchToSignUp }: LoginFormProps) => {
 };
 
 export default LoginForm;
+
