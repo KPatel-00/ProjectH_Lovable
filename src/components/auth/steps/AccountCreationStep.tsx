@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -71,51 +72,47 @@ const AccountCreationStep = ({ data, updateData, onNext, onSwitchToLogin }: Acco
         {/* Role Toggle */}
         <div className="space-y-2">
           <label className="text-sm font-medium">I am a:</label>
-          {/* Better pill toggle */}
-          <div className="relative flex gap-0.5 rounded-full bg-neutral-100 border border-primary/20 shadow-inner">
+          {/* Pill outline design for role toggle */}
+          <div className="relative flex rounded-full border border-primary/40 bg-white w-full overflow-hidden transition-all">
             <button
               type="button"
               onClick={() => handleInputChange("role", "tenant")}
-              className={`flex-1 py-2 px-4 text-sm font-semibold rounded-full transition-all
-                duration-200 z-10
-                ${
-                  data.role === "tenant"
-                    ? "bg-white border-2 border-primary shadow-lg text-primary"
-                    : "bg-transparent text-neutral-400 hover:text-primary"
-                }`}
-              aria-pressed={data.role === "tenant"}
+              className={`flex-1 text-sm font-semibold rounded-full py-2 transition-all z-10
+                ${data.role === "tenant"
+                  ? "text-primary"
+                  : "text-neutral-500 hover:text-primary"}
+              `}
               style={{
-                transition: "all 0.20s cubic-bezier(.4,0,.2,1)",
-                borderColor: data.role === "tenant" ? "var(--tw-shadow-color)" : "transparent",
+                border: "none",
+                outline: "none",
               }}
+              aria-pressed={data.role === "tenant"}
             >
               Tenant
             </button>
             <button
               type="button"
               onClick={() => handleInputChange("role", "landlord")}
-              className={`flex-1 py-2 px-4 text-sm font-semibold rounded-full transition-all
-                duration-200 z-10
-                ${
-                  data.role === "landlord"
-                    ? "bg-white border-2 border-primary shadow-lg text-primary"
-                    : "bg-transparent text-neutral-400 hover:text-primary"
-                }`}
-              aria-pressed={data.role === "landlord"}
+              className={`flex-1 text-sm font-semibold rounded-full py-2 transition-all z-10
+                ${data.role === "landlord"
+                  ? "text-primary"
+                  : "text-neutral-500 hover:text-primary"}
+              `}
               style={{
-                transition: "all 0.20s cubic-bezier(.4,0,.2,1)",
-                borderColor: data.role === "landlord" ? "var(--tw-shadow-color)" : "transparent",
+                border: "none",
+                outline: "none",
               }}
+              aria-pressed={data.role === "landlord"}
             >
               Landlord
             </button>
-            {/* bubble */}
+            {/* Outline indicator for active role */}
             <span
-              className={`absolute top-1 left-1 h-[calc(100%-0.5rem)] w-1/2 rounded-full
-                bg-primary/5 shadow-lg transition-transform duration-300 z-0
-                ${data.role === "landlord" ? "translate-x-full" : "translate-x-0"}`}
+              className="absolute top-0 bottom-0 w-1/2 rounded-full border-2 border-primary pointer-events-none transition-all duration-300"
               style={{
-                transition: "transform 0.30s cubic-bezier(.4,0,.2,1)",
+                left: data.role === "landlord" ? "50%" : "0%",
+                right: data.role === "landlord" ? "0%" : "50%",
+                boxSizing: "border-box"
               }}
               aria-hidden="true"
             />

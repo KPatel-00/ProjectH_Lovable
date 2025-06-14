@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import LoginForm from './auth/LoginForm';
@@ -13,16 +14,14 @@ interface AuthModalProps {
 const COMPANY_NAME = "RentConnect";
 
 const AuthModal = ({ isOpen, onClose, defaultTab = "login" }: AuthModalProps) => {
-  // Default to login tab as per instruction
   const [activeTab, setActiveTab] = useState<'login' | 'signup'>(defaultTab);
 
-  // Respond to modal triggers for tab switching
   useEffect(() => {
     setActiveTab(defaultTab);
   }, [defaultTab]);
 
   const handleClose = () => {
-    setActiveTab('login'); // Reset default to login for modal reopening
+    setActiveTab('login');
     onClose();
   };
 
@@ -42,59 +41,66 @@ const AuthModal = ({ isOpen, onClose, defaultTab = "login" }: AuthModalProps) =>
 
         {/* TOP TOGGLE */}
         <div className="px-6 pb-4">
-          <div className="relative flex gap-0.5 rounded-full bg-neutral-100 border border-primary/20 shadow-inner">
-            {/* Log In */}
-            <button
-              onClick={() => setActiveTab("login")}
-              className={`flex-1 py-2 px-4 text-base font-semibold rounded-full transition-all
-                duration-200 outline-none z-10
-                ${
-                  activeTab === "login"
-                    ? "bg-white border-2 border-primary shadow-lg text-primary"
-                    : "bg-transparent text-neutral-400 hover:text-primary"
-                }`}
-              aria-pressed={activeTab === "login"}
-              style={{
-                transition: "all 0.20s cubic-bezier(.4,0,.2,1)",
-                borderColor: activeTab === "login" ? "var(--tw-shadow-color)" : "transparent",
-              }}
-            >
-              Log In
-            </button>
-            {/* Sign Up */}
-            <button
-              onClick={() => setActiveTab("signup")}
-              className={`flex-1 py-2 px-4 text-base font-semibold rounded-full transition-all
-                duration-200 outline-none z-10
-                ${
-                  activeTab === "signup"
-                    ? "bg-white border-2 border-primary shadow-lg text-primary"
-                    : "bg-transparent text-neutral-400 hover:text-primary"
-                }`}
-              aria-pressed={activeTab === "signup"}
-              style={{
-                transition: "all 0.20s cubic-bezier(.4,0,.2,1)",
-                borderColor: activeTab === "signup" ? "var(--tw-shadow-color)" : "transparent",
-              }}
-            >
-              Sign Up
-            </button>
-            {/* Animated "bubble" background */}
-            <span
-              className={`absolute top-1 left-1 h-[calc(100%-0.5rem)] w-1/2 rounded-full
-                 bg-primary/5 shadow-lg transition-all duration-300 z-0 ${
-                activeTab === "signup" ? "translate-x-full" : "translate-x-0"
-              }`}
-              style={{
-                transition: "transform 0.30s cubic-bezier(.4,0,.2,1)",
-              }}
-              aria-hidden="true"
-            />
+          <div className="flex flex-col gap-2">
+            <div className="relative flex rounded-full border border-primary/40 bg-white transition-all w-full overflow-hidden">
+              <button
+                onClick={() => setActiveTab("login")}
+                className={`flex-1 text-base font-semibold rounded-full py-2 transition-all z-10
+                  ${activeTab === "login"
+                    ? "text-primary border-primary"
+                    : "text-neutral-500 hover:text-primary"}
+                `}
+                style={{
+                  border: "none",
+                  outline: "none",
+                }}
+                aria-pressed={activeTab === "login"}
+              >
+                Log In
+              </button>
+              <button
+                onClick={() => setActiveTab("signup")}
+                className={`flex-1 text-base font-semibold rounded-full py-2 transition-all z-10
+                  ${activeTab === "signup"
+                    ? "text-primary border-primary"
+                    : "text-neutral-500 hover:text-primary"}
+                `}
+                style={{
+                  border: "none",
+                  outline: "none",
+                }}
+                aria-pressed={activeTab === "signup"}
+              >
+                Sign Up
+              </button>
+              {/* Outline indicator for active tab */}
+              <span
+                className="absolute top-0 bottom-0 w-1/2 rounded-full border-2 border-primary pointer-events-none transition-all duration-300"
+                style={{
+                  left: activeTab === "signup" ? "50%" : "0%",
+                  right: activeTab === "signup" ? "0%" : "50%",
+                  boxSizing: "border-box"
+                }}
+                aria-hidden="true"
+              />
+            </div>
           </div>
         </div>
 
+        {/* STEP DOTS if on SIGNUP */}
+        <div className="w-full flex justify-center items-center mb-2" style={{ minHeight: 18 }}>
+          {activeTab === "signup" && (
+            <div className="flex gap-1">
+              <span className="w-2 h-2 rounded-full bg-primary/70 inline-block" />
+              <span className="w-2 h-2 rounded-full bg-primary/20 inline-block" />
+              <span className="w-2 h-2 rounded-full bg-primary/20 inline-block" />
+              <span className="w-2 h-2 rounded-full bg-primary/20 inline-block" />
+            </div>
+          )}
+        </div>
+
         {/* MODAL CONTENT */}
-        <div className="px-6 pb-6 min-h-[430px]">
+        <div className="px-6 pb-6 min-h-[420px]">
           <AnimatedSwitch animationKey={activeTab}>
             {activeTab === "signup" ? (
               <SignUpWizard

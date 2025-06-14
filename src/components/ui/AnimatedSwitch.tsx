@@ -4,67 +4,64 @@ import React, { useRef, useEffect, useState } from "react";
 
 /**
  * AnimatedSwitch transitions its children in/out smoothly when the key changes.
- * It animates both opacity/scale and container height.
+ * It uses a height and fade (opacity) animation only for subtle transitions.
  */
 const AnimatedSwitch: React.FC<{
   children: React.ReactNode;
   animationKey: string;
 }> = ({ children, animationKey }) => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [displayed, setDisplayed] = useState(children);
+  const [isTransitioning, setTransitioning] = useState(false);
   const [height, setHeight] = useState<number | "auto">("auto");
-  const [show, setShow] = useState(true);
-  const [prev, setPrev] = useState<React.ReactNode>(children);
+  const [opacity, setOpacity] = useState(1);
 
   useEffect(() => {
-    // Animate OUT
-    setShow(false);
-
-    // Let out animation finish, then update content
-    const timeout = setTimeout(() => {
-      setPrev(children);
-      setShow(true);
-    }, 160); // Slightly > outgoing animation for smoothness
-
-    return () => clearTimeout(timeout);
-    // eslint-disable-next-line
-  }, [animationKey]);
-
-  useEffect(() => {
-    // Animate container height
     if (!containerRef.current) return;
+
+    // Start fade out, set fixed height
     const el = containerRef.current;
-    // Use next frame to capture updated child's height
-    requestAnimationFrame(() => {
-      if (el.firstElementChild) {
-        setHeight(el.firstElementChild.scrollHeight);
-        // After animation, reset to auto for content changes (for inputs, steps, etc)
-        setTimeout(() => setHeight("auto"), 200);
-      }
-    });
-  }, [animationKey, show, prev, children]);
+    setHeight(el.scrollHeight);
+    setOpacity(0);
+    setTransitioning(true);
+
+    // After fade out, show new content, fade in
+    const timeout1 = setTimeout(() => {
+      setDisplayed(children);
+      setHeight(el.scrollHeight); // May different after new content render
+      setOpacity(1);
+
+      // After fade in, set auto height
+      setTimeout(() => {
+        setHeight("auto");
+        setTransitioning(false);
+      }, 220);
+    }, 170);
+
+    return () => {
+      clearTimeout(timeout1);
+    };
+    // eslint-disable-next-line
+  }, [animationKey]); // use animationKey
 
   return (
     <div
       ref={containerRef}
-      // Animate height for container (extra smooth!)
       style={{
-        transition: "height 210ms cubic-bezier(.4,0,.2,1)",
+        transition: "height 220ms cubic-bezier(.4,0,.2,1)",
         height: typeof height === "number" ? `${height}px` : "auto",
+        minHeight: 180,
         position: "relative",
       }}
     >
       <div
-        className={`absolute w-full left-0 top-0 transition-all duration-200 ease-in-out ${
-          show
-            ? "opacity-100 pointer-events-auto animate-fade-in animate-scale-in"
-            : "opacity-0 pointer-events-none"
-        }`}
         style={{
-          willChange: "opacity, transform",
+          opacity: opacity,
+          transition: "opacity 170ms cubic-bezier(.4,0,.2,1)",
         }}
-        key={animationKey}
+        className="w-full"
       >
-        {show ? children : prev}
+        {displayed}
       </div>
     </div>
   );
