@@ -1,9 +1,10 @@
 
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Globe, Menu, X } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import AuthModal from '@/components/AuthModal';
+import LanguageSelector from '@/components/LanguageSelector';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -11,17 +12,33 @@ const Header = () => {
     isOpen: false,
     tab: 'signup'
   });
+  const [isScrolled, setIsScrolled] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const navItems = [
     { label: 'Browse Listings', href: '/listings' },
     { label: 'List Property', href: '/list-property' },
-    { label: 'Help Center', href: '/contact' },
-    { label: 'Contact', href: '/contact' }
+    { label: 'Help Center', href: '/contact' }
   ];
+
+  // Handle scroll effect for sticky header
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 10);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const handleNavClick = (href: string) => {
     navigate(href);
+    setIsMenuOpen(false);
+  };
+
+  const handleLogoClick = () => {
+    navigate('/');
     setIsMenuOpen(false);
   };
 
@@ -33,47 +50,70 @@ const Header = () => {
     setAuthModal({ isOpen: false, tab: 'signup' });
   };
 
+  const isActivePage = (href: string) => {
+    return location.pathname === href;
+  };
+
   return (
     <>
-      <header className="sticky top-0 z-50 bg-background/95 backdrop-blur-md border-b border-border">
+      <header className={`sticky top-0 z-50 bg-background/95 backdrop-blur-md border-b border-border transition-shadow duration-200 ${
+        isScrolled ? 'shadow-sm' : ''
+      }`}>
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
-            {/* Logo + Company Name */}
-            <div className="flex items-center space-x-3 cursor-pointer" onClick={() => navigate('/')}>
-              <div className="w-8 h-8 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center">
+            {/* Left Section - Brand Identity */}
+            <div 
+              className="flex items-center space-x-3 cursor-pointer transition-transform duration-200 hover:scale-105 active:scale-95" 
+              onClick={handleLogoClick}
+            >
+              <div className="w-8 h-8 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center shadow-sm">
                 <span className="text-primary-foreground font-bold text-sm">R</span>
               </div>
-              <span className="text-xl font-bold text-foreground">RentConnect</span>
+              <span className="text-xl font-bold text-foreground hover:text-primary transition-colors duration-200">
+                RentConnect
+              </span>
             </div>
 
-            {/* Desktop Navigation */}
+            {/* Center Section - Navigation Menu */}
             <nav className="hidden md:flex items-center space-x-8">
               {navItems.map((item) => (
                 <button
                   key={item.label}
                   onClick={() => handleNavClick(item.href)}
-                  className="text-muted-foreground hover:text-foreground transition-colors duration-200 relative group"
+                  className={`text-muted-foreground hover:text-foreground transition-all duration-200 relative group font-medium ${
+                    isActivePage(item.href) ? 'text-foreground' : ''
+                  }`}
                 >
                   {item.label}
-                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-200 group-hover:w-full"></span>
+                  <span className={`absolute -bottom-1 left-0 h-0.5 bg-primary transition-all duration-200 ${
+                    isActivePage(item.href) ? 'w-full' : 'w-0 group-hover:w-full'
+                  }`}></span>
                 </button>
               ))}
             </nav>
 
-            {/* Right Side Controls */}
-            <div className="flex items-center space-x-4">
-              {/* Language Selector */}
-              <Button variant="ghost" size="sm" className="hidden sm:flex">
-                <Globe className="w-4 h-4 mr-2" />
-                EN
-              </Button>
+            {/* Right Section - Actions */}
+            <div className="flex items-center space-x-3">
+              {/* Language Selector - Hidden on small screens */}
+              <div className="hidden sm:block">
+                <LanguageSelector />
+              </div>
 
-              {/* Auth Buttons */}
+              {/* Auth Buttons - Hidden on small screens */}
               <div className="hidden sm:flex items-center space-x-2">
-                <Button variant="ghost" size="sm" onClick={() => openAuthModal('login')}>
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  onClick={() => openAuthModal('login')}
+                  className="font-medium hover:text-primary transition-colors"
+                >
                   Log In
                 </Button>
-                <Button size="sm" className="bg-gradient-to-r from-primary to-secondary hover:opacity-90 transition-opacity" onClick={() => openAuthModal('signup')}>
+                <Button 
+                  size="sm" 
+                  className="bg-gradient-to-r from-primary to-secondary hover:opacity-90 transition-all duration-200 shadow-sm font-medium" 
+                  onClick={() => openAuthModal('signup')}
+                >
                   Get Started
                 </Button>
               </div>
@@ -82,7 +122,7 @@ const Header = () => {
               <Button
                 variant="ghost"
                 size="sm"
-                className="md:hidden"
+                className="md:hidden hover:bg-accent transition-colors"
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
               >
                 {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -94,24 +134,37 @@ const Header = () => {
           {isMenuOpen && (
             <div className="md:hidden absolute top-16 left-0 right-0 bg-background border-b border-border shadow-lg animate-fade-in">
               <div className="px-4 py-6 space-y-4">
+                {/* Navigation Items */}
                 {navItems.map((item) => (
                   <button
                     key={item.label}
                     onClick={() => handleNavClick(item.href)}
-                    className="block text-muted-foreground hover:text-foreground transition-colors duration-200 w-full text-left"
+                    className={`block text-muted-foreground hover:text-foreground transition-colors duration-200 w-full text-left py-2 font-medium ${
+                      isActivePage(item.href) ? 'text-foreground border-l-2 border-primary pl-3' : ''
+                    }`}
                   >
                     {item.label}
                   </button>
                 ))}
-                <div className="pt-4 border-t border-border space-y-2">
-                  <Button variant="ghost" size="sm" className="w-full justify-start">
-                    <Globe className="w-4 h-4 mr-2" />
-                    Language
-                  </Button>
-                  <Button variant="ghost" size="sm" className="w-full" onClick={() => openAuthModal('login')}>
+                
+                {/* Mobile Actions */}
+                <div className="pt-4 border-t border-border space-y-3">
+                  <div className="flex justify-start">
+                    <LanguageSelector />
+                  </div>
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    className="w-full justify-start font-medium" 
+                    onClick={() => openAuthModal('login')}
+                  >
                     Log In
                   </Button>
-                  <Button size="sm" className="w-full bg-gradient-to-r from-primary to-secondary" onClick={() => openAuthModal('signup')}>
+                  <Button 
+                    size="sm" 
+                    className="w-full bg-gradient-to-r from-primary to-secondary font-medium" 
+                    onClick={() => openAuthModal('signup')}
+                  >
                     Get Started
                   </Button>
                 </div>
