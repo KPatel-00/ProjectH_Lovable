@@ -78,7 +78,7 @@ const LandlordHome = () => {
             <h2 className="text-lg font-semibold text-gray-900">Recent Listings</h2>
             <button
               className="text-sm font-medium text-primary hover:underline transition"
-              onClick={() => navigate("/landlord/dashboard", { state: { section: "listings" } })}
+              onClick={() => navigate("/landlord/dashboard/mylistings")}
             >
               View All
             </button>
@@ -99,7 +99,7 @@ const LandlordHome = () => {
             <h2 className="text-lg font-semibold text-gray-900">Recent Applications</h2>
             <button
               className="text-sm font-medium text-primary hover:underline transition"
-              onClick={() => navigate("/landlord/dashboard", { state: { section: "applications" } })}
+              onClick={() => navigate("/landlord/dashboard/applications")}
             >
               View All
             </button>
@@ -131,3 +131,4 @@ const LandlordHome = () => {
 };
 
 export default LandlordHome;
+
