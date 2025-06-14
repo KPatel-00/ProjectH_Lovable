@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import Header from '@/components/Header';
@@ -139,7 +140,8 @@ const Listings = () => {
                   <div className="text-lg font-bold text-primary">{property.rent}</div>
                 </div>
                 <div className="text-xs text-muted-foreground">
-                  {t("listedAgo", "common").replace("{days}", property.daysListed)}
+                  {/* Safe replacement for "listedAgo" with days interpolation */}
+                  {t("listedAgo").replace("{days}", String(property.daysListed))}
                 </div>
               </div>
             </div>

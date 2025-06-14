@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -154,26 +155,25 @@ const TenantHome = () => {
               saved={mockQuickStats.saved}
               applications={mockQuickStats.applications}
               messages={mockQuickStats.messages}
-              t={t}
             />
           }
           {loading ? <TenantSavedListingsSkeleton /> :
-            <TenantSavedListings listings={mockSavedListings} t={t} />
+            <TenantSavedListings listings={mockSavedListings} />
           }
           {loading ? <TenantRecommendedSkeleton /> :
-            <TenantRecommended listings={mockRecommended} t={t} />
+            <TenantRecommended listings={mockRecommended} />
           }
           {loading ? <TenantStatsSummarySkeleton /> :
-            <TenantApplicationStatuses applications={mockApplications} t={t} />
+            <TenantApplicationStatuses applications={mockApplications} />
           }
           {loading ? <TenantMessagesPreviewSkeleton /> :
-            <TenantMessagesPreview messages={mockMessages} t={t} />
+            <TenantMessagesPreview messages={mockMessages} />
           }
           {loading ? <TenantExploreCitiesSkeleton /> :
-            <TenantExploreCities cities={mockCities} t={t} />
+            <TenantExploreCities cities={mockCities} />
           }
           {loading ? <TenantTrustSupportSkeleton /> :
-            <TenantTrustSupport t={t} />
+            <TenantTrustSupport />
           }
         </div>
       </main>

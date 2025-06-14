@@ -133,4 +133,3 @@ const LandlordHome = () => {
 };
 
 export default LandlordHome;
-

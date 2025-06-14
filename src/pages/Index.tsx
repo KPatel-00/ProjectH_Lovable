@@ -2,7 +2,6 @@
 import React from 'react';
 import Header from '@/components/Header';
 import Hero from '@/components/Hero';
-import Features from '@/components/Features';
 import FAQ from '@/components/FAQ';
 import Footer from '@/components/Footer';
 import { useT } from "@/i18n";
@@ -13,9 +12,9 @@ const Index = () => {
     <div className="min-h-screen bg-background">
       <Header />
       <main>
-        <Hero t={t} />
+        <Hero />
         {/* <Features /> removed as requested */}
-        <FAQ t={t} />
+        <FAQ />
       </main>
       <Footer />
     </div>
