@@ -2,6 +2,8 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
+import EmptyState from "@/components/EmptyState";
+import { MailWarning } from "lucide-react";
 type Message = {
   id: number;
   landlordName: string;
@@ -19,9 +21,15 @@ const TenantMessagesPreview: React.FC<Props> = ({ messages }) => {
         <h2 className="text-lg font-semibold">Messages from Landlords</h2>
         <Button size="sm" onClick={() => navigate("/messages")}>Go to Inbox</Button>
       </div>
-      <div className="flex flex-col gap-2">
-        {messages.length === 0 ? <div className="text-muted-foreground text-sm">No new messages.</div> :
-          messages.map(msg =>
+      {messages.length === 0 ? (
+        <EmptyState
+          icon={MailWarning}
+          title="No new messages"
+          description="Message threads from landlords about your applications will show up here."
+        />
+      ) : (
+        <div className="flex flex-col gap-2">
+          {messages.map(msg =>
             <div key={msg.id} className="flex items-center gap-3 bg-white shadow rounded-lg p-3 hover:shadow-md transition">
               <img src={msg.landlordAvatar} className="w-10 h-10 rounded-full object-cover" alt={msg.landlordName} />
               <div className="flex-1 min-w-0">
@@ -30,9 +38,9 @@ const TenantMessagesPreview: React.FC<Props> = ({ messages }) => {
               </div>
               <div className="text-xs text-muted-foreground">{msg.timestamp}</div>
             </div>
-          )
-        }
-      </div>
+          )}
+        </div>
+      )}
     </section>
   );
 };

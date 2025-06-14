@@ -1,4 +1,3 @@
-
 export default {
   common: {
     dashboard: "Dashboard",
@@ -52,5 +51,21 @@ export default {
     yourEmail: "Your Email",
     subject: "Subject",
     yourMessage: "Your Message",
-  }
+  },
+  empty: {
+    noSavedListings: "No saved listings",
+    noSavedListingsDesc: "You haven't saved any properties yet. Start browsing and save your favorites!",
+    noRecommended: "No recommendations right now",
+    noRecommendedDesc: "We'll recommend properties based on your preferences once you start searching.",
+    noApplications: "No applications yet",
+    noApplicationsDesc: "Your submitted applications and their status will appear here.",
+    noMessages: "No new messages",
+    noMessagesDesc: "Message threads from landlords about your applications will show up here.",
+    noCities: "No popular cities to explore",
+    noCitiesDesc: "Come back later to see top cities or browse listings by search.",
+    noRecentListings: "No recent listings",
+    noRecentListingsDesc: "You haven't listed any properties yet.",
+    noRecentApps: "No recent applications",
+    noRecentAppsDesc: "You have not received any applications yet.",
+  },
 };

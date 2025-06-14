@@ -1,6 +1,8 @@
 import React from "react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import EmptyState from "@/components/EmptyState";
+import { Inbox } from "lucide-react";
 
 interface Application {
   id: number;
@@ -30,11 +32,11 @@ const RecentApplicationsCard: React.FC<Props> = ({
       </div>
     )}
     {applications.length === 0 ? (
-      <div className="py-8 flex flex-col items-center text-center text-muted-foreground">
-        <img src="/placeholder.svg" alt="" className="w-14 h-14 mb-2 opacity-70" />
-        <div className="font-semibold mb-1">No recent applications</div>
-        <div className="text-xs">You have not received any applications yet.</div>
-      </div>
+      <EmptyState
+        icon={Inbox}
+        title="No recent applications"
+        description="You have not received any applications yet."
+      />
     ) : (
       <ul className="flex flex-col gap-4">
         {applications.slice(0, 3).map(app => (

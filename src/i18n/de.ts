@@ -1,4 +1,3 @@
-
 export default {
   common: {
     dashboard: "Übersicht",
@@ -52,5 +51,21 @@ export default {
     yourEmail: "Ihre E-Mail",
     subject: "Betreff",
     yourMessage: "Ihre Nachricht",
-  }
+  },
+  empty: {
+    noSavedListings: "Keine gespeicherten Inserate",
+    noSavedListingsDesc: "Sie haben noch keine Immobilien gespeichert. Starten Sie die Suche und speichern Sie Ihre Favoriten!",
+    noRecommended: "Derzeit keine Empfehlungen",
+    noRecommendedDesc: "Sobald Sie Ihre Suche starten, erhalten Sie passende Empfehlungen.",
+    noApplications: "Noch keine Bewerbungen",
+    noApplicationsDesc: "Ihre eingereichten Bewerbungen und deren Status erscheinen hier.",
+    noMessages: "Keine neuen Nachrichten",
+    noMessagesDesc: "Nachrichten von Vermietern zu Ihren Bewerbungen erscheinen hier.",
+    noCities: "Keine beliebten Städte verfügbar",
+    noCitiesDesc: "Kehren Sie später zurück, um Top-Städte zu sehen oder durchsuchen Sie die Inserate.",
+    noRecentListings: "Keine aktuellen Inserate",
+    noRecentListingsDesc: "Sie haben noch keine Immobilien eingestellt.",
+    noRecentApps: "Keine aktuellen Bewerbungen",
+    noRecentAppsDesc: "Sie haben noch keine Bewerbungen erhalten.",
+  },
 };
