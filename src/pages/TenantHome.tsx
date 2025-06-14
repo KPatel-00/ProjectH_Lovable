@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -146,8 +145,6 @@ const TenantHome = () => {
           {loading ? <TenantWelcomeBannerSkeleton /> :
             <TenantWelcomeBanner
               firstName={mockUser.firstName}
-              subtitle="Ready to find your new home? Let’s get started."
-              profileComplete={mockUser.profileComplete}
             />
           }
           {loading ? <TenantQuickStatsSkeleton /> :
