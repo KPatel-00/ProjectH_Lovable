@@ -1,9 +1,136 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search, MapPin, Home, Calendar, Users, FileText, MessageSquare, BarChart3, Shield, Play, Star, ArrowRight, Phone } from 'lucide-react';
+import {
+  Search,
+  MapPin,
+  Home,
+  Calendar,
+  Users,
+  FileText,
+  MessageSquare,
+  BarChart3,
+  Shield,
+  Play,
+  Star,
+  ArrowRight,
+  Phone,
+  Building2,
+  City,
+  User,
+  CheckCircle2,
+  ChevronLeft,
+  ChevronRight,
+} from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+
+const popularCities = [
+  {
+    name: 'Berlin',
+    subtitle: 'Startup hub',
+    image: 'https://images.unsplash.com/photo-1605810230434-7631ac76ec81?auto=format&fit=crop&w=600&q=80',
+    icon: City,
+  },
+  {
+    name: 'Munich',
+    subtitle: 'Home of Oktoberfest',
+    image: 'https://images.unsplash.com/photo-1531297484001-80022131f5a1?auto=format&fit=crop&w=600&q=80',
+    icon: BeerMugIcon,
+  },
+  {
+    name: 'Frankfurt',
+    subtitle: 'Finance capital',
+    image: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=600&q=80',
+    icon: Building2,
+  },
+  {
+    name: 'Hamburg',
+    subtitle: 'Port city charm',
+    image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=600&q=80',
+    icon: ShipIcon,
+  },
+  {
+    name: 'Cologne',
+    subtitle: 'Cultural center',
+    image: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=600&q=80',
+    icon: CathedralIcon,
+  },
+  {
+    name: 'Stuttgart',
+    subtitle: 'Tech innovation',
+    image: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=600&q=80',
+    icon: BarChart3,
+  },
+];
+
+function BeerMugIcon(props: any) {
+  // Inline SVG or simply use 'Users' for illustration
+  return <Users {...props} />;
+}
+function ShipIcon(props: any) {
+  // Placeholder, use City icon or similar
+  return <Home {...props} />;
+}
+function CathedralIcon(props: any) {
+  // Placeholder, use a star
+  return <Star {...props} />;
+}
+
+const featuredProperties = [
+  {
+    id: 1,
+    image: '/placeholder.svg',
+    type: 'Apartment',
+    area: 'Berlin Mitte',
+    rent: '€1,200',
+    verified: true,
+    daysListed: 3
+  },
+  {
+    id: 2,
+    image: '/placeholder.svg',
+    type: 'WG Room',
+    area: 'Munich Schwabing',
+    rent: '€650',
+    verified: true,
+    daysListed: 1
+  },
+  {
+    id: 3,
+    image: '/placeholder.svg',
+    type: 'House',
+    area: 'Frankfurt Westend',
+    rent: '€2,100',
+    verified: false,
+    daysListed: 5
+  },
+  {
+    id: 4,
+    image: '/placeholder.svg',
+    type: 'Studio',
+    area: 'Hamburg Altona',
+    rent: '€800',
+    verified: true,
+    daysListed: 2
+  }
+];
+
+// For value points with icons
+const valuePoints = [
+  {
+    icon: CheckCircle2,
+    label: 'Browse Verified Listings',
+  },
+  {
+    icon: FileText,
+    label: 'Easy & Quick Applications',
+  },
+  {
+    icon: BarChart3,
+    label: 'Real-Time Application Status',
+  },
+];
 
 const Hero = () => {
   const [selectedAudience, setSelectedAudience] = useState('tenant');
@@ -12,55 +139,8 @@ const Hero = () => {
     propertyType: '',
     moveInDate: ''
   });
+  const [cityScroll, setCityScroll] = useState(0);
   const navigate = useNavigate();
-
-  const cities = [
-    { name: 'Berlin', subtitle: 'Startup hub', image: '/placeholder.svg' },
-    { name: 'Munich', subtitle: 'Home of Oktoberfest', image: '/placeholder.svg' },
-    { name: 'Frankfurt', subtitle: 'Finance capital', image: '/placeholder.svg' },
-    { name: 'Hamburg', subtitle: 'Port city charm', image: '/placeholder.svg' },
-    { name: 'Cologne', subtitle: 'Cultural center', image: '/placeholder.svg' },
-    { name: 'Stuttgart', subtitle: 'Tech innovation', image: '/placeholder.svg' },
-  ];
-
-  const featuredProperties = [
-    {
-      id: 1,
-      image: '/placeholder.svg',
-      type: 'Apartment',
-      area: 'Berlin Mitte',
-      rent: '€1,200',
-      verified: true,
-      daysListed: 3
-    },
-    {
-      id: 2,
-      image: '/placeholder.svg',
-      type: 'WG Room',
-      area: 'Munich Schwabing',
-      rent: '€650',
-      verified: true,
-      daysListed: 1
-    },
-    {
-      id: 3,
-      image: '/placeholder.svg',
-      type: 'House',
-      area: 'Frankfurt Westend',
-      rent: '€2,100',
-      verified: false,
-      daysListed: 5
-    },
-    {
-      id: 4,
-      image: '/placeholder.svg',
-      type: 'Studio',
-      area: 'Hamburg Altona',
-      rent: '€800',
-      verified: true,
-      daysListed: 2
-    }
-  ];
 
   const handleSearch = () => {
     const params = new URLSearchParams();
@@ -145,6 +225,90 @@ const Hero = () => {
     }
   ];
 
+  // Ref: amount of cards visible per screen
+  const visibleCities = () => {
+    if (window.innerWidth < 640) return 2;
+    if (window.innerWidth < 1024) return 4;
+    return 6;
+  };
+
+  // Dots for carousel
+  const cityPageCount = Math.max(1, Math.ceil(popularCities.length / visibleCities()));
+
+  const renderCityCarousel = () => {
+    const perPage = visibleCities();
+    const total = popularCities.length;
+    const firstIdx = cityScroll * perPage;
+    const lastIdx = Math.min(firstIdx + perPage, total);
+
+    return (
+      <div className="relative">
+        <div className="flex items-center mb-4 justify-end gap-2 pr-6">
+          <button
+            className={`rounded-full p-2 bg-background border border-border shadow-md transition disabled:opacity-50`}
+            onClick={() => setCityScroll((s) => Math.max(0, s - 1))}
+            disabled={cityScroll === 0}
+            aria-label="Previous Cities"
+          >
+            <ChevronLeft className="w-5 h-5" />
+          </button>
+          <button
+            className={`rounded-full p-2 bg-background border border-border shadow-md transition disabled:opacity-50`}
+            onClick={() => setCityScroll((s) => Math.min(cityPageCount - 1, s + 1))}
+            disabled={cityScroll >= cityPageCount - 1}
+            aria-label="Next Cities"
+          >
+            <ChevronRight className="w-5 h-5" />
+          </button>
+        </div>
+        <div className="cities-scroll-container overflow-x-auto pb-4">
+          <div className="flex space-x-6 min-w-max px-4">
+            {popularCities.slice(firstIdx, lastIdx).map((city, index) => (
+              <div
+                key={city.name}
+                className="group bg-background rounded-2xl overflow-hidden shadow-lg border border-border hover:shadow-2xl transition-all duration-200 hover:scale-105 cursor-pointer min-w-[220px]"
+                onClick={() => handleCityClick(city.name)}
+                tabIndex={0}
+                role="button"
+                aria-label={`Go to listings for ${city.name}`}
+              >
+                <div className="relative h-36 w-full">
+                  <img
+                    src={city.image}
+                    alt={city.name}
+                    className="object-cover h-full w-full"
+                    style={{ objectPosition: 'center', minHeight: 120, maxHeight: 144, transition: 'transform 0.2s' }}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
+                  <div className="absolute top-3 left-3">
+                    <city.icon className="bg-white/90 p-1 rounded-full w-8 h-8 text-primary border border-primary shadow" />
+                  </div>
+                  <div className="absolute bottom-3 left-3 text-white">
+                    <div className="text-lg font-bold">{city.name}</div>
+                    <div className="text-xs opacity-90">{city.subtitle}</div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+        {/* Dots indicator */}
+        <div className="flex justify-center mt-2 gap-1">
+          {Array.from({ length: cityPageCount }).map((_, idx) => (
+            <div
+              key={idx}
+              className={`w-2.5 h-2.5 rounded-full ${idx === cityScroll ? 'bg-primary' : 'bg-muted'} transition`}
+              style={{
+                opacity: idx === cityScroll ? 1 : 0.5,
+                transform: idx === cityScroll ? 'scale(1.15)' : 'scale(0.92)',
+              }}
+            ></div>
+          ))}
+        </div>
+      </div>
+    );
+  };
+
   return (
     <section className="relative min-h-screen bg-gradient-to-br from-background via-muted/30 to-background overflow-hidden">
       {/* Background Elements */}
@@ -154,52 +318,58 @@ const Hero = () => {
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-16 relative">
         {/* Audience Toggle */}
-        <div className="flex justify-center mb-12 animate-fade-in">
-          <div className="bg-background rounded-full p-1 shadow-lg border border-border">
-            <div className="flex">
-              <button
-                onClick={() => setSelectedAudience('tenant')}
-                className={`px-6 py-3 rounded-full font-medium transition-all duration-300 ${
-                  selectedAudience === 'tenant'
-                    ? 'bg-primary text-primary-foreground shadow-md'
-                    : 'text-muted-foreground hover:text-foreground'
-                }`}
-              >
-                I'm a Tenant
-              </button>
-              <button
-                onClick={() => setSelectedAudience('landlord')}
-                className={`px-6 py-3 rounded-full font-medium transition-all duration-300 ${
-                  selectedAudience === 'landlord'
-                    ? 'bg-primary text-primary-foreground shadow-md'
-                    : 'text-muted-foreground hover:text-foreground'
-                }`}
-              >
-                I'm a Landlord
-              </button>
-            </div>
+        <div className="flex justify-center mb-12">
+          <div className="flex bg-background border border-border rounded-full p-1 shadow-lg max-w-md w-full mx-auto">
+            <button
+              onClick={() => setSelectedAudience('tenant')}
+              className={`flex-1 text-base font-semibold rounded-full py-2 transition-all duration-300 z-10 text-center
+                ${selectedAudience === "tenant"
+                  ? "text-primary border-2 border-primary bg-white shadow"
+                  : "text-muted-foreground hover:text-primary"}
+              `}
+              style={{
+                outline: "none",
+                background: selectedAudience === "tenant" ? "white" : "transparent"
+              }}
+              aria-pressed={selectedAudience === "tenant"}
+            >
+              I'm a Tenant
+            </button>
+            <button
+              onClick={() => setSelectedAudience('landlord')}
+              className={`flex-1 text-base font-semibold rounded-full py-2 transition-all duration-300 z-10 text-center
+                ${selectedAudience === "landlord"
+                  ? "text-primary border-2 border-primary bg-white shadow"
+                  : "text-muted-foreground hover:text-primary"}
+              `}
+              style={{
+                outline: "none",
+                background: selectedAudience === "landlord" ? "white" : "transparent"
+              }}
+              aria-pressed={selectedAudience === "landlord"}
+            >
+              I'm a Landlord
+            </button>
           </div>
         </div>
 
-        {/* Dynamic Content Based on Selection */}
-        <div className="animate-fade-in">
-          {selectedAudience === 'tenant' ? (
-            <>
+        {/* Animated Content Switch */}
+        <div
+          className="relative animate-fade-in"
+          style={{ minHeight: 600, transition: "min-height 0.3s" }}
+        >
+          {/* --- TENANT PATH --- */}
+          {selectedAudience === 'tenant' && (
+            <div key="tenant" className="w-full">
               {/* Why Choose Us */}
-              <div className="text-center mb-12">
-                <div className="flex justify-center space-x-8 mb-8">
-                  <div className="flex items-center space-x-2 text-sm text-muted-foreground">
-                    <div className="w-2 h-2 bg-primary rounded-full"></div>
-                    <span>Browse verified listings</span>
-                  </div>
-                  <div className="flex items-center space-x-2 text-sm text-muted-foreground">
-                    <div className="w-2 h-2 bg-primary rounded-full"></div>
-                    <span>Easy & quick applications</span>
-                  </div>
-                  <div className="flex items-center space-x-2 text-sm text-muted-foreground">
-                    <div className="w-2 h-2 bg-primary rounded-full"></div>
-                    <span>Direct landlord contact</span>
-                  </div>
+              <div className="text-center mb-10">
+                <div className="flex flex-wrap justify-center gap-6 md:gap-12 mb-8">
+                  {valuePoints.map((vp, i) => (
+                    <div key={vp.label} className="flex gap-2 items-center text-base text-muted-foreground font-medium">
+                      <vp.icon className="w-6 h-6 text-primary" />
+                      <span>{vp.label}</span>
+                    </div>
+                  ))}
                 </div>
               </div>
 
@@ -220,8 +390,8 @@ const Hero = () => {
                   <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                     <div className="relative">
                       <MapPin className="absolute left-3 top-3 w-5 h-5 text-muted-foreground" />
-                      <Input 
-                        placeholder="City / Area / Zip Code" 
+                      <Input
+                        placeholder="City / Area / Zip Code"
                         className="pl-10 h-12"
                         value={searchFilters.location}
                         onChange={(e) => setSearchFilters({ ...searchFilters, location: e.target.value })}
@@ -241,8 +411,8 @@ const Hero = () => {
                     </Select>
                     <div className="relative">
                       <Calendar className="absolute left-3 top-3 w-5 h-5 text-muted-foreground" />
-                      <Input 
-                        type="month" 
+                      <Input
+                        type="month"
                         className="pl-10 h-12"
                         placeholder="Move-in Date"
                         value={searchFilters.moveInDate}
@@ -276,25 +446,7 @@ const Hero = () => {
               {/* Popular Cities */}
               <div className="mb-16">
                 <h2 className="text-3xl font-bold text-center mb-8">Explore Top Cities</h2>
-                <div className="cities-scroll-container overflow-x-auto pb-4">
-                  <div className="flex space-x-6 min-w-max px-4">
-                    {cities.map((city, index) => (
-                      <div 
-                        key={city.name}
-                        className="bg-background rounded-2xl overflow-hidden shadow-lg border border-border hover:shadow-xl transition-shadow duration-300 cursor-pointer min-w-[250px] group"
-                        onClick={() => handleCityClick(city.name)}
-                      >
-                        <div className="h-40 bg-gradient-to-br from-muted to-muted/50 relative overflow-hidden">
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
-                          <div className="absolute bottom-3 left-3 text-white">
-                            <div className="text-lg font-bold">{city.name}</div>
-                            <div className="text-sm opacity-90">{city.subtitle}</div>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
+                {renderCityCarousel()}
               </div>
 
               {/* Featured Properties */}
@@ -305,7 +457,7 @@ const Hero = () => {
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                   {featuredProperties.map((property) => (
-                    <div 
+                    <div
                       key={property.id}
                       className="bg-background rounded-2xl overflow-hidden shadow-lg border border-border hover:shadow-xl transition-shadow duration-300 cursor-pointer group"
                       onClick={() => handlePropertyClick(property.id)}
@@ -360,9 +512,12 @@ const Hero = () => {
                   </div>
                 </div>
               </div>
-            </>
-          ) : (
-            <>
+            </div>
+          )}
+
+          {/* --- LANDLORD PATH --- */}
+          {selectedAudience === 'landlord' && (
+            <div key="landlord" className="w-full">
               {/* Why List with Us */}
               <div className="mb-16">
                 <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-center text-foreground mb-6 leading-tight">
@@ -374,10 +529,9 @@ const Hero = () => {
                 <p className="text-xl text-muted-foreground text-center mb-12 max-w-2xl mx-auto">
                   Join thousands of landlords who trust us to connect them with quality tenants.
                 </p>
-
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                  {landlordFeatures.map((feature, index) => (
-                    <div 
+                  {landlordFeatures.map((feature) => (
+                    <div
                       key={feature.title}
                       className="bg-background rounded-2xl p-6 shadow-lg border border-border hover:shadow-xl transition-all duration-300 hover:scale-105 group relative"
                     >
@@ -420,18 +574,18 @@ const Hero = () => {
                   <h2 className="text-3xl font-bold mb-4">Ready to List Your Property?</h2>
                   <p className="text-xl mb-6 opacity-90">Join thousands of successful landlords today</p>
                   <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                    <Button 
-                      size="lg" 
-                      variant="secondary" 
+                    <Button
+                      size="lg"
+                      variant="secondary"
                       className="bg-white text-primary hover:bg-white/90"
                       onClick={() => handleCTAClick('list-property')}
                     >
                       <ArrowRight className="w-5 h-5 mr-2" />
                       List Your Property
                     </Button>
-                    <Button 
-                      size="lg" 
-                      variant="outline" 
+                    <Button
+                      size="lg"
+                      variant="outline"
                       className="border-white text-white hover:bg-white hover:text-primary"
                       onClick={() => handleCTAClick('contact-support')}
                     >
@@ -447,7 +601,7 @@ const Hero = () => {
                 <h2 className="text-3xl font-bold text-center mb-8">What Landlords Say</h2>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                   {landlordReviews.map((review, index) => (
-                    <div 
+                    <div
                       key={review.name}
                       className="bg-background rounded-2xl p-6 shadow-lg border border-border"
                     >
@@ -473,7 +627,7 @@ const Hero = () => {
                   <span className="font-semibold text-foreground">93% of listings get leads within 72 hours</span>
                 </div>
               </div>
-            </>
+            </div>
           )}
         </div>
       </div>
