@@ -28,7 +28,7 @@ const RecentListingsCard: React.FC<Props> = ({
   showHeader = true,
   className = "",
 }) => (
-  <div className={`px-5 pb-2 ${className}`}>
+  <div className={`px-6 pb-3 ${className}`}>
     {showHeader && (
       <div className="flex justify-between items-center mb-2">
         <span className="font-semibold gap-2 text-base">Recent Listings</span>
@@ -40,24 +40,27 @@ const RecentListingsCard: React.FC<Props> = ({
     {listings.length === 0 ? (
       <div className="py-4 text-sm text-muted-foreground text-center">No listings yet.</div>
     ) : (
-      <ul className="space-y-2">
+      <ul className="flex flex-col gap-3">
         {listings.slice(0, 3).map(listing => (
           <li
             key={listing.id}
-            className="bg-muted rounded-xl px-4 py-3 flex flex-col sm:flex-row sm:items-center sm:justify-between group shadow-sm hover:shadow-md transition-shadow duration-150"
+            className="bg-white rounded-lg px-4 py-3 shadow-sm hover:shadow-md transition-shadow duration-150 flex flex-col sm:flex-row sm:items-center sm:justify-between group"
           >
-            <div className="flex-1 min-w-0">
+            <div className="flex-1 min-w-0 flex flex-col gap-1">
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <span className="font-medium truncate max-w-xs block cursor-pointer hover:underline">{listing.title}</span>
+                  <span className="font-semibold truncate max-w-xs block cursor-pointer hover:underline">{listing.title}</span>
                 </TooltipTrigger>
                 <TooltipContent>{listing.title}</TooltipContent>
               </Tooltip>
-              <div className="flex items-center gap-2 text-xs mt-1 text-muted-foreground">
+              <div className="flex items-center gap-2 text-xs mt-0.5 text-muted-foreground">
                 <Badge className={`rounded ${statusColor[listing.status]}`}>{listing.status}</Badge>
-                <span>Views: <span className="font-semibold">{listing.views}</span></span>
-                <span>· Updated {listing.lastUpdated}</span>
+                <span>
+                  Views: <span className="font-semibold text-gray-900">{listing.views}</span>
+                </span>
+                <span className="hidden xs:inline-block">· Updated {listing.lastUpdated}</span>
               </div>
+              <span className="xs:hidden mt-0.5 text-xs text-muted-foreground">Updated {listing.lastUpdated}</span>
             </div>
           </li>
         ))}

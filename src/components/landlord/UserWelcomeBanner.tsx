@@ -9,24 +9,27 @@ interface Props {
   verified: boolean;
 }
 const UserWelcomeBanner: React.FC<Props> = ({ name, business, verified }) => (
-  <section className="flex items-center gap-4 mb-3 p-5 rounded-2xl bg-card shadow-sm border">
-    <Avatar className="h-14 w-14 text-xl">
-      <AvatarFallback className="bg-primary text-primary-foreground font-bold text-2xl">
+  <section className="flex items-center gap-5 mb-2 p-6 rounded-xl bg-white shadow-md border">
+    <Avatar className="h-16 w-16 text-2xl">
+      <AvatarFallback className="bg-primary text-primary-foreground font-bold text-3xl">
         {name[0]}
       </AvatarFallback>
     </Avatar>
-    <div>
-      <div className="text-2xl md:text-3xl font-extrabold flex items-center gap-2 leading-tight">
-        Welcome, {name}
+    <div className="flex flex-col gap-1">
+      <div className="flex items-center gap-2">
+        <span className="text-2xl md:text-3xl font-bold leading-tight text-gray-900">
+          Welcome, {name}
+        </span>
         {verified && (
-          <span title="Verified">
-            <ShieldCheck className="text-green-600 w-6 h-6" aria-label="Verified"/>
-          </span>
+          <ShieldCheck className="text-green-600 w-6 h-6" title="Verified" aria-label="Verified"/>
         )}
       </div>
       {business && (
-        <div className="text-sm md:text-base text-muted-foreground font-medium mt-1">
-          {business} <span className="ml-1 bg-green-100 text-green-700 px-2 py-0.5 rounded text-[11px] font-bold align-middle">Verified</span>
+        <div className="text-sm text-muted-foreground font-semibold flex items-center gap-2">
+          <span>{business}</span>
+          {verified && (
+            <span className="ml-1 px-2 py-0.5 rounded bg-green-100 text-green-700 text-[11px] font-semibold align-middle">Verified</span>
+          )}
         </div>
       )}
     </div>

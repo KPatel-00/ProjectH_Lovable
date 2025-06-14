@@ -7,6 +7,7 @@ import StatCards from "@/components/landlord/StatCards";
 import RecentListingsCard from "@/components/landlord/RecentListingsCard";
 import RecentApplicationsCard from "@/components/landlord/RecentApplicationsCard";
 import { Button } from "@/components/ui/button";
+import { LayoutDashboard } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 // DEMO DATA
@@ -39,10 +40,10 @@ const LandlordHome = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen flex flex-col bg-background">
+    <div className="min-h-screen flex flex-col bg-neutral-50">
       <Header />
-      <main className="flex-1 w-full max-w-3xl mx-auto px-3 md:px-0 pt-8 pb-12 flex flex-col gap-7">
-        {/* 1. Header */}
+      <main className="flex-1 w-full max-w-3xl mx-auto px-3 md:px-0 pt-12 pb-16 flex flex-col gap-8 items-stretch">
+        {/* 1. Welcome Header */}
         <UserWelcomeBanner
           name={landlord.firstName}
           business={landlord.businessName}
@@ -53,11 +54,11 @@ const LandlordHome = () => {
         <StatCards stats={metrics} />
 
         {/* 3. Recent Listings Section */}
-        <section className="bg-card rounded-2xl shadow-md px-0 py-0 md:p-0 mb-2">
-          <div className="flex items-center justify-between px-5 pt-5 pb-2">
-            <h2 className="font-semibold text-lg">Recent Listings</h2>
+        <section className="bg-white rounded-xl shadow-md px-0 py-0 md:p-0">
+          <div className="flex items-center justify-between px-6 pt-6 pb-3">
+            <h2 className="font-semibold text-lg md:text-xl">Recent Listings</h2>
             <button
-              className="text-xs text-primary hover:underline font-medium transition"
+              className="text-xs md:text-sm text-primary hover:underline font-medium transition"
               onClick={() => navigate("/landlord/dashboard", { state: { section: "listings" } })}
             >
               View All
@@ -72,11 +73,11 @@ const LandlordHome = () => {
         </section>
 
         {/* 4. Recent Applications Section */}
-        <section className="bg-card rounded-2xl shadow-md px-0 py-0 md:p-0">
-          <div className="flex items-center justify-between px-5 pt-5 pb-2">
-            <h2 className="font-semibold text-lg">Recent Applications</h2>
+        <section className="bg-white rounded-xl shadow-md px-0 py-0 md:p-0">
+          <div className="flex items-center justify-between px-6 pt-6 pb-3">
+            <h2 className="font-semibold text-lg md:text-xl">Recent Applications</h2>
             <button
-              className="text-xs text-primary hover:underline font-medium transition"
+              className="text-xs md:text-sm text-primary hover:underline font-medium transition"
               onClick={() => navigate("/landlord/dashboard", { state: { section: "applications" } })}
             >
               View All
@@ -91,12 +92,13 @@ const LandlordHome = () => {
         </section>
 
         {/* 5. CTA Button */}
-        <div className="w-full sticky bottom-0 z-20 px-0 pt-3 mt-8 bg-background flex items-center justify-center">
+        <div className="sticky bottom-0 z-20 w-full flex items-center justify-center mt-6 md:mt-8">
           <Button
-            className="w-full max-w-md mx-auto text-lg font-semibold py-4 rounded-xl shadow-lg bg-gradient-to-tr from-primary to-secondary text-white hover:scale-[1.03] hover:shadow-xl hover:bg-primary transition-all duration-150"
+            className="w-full md:w-fit mx-auto text-base md:text-lg font-semibold py-4 rounded-xl shadow-lg bg-primary text-primary-foreground hover:scale-105 hover:shadow-xl transition-all duration-150 px-8 flex items-center gap-2"
             onClick={() => navigate("/landlord/dashboard")}
           >
-            📊 Open Full Dashboard
+            <LayoutDashboard className="w-6 h-6" />
+            <span>Open Full Dashboard</span>
           </Button>
         </div>
       </main>
@@ -106,3 +108,4 @@ const LandlordHome = () => {
 };
 
 export default LandlordHome;
+
