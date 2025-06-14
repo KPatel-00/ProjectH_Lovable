@@ -1,243 +1,114 @@
 
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Menu, X, User, LogOut, UserRound } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import AuthModal from '@/components/AuthModal';
-import LanguageSelector from '@/components/LanguageSelector';
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuLabel,
-} from '@/components/ui/dropdown-menu';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Menu, X } from 'lucide-react';
+
+const navItems = [
+  { label: 'Browse Listings', href: '/listings' },
+  { label: 'List Property', href: '/list-property' },
+  { label: 'Help Center', href: '/contact' }
+];
 
 const Header = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(true);
-  const user = {
-    name: 'Anna',
-    email: 'anna.tenant@example.com',
-    avatarUrl: '',
-  };
-
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [authModal, setAuthModal] = useState<{ isOpen: boolean; tab: 'login' | 'signup' }>({
-    isOpen: false,
-    tab: 'signup'
-  });
+  const [isAuthenticated, setIsAuthenticated] = useState(true);
+  const user = { name: "Anna", email: "anna.tenant@example.com" };
   const navigate = useNavigate();
   const location = useLocation();
 
-  const navItems = [
-    { label: 'Browse Listings', href: '/listings' },
-    { label: 'List Property', href: '/list-property' },
-    { label: 'Help Center', href: '/contact' }
-  ];
-
-  const handleNavClick = (href: string) => {
-    navigate(href);
-    setIsMenuOpen(false);
-  };
-
-  const handleLogoClick = () => {
-    navigate('/');
-    setIsMenuOpen(false);
-  };
-
-  const openAuthModal = (tab: 'login' | 'signup') => {
-    setAuthModal({ isOpen: true, tab });
-  };
-
-  const closeAuthModal = () => {
-    setAuthModal({ isOpen: false, tab: 'signup' });
-  };
-
-  const isActivePage = (href: string) => {
-    return location.pathname === href;
-  };
-
-  const handleSignOut = () => {
-    setIsAuthenticated(false);
-    navigate('/');
-  };
+  const isActive = (href: string) => location.pathname === href;
 
   return (
-    <>
-      <header className="w-full border-b border-gray-200 bg-white font-sans">
-        <div className="container mx-auto flex items-center justify-between h-16 px-0 max-w-5xl">
-          {/* Minimal Brand (clickable) */}
-          <span 
-            className="flex items-center gap-2 cursor-pointer select-none"
-            onClick={handleLogoClick}
-            tabIndex={0}
-          >
-            <span className="text-lg font-bold tracking-tight text-black">
-              RentConnect
-            </span>
-          </span>
-
-          {/* Minimalist Navigation */}
-          <nav className="hidden md:flex items-center gap-10">
-            {navItems.map((item) => (
-              <button
-                key={item.label}
-                onClick={() => handleNavClick(item.href)}
-                className={`bg-transparent border-0 px-0 py-1 font-medium text-base ${
-                  isActivePage(item.href)
-                    ? 'text-accent font-semibold'
-                    : 'text-gray-600 hover:text-black'
-                }`}
-                style={{ outline: 'none' }}
-                tabIndex={0}
-              >
-                {item.label}
-              </button>
-            ))}
-          </nav>
-
-          {/* User Actions */}
-          <div className="flex items-center gap-4">
-            {/* Language selector can remain very minimalist or be removed if desired */}
-            <div className="hidden sm:block">
-              <LanguageSelector />
-            </div>
-            {isAuthenticated ? (
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="icon" className="rounded-full p-0 hover:bg-transparent focus-visible:ring-0">
-                    <Avatar>
-                      {user.avatarUrl ? (
-                        <AvatarImage src={user.avatarUrl} alt={user.name} />
-                      ) : (
-                        <AvatarFallback className="text-black bg-gray-200">{user.name[0]}</AvatarFallback>
-                      )}
-                    </Avatar>
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-44 border border-gray-200 bg-white px-0 py-1">
-                  <DropdownMenuLabel className="px-3 py-2 font-semibold text-black">
-                    <span>{user.name}</span>
-                    <span className="block text-xs font-normal text-gray-500">{user.email}</span>
-                  </DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={() => navigate('/profile')} className="px-3 py-2 text-black hover:bg-gray-100">
-                    <UserRound className="w-4 h-4 mr-2" /> My Profile
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => navigate('/profile/applications')} className="px-3 py-2 text-black hover:bg-gray-100">
-                    <User className="w-4 h-4 mr-2" /> My Applications
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={handleSignOut} className="px-3 py-2 text-red-600 hover:bg-gray-100">
-                    <LogOut className="w-4 h-4 mr-2" /> Sign Out
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            ) : (
-              <div className="hidden sm:flex items-center gap-2">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="font-medium text-black hover:text-accent"
-                  onClick={() => openAuthModal('login')}
-                >
-                  Log In
-                </Button>
-                <Button
-                  size="sm"
-                  className="font-medium text-white bg-accent hover:bg-accent"
-                  onClick={() => openAuthModal('signup')}
-                >
-                  Get Started
-                </Button>
-              </div>
-            )}
-            {/* Mobile Menu */}
-            <Button
-              variant="ghost"
-              size="sm"
-              className="md:hidden p-1.5 hover:bg-gray-100"
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
+    <header className="w-full border-b border-border bg-white">
+      <div className="container flex items-center justify-between h-16 max-w-4xl mx-auto px-2">
+        {/* Brand - minimalist */}
+        <button
+          className="text-xl font-semibold tracking-tight text-black bg-transparent border-0 p-0 m-0 hover:underline"
+          onClick={() => navigate('/')}
+          aria-label="RentConnect home"
+        >
+          RentConnect
+        </button>
+        {/* Desktop Navigation */}
+        <nav className="hidden md:flex gap-8">
+          {navItems.map(item => (
+            <button
+              key={item.label}
+              className={`minimal-button${isActive(item.href) ? ' active' : ''}`}
+              aria-current={isActive(item.href) ? "page" : undefined}
+              onClick={() => navigate(item.href)}
+              style={{ fontSize: "1rem" }}
             >
-              {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-            </Button>
-          </div>
-        </div>
-        {isMenuOpen && (
-          <div className="md:hidden absolute left-0 right-0 bg-white border-b border-gray-200 py-4">
-            <div className="flex flex-col gap-4 px-6">
-              {navItems.map((item) => (
-                <button
-                  key={item.label}
-                  onClick={() => handleNavClick(item.href)}
-                  className={`text-base bg-transparent border-0 px-0 py-1 text-left ${
-                    isActivePage(item.href)
-                      ? 'text-accent font-semibold'
-                      : 'text-gray-600 hover:text-black'
-                  }`}
-                >
-                  {item.label}
-                </button>
-              ))}
-              <div className="flex flex-col gap-2 pt-2">
-                {isAuthenticated ? (
-                  <>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="text-black text-left px-0"
-                      onClick={() => { navigate('/profile'); setIsMenuOpen(false); }}
-                    >
-                      My Profile
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="text-black text-left px-0"
-                      onClick={() => { navigate('/profile/applications'); setIsMenuOpen(false); }}
-                    >
-                      My Applications
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="text-red-600 text-left px-0"
-                      onClick={() => { handleSignOut(); setIsMenuOpen(false); }}
-                    >
-                      Sign Out
-                    </Button>
-                  </>
-                ) : (
-                  <>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="text-black text-left px-0"
-                      onClick={() => { openAuthModal('login'); setIsMenuOpen(false); }}
-                    >
-                      Log In
-                    </Button>
-                    <Button
-                      size="sm"
-                      className="text-white bg-accent px-0"
-                      onClick={() => { openAuthModal('signup'); setIsMenuOpen(false); }}
-                    >
-                      Get Started
-                    </Button>
-                  </>
-                )}
-              </div>
-              <div className="pt-2">
-                <LanguageSelector />
-              </div>
+              {item.label}
+            </button>
+          ))}
+        </nav>
+        {/* Profile / auth */}
+        <div className="flex items-center gap-4">
+          {isAuthenticated ? (
+            <div className="relative">
+              <button
+                className="minimal-button flex items-center gap-2 bg-transparent border-0"
+                onClick={() => setIsMenuOpen(v => !v)}
+                aria-label="User menu"
+              >
+                <span className="font-bold text-base">{user.name[0]}</span>
+              </button>
+              {isMenuOpen && (
+                <div className="absolute right-0 mt-2 bg-white border border-border w-44 py-2 z-20">
+                  <button className="minimal-button w-full text-left" onClick={() => {navigate('/profile');setIsMenuOpen(false);}}>My Profile</button>
+                  <button className="minimal-button w-full text-left" onClick={() => {navigate('/profile/applications');setIsMenuOpen(false);}}>My Applications</button>
+                  <button className="minimal-button w-full text-left text-red-600" onClick={() => {setIsAuthenticated(false);setIsMenuOpen(false);navigate('/');}}>Sign Out</button>
+                </div>
+              )}
             </div>
+          ) : (
+            <div className="flex gap-2">
+              <button className="minimal-button" onClick={() => setIsMenuOpen(true)}>Log In</button>
+              <button className="minimal-button" style={{ color: "#246BFD" }}>Get Started</button>
+            </div>
+          )}
+          {/* Mobile Menu */}
+          <button
+            className="md:hidden minimal-button p-0"
+            onClick={() => setIsMenuOpen(v => !v)}
+            aria-label="Open menu"
+          >
+            {isMenuOpen ? <X /> : <Menu />}
+          </button>
+        </div>
+      </div>
+      {/* Mobile nav */}
+      {isMenuOpen && (
+        <nav className="md:hidden px-4 pt-2 pb-4 flex flex-col gap-1 bg-white border-t border-border">
+          {navItems.map(item => (
+            <button
+              key={item.label}
+              className={`minimal-button text-left${isActive(item.href) ? ' active' : ''}`}
+              aria-current={isActive(item.href) ? "page" : undefined}
+              onClick={() => {navigate(item.href);setIsMenuOpen(false);}}
+              style={{ fontSize: "1rem" }}
+            >
+              {item.label}
+            </button>
+          ))}
+          <div className="pt-4 border-t border-border mt-2 flex flex-col gap-1">
+            {isAuthenticated ? (
+              <>
+                <button className="minimal-button text-left" onClick={() => {navigate('/profile');setIsMenuOpen(false);}}>My Profile</button>
+                <button className="minimal-button text-left" onClick={() => {navigate('/profile/applications');setIsMenuOpen(false);}}>My Applications</button>
+                <button className="minimal-button text-left text-red-600" onClick={() => {setIsAuthenticated(false);setIsMenuOpen(false);navigate('/');}}>Sign Out</button>
+              </>
+            ) : (
+              <>
+                <button className="minimal-button text-left" onClick={() => setIsMenuOpen(false)}>Log In</button>
+                <button className="minimal-button text-left" style={{ color: "#246BFD" }}>Get Started</button>
+              </>
+            )}
           </div>
-        )}
-      </header>
-      <AuthModal isOpen={authModal.isOpen} onClose={closeAuthModal} defaultTab={authModal.tab} />
-    </>
+        </nav>
+      )}
+    </header>
   );
 };
 
