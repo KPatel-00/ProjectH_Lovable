@@ -1,8 +1,13 @@
-
 import React, { useState } from 'react';
 import HeroTenant from './HeroTenant';
 import HeroLandlord from './HeroLandlord';
 import { useNavigate } from 'react-router-dom';
+import AudienceToggle from "./AudienceToggle";
+
+const audienceOptions = [
+  { value: "tenant", label: "I'm a Tenant" },
+  { value: "landlord", label: "I'm a Landlord" }
+];
 
 const Hero = () => {
   const [selectedAudience, setSelectedAudience] = useState('tenant');
@@ -63,38 +68,11 @@ const Hero = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-16 relative">
         {/* Audience Toggle */}
         <div className="flex justify-center mb-12">
-          <div className="flex bg-background border border-border rounded-full p-1 shadow-lg max-w-md w-full mx-auto">
-            <button
-              onClick={() => setSelectedAudience('tenant')}
-              className={`flex-1 text-base font-semibold rounded-full py-2 transition-all duration-300 z-10 text-center
-                ${selectedAudience === "tenant"
-                  ? "text-primary border-2 border-primary bg-white shadow"
-                  : "text-muted-foreground hover:text-primary"}
-              `}
-              style={{
-                outline: "none",
-                background: selectedAudience === "tenant" ? "white" : "transparent"
-              }}
-              aria-pressed={selectedAudience === "tenant"}
-            >
-              I'm a Tenant
-            </button>
-            <button
-              onClick={() => setSelectedAudience('landlord')}
-              className={`flex-1 text-base font-semibold rounded-full py-2 transition-all duration-300 z-10 text-center
-                ${selectedAudience === "landlord"
-                  ? "text-primary border-2 border-primary bg-white shadow"
-                  : "text-muted-foreground hover:text-primary"}
-              `}
-              style={{
-                outline: "none",
-                background: selectedAudience === "landlord" ? "white" : "transparent"
-              }}
-              aria-pressed={selectedAudience === "landlord"}
-            >
-              I'm a Landlord
-            </button>
-          </div>
+          <AudienceToggle
+            options={audienceOptions}
+            selected={selectedAudience}
+            onSelect={setSelectedAudience}
+          />
         </div>
         {/* Animated Content Switch */}
         <div className="relative animate-fade-in" style={{ minHeight: 600, transition: "min-height 0.3s" }}>
