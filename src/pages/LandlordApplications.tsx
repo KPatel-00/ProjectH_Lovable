@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
@@ -6,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription } from "@/components/ui/dialog";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Eye, Check, X, MessageCircle } from "lucide-react";
+import { Eye, Check, X, MessageCircle, ArrowLeft } from "lucide-react";
 
 // Mock data for listings (normally fetched)
 const MOCK_LISTINGS = [
@@ -110,9 +109,20 @@ const LandlordApplications: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-background pb-16">
-      {/* Header */}
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-4 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-        <h1 className="text-3xl font-bold text-foreground mb-1">Applications Received</h1>
+      {/* Back Button */}
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 pt-20 flex items-center">
+        <Button
+          variant="ghost"
+          size="sm"
+          className="mr-2"
+          onClick={() => navigate(-1)}
+        >
+          <ArrowLeft className="w-4 h-4 mr-1" />
+          Back
+        </Button>
+        <h1 className="text-3xl font-bold text-foreground mb-1 ml-2">
+          Applications Received
+        </h1>
         <div />
       </div>
       {/* Filters */}
