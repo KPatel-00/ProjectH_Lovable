@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -15,8 +14,10 @@ import TenantHome from "./pages/TenantHome";
 import LandlordHome from "./pages/LandlordHome";
 import Search from "./pages/Search";
 import RentalApplicationPage from "./pages/RentalApplication";
-import LandlordListings from "./pages/LandlordListings";
 import LandlordDashboard from "./pages/LandlordDashboard";
+
+// Remove LandlordListings import
+// import LandlordListings from "./pages/LandlordListings";
 
 const queryClient = new QueryClient();
 
@@ -35,7 +36,8 @@ const App: React.FC = () => (
           <Route path="/apply/:listingId" element={<RentalApplicationPage />} />
           <Route path="/tenant/home" element={<TenantHome />} />
           <Route path="/landlord/home" element={<LandlordHome />} />
-          <Route path="/landlord/listings" element={<LandlordListings />} />
+          {/* Removed redundant /landlord/listings route */}
+          {/* <Route path="/landlord/listings" element={<LandlordListings />} /> */}
           <Route path="/search" element={<Search />} />
           {/* Only use nested routing for dashboard */}
           <Route path="/landlord/dashboard/*" element={<LandlordDashboard />} />
