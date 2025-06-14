@@ -9,6 +9,8 @@ import BrandLogo from '@/components/shared/BrandLogo';
 import HeaderNavLinks from '@/components/shared/HeaderNavLinks';
 import { useI18n } from '@/hooks/useI18n';
 import { useT } from "@/i18n";
+// Import Sheet components for mobile drawer
+import { Sheet, SheetTrigger, SheetContent } from "@/components/ui/sheet";
 
 const navLinks = [
   { name: "dashboard", to: "/listings" },
@@ -25,18 +27,20 @@ const LandingPageHeader = () => {
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [authDefaultTab, setAuthDefaultTab] = useState<'login'|'signup'>('login');
 
+  // State for sheet open (mobile nav)
+  const [sheetOpen, setSheetOpen] = useState(false);
+
   const openLoginModal = () => {
     setAuthDefaultTab('login');
     setAuthModalOpen(true);
+    setSheetOpen(false);
   };
 
   const openSignupModal = () => {
     setAuthDefaultTab('signup');
     setAuthModalOpen(true);
+    setSheetOpen(false);
   };
-
-  // DEBUG: rerender trigger
-  console.log("[LandingPageHeader] Rerender: language =", language);
 
   // Use translations for nav links (place inside the render so always updates)
   const translatedNavLinks = [
@@ -50,7 +54,7 @@ const LandingPageHeader = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         {/* Logo and brand */}
         <BrandLogo showText={true} showRoleTag={false} onClick={() => navigate("/")} />
-        {/* Nav */}
+        {/* Nav (desktop only) */}
         <HeaderNavLinks
           links={translatedNavLinks}
           navClassName="hidden md:flex space-x-8"
@@ -64,26 +68,70 @@ const LandingPageHeader = () => {
           <Button
             size="sm"
             variant="ghost"
-            className="font-medium"
+            className="font-medium hidden md:inline-flex"
             onClick={openLoginModal}
           >
             {t("login")}
           </Button>
           <Button
             size="sm"
-            className="bg-gradient-to-r from-primary to-secondary font-medium px-6"
+            className="bg-gradient-to-r from-primary to-secondary font-medium px-6 hidden md:inline-flex"
             onClick={openSignupModal}
           >
             {t("getStarted")}
           </Button>
-          <Button
-            size="sm"
-            variant="ghost"
-            className="md:hidden"
-            onClick={() => {/* Open nav menu (not yet implemented) */}}
-          >
-            <Menu />
-          </Button>
+          {/* Mobile nav trigger */}
+          <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
+            <SheetTrigger asChild>
+              <Button
+                size="sm"
+                variant="ghost"
+                className="md:hidden"
+                aria-label="Open navigation menu"
+              >
+                <Menu />
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="right" className="p-0 pt-2 w-72 max-w-full flex flex-col">
+              {/* Logo at top of drawer */}
+              <div className="px-5 pt-1 pb-6 border-b flex items-center">
+                <BrandLogo showText={true} showRoleTag={false} onClick={() => {navigate("/"); setSheetOpen(false);}} />
+              </div>
+              {/* Nav links */}
+              <nav className="flex flex-col gap-3 mt-4 px-5">
+                {translatedNavLinks.map(link => (
+                  <Button
+                    key={link.to}
+                    variant="ghost"
+                    className="justify-start w-full text-base font-medium"
+                    onClick={() => { navigate(link.to); setSheetOpen(false); }}
+                  >
+                    {link.name}
+                  </Button>
+                ))}
+              </nav>
+              <div className="border-t mt-6 mb-0" />
+              {/* Language selector and Auth buttons */}
+              <div className="flex flex-col gap-3 px-5 py-4">
+                <LanguageSelector />
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  className="font-medium"
+                  onClick={openLoginModal}
+                >
+                  {t("login")}
+                </Button>
+                <Button
+                  size="sm"
+                  className="bg-gradient-to-r from-primary to-secondary font-medium px-6"
+                  onClick={openSignupModal}
+                >
+                  {t("getStarted")}
+                </Button>
+              </div>
+            </SheetContent>
+          </Sheet>
         </div>
         {/* Render AuthModal */}
         <AuthModal
