@@ -129,14 +129,20 @@ const Search = () => {
             </div>
           ) : (
             <>
-              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5">
+              <ul className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5" aria-label="Search results">
                 {listings.slice(0, displayed).map(l => (
-                  <div
+                  <li
                     key={l.id}
                     tabIndex={0}
                     className={`group outline-none ring-offset-2 rounded-xl transition-all bg-background
                       hover:scale-[1.02] hover:shadow-xl focus:scale-[1.01] focus:ring-2 focus:ring-primary/60
                     `}
+                    onClick={() => navigate(`/listing/${l.id}`)}
+                    onKeyDown={e => {
+                      if (e.key === "Enter") navigate(`/listing/${l.id}`);
+                    }}
+                    aria-label={`${l.verified ? "Verified " : ""}${l.title} in ${l.city}, €${l.rent}/mo`}
+                    role="button"
                   >
                     <ListingCard
                       image={l.image}
@@ -147,11 +153,10 @@ const Search = () => {
                       status={l.status}
                       bookmarked={l.bookmarked}
                       onBookmark={() => handleBookmark(l.id)}
-                      onClick={() => navigate(`/listing/${l.id}`)}
                     />
-                  </div>
+                  </li>
                 ))}
-              </div>
+              </ul>
               {displayed < listings.length && (
                 <div className="flex justify-center mt-8">
                   <button onClick={() => setDisplayed(d => d + 9)} className="px-4 py-2 rounded bg-secondary">Load More</button>
