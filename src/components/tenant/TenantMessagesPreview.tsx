@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
@@ -23,14 +22,14 @@ const TenantMessagesPreview: React.FC<Props> = ({ messages }) => {
       <div className="flex items-center justify-between mb-4">
         {/* Spacer - H2 is now rendered by parent */}
         <span />
-        <Button 
-          variant="ghost" 
+        <Button
+          variant="outline"
           size="sm"
           onClick={() => navigate("/messages")}
-          className="rounded-full border px-4 py-1 text-xs uppercase tracking-wider border-border bg-white hover:bg-muted text-foreground shadow-sm transition-all font-normal"
+          className="rounded-2xl px-7 py-2 text-sm font-medium tracking-widest border-border text-foreground flex items-center gap-2 uppercase border"
         >
-          Go to Inbox
-          <ArrowRight className="w-3 h-3 ml-2" />
+          GO TO INBOX
+          <ArrowRight className="w-4 h-4 ml-2" />
         </Button>
       </div>
 
@@ -77,4 +76,3 @@ const TenantMessagesPreview: React.FC<Props> = ({ messages }) => {
 };
 
 export default TenantMessagesPreview;
-

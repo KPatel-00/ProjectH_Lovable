@@ -1,4 +1,3 @@
-
 import React from "react";
 import EmptyState from "@/components/EmptyState";
 import { FolderOpen, ArrowRight } from "lucide-react";
@@ -31,19 +30,17 @@ const TenantApplicationStatuses: React.FC<Props> = ({ applications }) => {
   return (
     <div>
       <div className="flex items-center justify-between mb-4">
-        {/* Spacer - H2 is now rendered by parent */}
         <span />
-        <Button 
-          variant="ghost" 
+        <Button
+          variant="outline"
           size="sm"
           onClick={() => navigate("/myapplications")}
-          className="rounded-full border px-4 py-1 text-xs uppercase tracking-wider border-border bg-white hover:bg-muted text-foreground shadow-sm transition-all font-normal"
+          className="rounded-2xl px-7 py-2 text-sm font-medium tracking-widest border-border text-foreground flex items-center gap-2 uppercase border"
         >
-          View All Applications
-          <ArrowRight className="w-3 h-3 ml-2" />
+          VIEW ALL APPLICATIONS
+          <ArrowRight className="w-4 h-4 ml-2" />
         </Button>
       </div>
-
       {applications.length === 0 ? (
         <EmptyState
           icon={FolderOpen}
@@ -92,4 +89,3 @@ const TenantApplicationStatuses: React.FC<Props> = ({ applications }) => {
 };
 
 export default TenantApplicationStatuses;
-
