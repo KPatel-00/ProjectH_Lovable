@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
@@ -63,7 +62,6 @@ export function UserActionsDropdown({ user, onBan, onUnban, onRoleChange, onVeri
         </DropdownMenuContent>
       </DropdownMenu>
 
-      {/* Simple modal/confirm for demo */}
       {confirm && (
         <div className="fixed inset-0 bg-black/30 z-50 flex items-center justify-center">
           <div className="bg-white rounded-lg p-5 max-w-xs w-full border">
@@ -92,7 +90,16 @@ export function UserActionsDropdown({ user, onBan, onUnban, onRoleChange, onVeri
               <div className="flex gap-2 justify-center">
                 <Button variant="outline" onClick={() => setConfirm(null)}>Cancel</Button>
                 <Button
-                  variant={["ban", "unban"].includes(confirm.action) ? (confirm.action === "ban" ? "destructive" : "default") : "default"}
+                  variant={
+                    ["ban", "unban"].includes(confirm.action)
+                      ? "outline"
+                      : "default"
+                  }
+                  className={
+                    confirm.action === "ban"
+                      ? "text-destructive border-destructive"
+                      : ""
+                  }
                   onClick={() => {
                     if (confirm.action === "ban") onBan();
                     if (confirm.action === "unban") onUnban();

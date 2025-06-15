@@ -205,7 +205,13 @@ const LandlordApplications: React.FC = () => {
                               <Button size="icon" variant="secondary" onClick={() => handleAccept(app.id)} title="Accept">
                                 <Check className="w-4 h-4" />
                               </Button>
-                              <Button size="icon" variant="destructive" onClick={() => handleReject(app.id)} title="Reject">
+                              <Button
+                                size="icon"
+                                variant="outline"
+                                className="text-destructive border-destructive"
+                                onClick={() => handleReject(app.id)}
+                                title="Reject"
+                              >
                                 <X className="w-4 h-4" />
                               </Button>
                             </>
@@ -260,7 +266,11 @@ const LandlordApplications: React.FC = () => {
                 <Button variant="secondary" onClick={() => handleAccept(activeApp.id)}>
                   Accept
                 </Button>
-                <Button variant="destructive" onClick={() => handleReject(activeApp.id)}>
+                <Button
+                  variant="outline"
+                  className="text-destructive border-destructive"
+                  onClick={() => handleReject(activeApp.id)}
+                >
                   Reject
                 </Button>
               </>

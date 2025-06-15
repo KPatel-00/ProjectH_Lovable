@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogFooter, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -40,7 +39,8 @@ export default function ConfirmationModal({ open, onClose, onConfirm, type }: Pr
         <DialogFooter>
           <Button variant="outline" onClick={onClose}>Cancel</Button>
           <Button
-            variant={type === "approve" ? "default" : "destructive"}
+            variant={type === "approve" ? "default" : "outline"}
+            className={type === "reject" ? "text-destructive border-destructive" : ""}
             onClick={() => {
               onConfirm(type === "reject" ? reason : undefined);
             }}
@@ -52,3 +52,4 @@ export default function ConfirmationModal({ open, onClose, onConfirm, type }: Pr
     </Dialog>
   );
 }
+

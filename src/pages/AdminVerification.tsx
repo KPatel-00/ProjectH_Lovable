@@ -186,7 +186,8 @@ export default function AdminVerification() {
                           <Check className="w-4 h-4 mr-1" /> Approve
                         </Button>
                         <Button
-                          variant="destructive"
+                          variant="outline"
+                          className="text-destructive border-destructive"
                           size="sm"
                           disabled={l.status !== "pending"}
                           onClick={() => openModal("reject", "landlord", l.id)}
@@ -266,7 +267,8 @@ export default function AdminVerification() {
                           <Check className="w-4 h-4 mr-1" /> Approve
                         </Button>
                         <Button
-                          variant="destructive"
+                          variant="outline"
+                          className="text-destructive border-destructive"
                           size="sm"
                           disabled={l.status !== "pending"}
                           onClick={() => openModal("reject", "listing", l.id)}
