@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -5,70 +6,35 @@
 /* Import modern sans-serif fonts */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
-/* Refined neutral color palette for luxury rental housing platform */
-
 @layer base {
   :root {
-    /* New Refined Color Palette for Editorial Minimalist UI */
-    --background: 250 250 250;        /* Soft off-white #FAFAFA */
-    --foreground: 26 26 26;           /* Deep charcoal #1A1A1A */
-    --card: 255 255 255;
-    --card-foreground: 26 26 26;
-    --popover: 255 255 255;
-    --popover-foreground: 26 26 26;
-    --primary: 26 26 26;              /* Deep charcoal */
+    --background: 250 250 250; /* #FAFAFA */
+    --foreground: 26 26 26;    /* #1A1A1A */
+    --primary: 26 26 26;       /* #1A1A1A */
     --primary-foreground: 250 250 250;
-    --secondary: 217 203 163;         /* Muted gold #D9CBA3 */
+    --secondary: 217 203 163;  /* #D9CBA3 */
     --secondary-foreground: 26 26 26;
-    --muted: 247 245 241;             /* Pale beige #F7F5F1 */
-    --muted-foreground: 115 115 115;
-    --accent: 244 244 244;            /* Warm light gray #F4F4F4 */
-    --accent-foreground: 26 26 26;
+    --accent: 244 244 244;     /* #F4F4F4 */
+    --card: 255 255 255;
+    --muted: 231 231 231;      /* lighter for inputs */
+    --muted-foreground: 85 85 85;
+    --border: 217 203 163;     /* #D9CBA3 (gold!) */
+    --input: 217 203 163;
+    --ring: 217 203 163;
     --destructive: 185 51 51;
     --destructive-foreground: 255 255 255;
-    --border: 234 234 234;            /* Light gray #EAEAEA */
-    --input: 234 234 234;
-    --ring: 217 203 163;              /* Muted gold for focus ring */
     --radius: 0.5rem;
-    /* Sidebar colors */
-    --sidebar-background: 250 250 250;
-    --sidebar-foreground: 26 26 26;
-    --sidebar-primary: 26 26 26;
-    --sidebar-primary-foreground: 250 250 250;
-    --sidebar-accent: 244 244 244;
-    --sidebar-accent-foreground: 26 26 26;
-    --sidebar-border: 234 234 234;
-    --sidebar-ring: 217 203 163;
   }
-
   .dark {
     --background: 26 26 26;
     --foreground: 250 250 250;
     --card: 35 35 35;
-    --card-foreground: 250 250 250;
-    --popover: 35 35 35;
-    --popover-foreground: 250 250 250;
     --primary: 250 250 250;
     --primary-foreground: 26 26 26;
     --secondary: 217 203 163;
-    --secondary-foreground: 26 26 26;
-    --muted: 45 45 45;
-    --muted-foreground: 170 170 170;
-    --accent: 45 45 45;
-    --accent-foreground: 250 250 250;
-    --destructive: 220 85 85;
-    --destructive-foreground: 250 250 250;
-    --border: 55 55 55;
-    --input: 55 55 55;
+    --border: 217 203 163;
+    --input: 217 203 163;
     --ring: 217 203 163;
-    --sidebar-background: 26 26 26;
-    --sidebar-foreground: 250 250 250;
-    --sidebar-primary: 217 203 163;
-    --sidebar-primary-foreground: 26 26 26;
-    --sidebar-accent: 45 45 45;
-    --sidebar-accent-foreground: 250 250 250;
-    --sidebar-border: 55 55 55;
-    --sidebar-ring: 217 203 163;
   }
 }
 
@@ -80,156 +46,124 @@
   body {
     @apply bg-background text-foreground;
     font-family: 'Inter', 'Helvetica Neue', system-ui, -apple-system, sans-serif;
-    font-weight: 300;
+    font-weight: 400;
     line-height: 1.7;
     letter-spacing: 0.02em;
   }
 
-  /* Editorial Typography System */
-  .editorial-display {
+  /* Typography (Strong contrast for all) */
+  h1, h2, h3, h4, h5, h6 {
+    color: #1A1A1A !important;
     font-family: 'Inter', 'Helvetica Neue', system-ui, -apple-system, sans-serif;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    line-height: 1.1;
+    font-weight: bold;
+  }
+  p, span, label, input, textarea, select, .editorial-caption, .editorial-body, .editorial-headline {
+    color: #1A1A1A;
+  }
+  ::placeholder {
+    color: #757575 !important; /* darker placeholder for readability */
+    opacity: 1 !important;
+  }
+  .text-muted-foreground, .editorial-caption {
+    color: #757575 !important;
+    opacity: 1 !important;
   }
 
-  .editorial-headline {
-    font-family: 'Inter', 'Helvetica Neue', system-ui, -apple-system, sans-serif;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-    line-height: 1.3;
-  }
-
-  .editorial-subhead {
-    font-family: 'Inter', 'Helvetica Neue', system-ui, -apple-system, sans-serif;
-    font-weight: 400;
-    letter-spacing: 0.01em;
-    line-height: 1.5;
-  }
-
-  .editorial-body {
-    font-family: 'Inter', 'Helvetica Neue', system-ui, -apple-system, sans-serif;
-    font-weight: 300;
-    letter-spacing: 0.01em;
-    line-height: 1.7;
-  }
-
-  .editorial-caption {
-    font-family: 'Inter', 'Helvetica Neue', system-ui, -apple-system, sans-serif;
-    font-weight: 400;
-    letter-spacing: 0.04em;
-    line-height: 1.4;
-    text-transform: uppercase;
-    font-size: 0.75rem;
+  /* Input and Select fields: visible border, solid white bg, black text */
+  input, select, textarea {
+    background: #fff !important;
+    color: #1A1A1A !important;
+    border: 2px solid #D9CBA3 !important; /* gold border */
+    border-radius: 0.75rem !important;
+    font-size: 1rem !important;
+    font-weight: 500;
   }
 
   /* Refined Button Styles */
-  .btn-primary {
-    @apply bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm hover:shadow-md transition-all duration-300;
+  .btn-primary, .shadcn-btn-primary {
+    background-color: #1A1A1A !important;
+    color: #FAFAFA !important;
+    border: none !important;
+    box-shadow: none;
+    font-weight: 700;
+    font-size: 1rem;
+    border-radius: 0.75rem;
+    transition: background 0.2s;
+  }
+  .btn-primary:hover, .shadcn-btn-primary:hover {
+    background-color: #333 !important;
+  }
+  .btn-outline, .shadcn-btn-outline {
+    background: #fff !important;
+    color: #1A1A1A !important;
+    border: 2px solid #D9CBA3 !important;
+    font-weight: 700;
+    font-size: 1rem;
+    border-radius: 0.75rem;
+    transition: border 0.2s, background 0.2s;
+  }
+  .btn-outline:hover, .shadcn-btn-outline:hover {
+    background: #F4F4F4 !important;
+    border-color: #333 !important;
+  }
+  .btn-secondary, .shadcn-btn-secondary {
+    background-color: #D9CBA3 !important;
+    color: #1A1A1A !important;
+    font-weight: 700;
+    border-radius: 0.75rem;
+    border: none !important;
+    font-size: 1rem;
+  }
+  /* Black button for actions */
+  .btn-black, .shadcn-btn-black {
+    background: #1A1A1A !important;
+    color: #FAFAFA !important;
+    font-weight: 700;
+    font-size: 1rem;
+    border-radius: 0.75rem;
+    border: none !important;
   }
 
-  .btn-secondary {
-    @apply bg-secondary text-secondary-foreground hover:bg-secondary/80 shadow-sm hover:shadow-md transition-all duration-300;
-  }
-
-  .btn-ghost {
-    @apply bg-transparent border border-border hover:bg-accent hover:border-muted-foreground/20 transition-all duration-300;
-  }
-
-  /* Refined Card Styles */
-  .card-refined {
-    @apply bg-card border border-border/50 rounded-xl shadow-sm hover:shadow-md hover:border-border transition-all duration-300;
-  }
-
-  /* Typography Scale */
-  h1 {
-    @apply editorial-display text-4xl md:text-5xl lg:text-6xl text-foreground;
-  }
-
-  h2 {
-    @apply editorial-headline text-2xl md:text-3xl text-foreground;
-  }
-
-  h3 {
-    @apply editorial-subhead text-xl md:text-2xl text-foreground;
-  }
-
-  h4 {
-    @apply editorial-subhead text-lg md:text-xl text-foreground;
-  }
-
-  h5 {
-    @apply editorial-subhead text-base md:text-lg text-foreground;
-  }
-
-  h6 {
-    @apply editorial-caption text-muted-foreground;
-  }
-
-  p {
-    @apply editorial-body text-base md:text-lg text-foreground;
+  /* Card and search filter sections */
+  .card-refined, .search-bar-refined {
+    background: #fff !important;
+    border: 2px solid #D9CBA3 !important;
+    border-radius: 1rem !important;
+    box-shadow: 0 2px 8px 0 rgba(217, 203, 163, 0.10);
   }
 }
 
-/* Custom scrollbar with refined colors */
-::-webkit-scrollbar {
-  width: 6px;
-}
-
-::-webkit-scrollbar-track {
-  background: hsl(var(--muted));
-}
-
-::-webkit-scrollbar-thumb {
-  background: hsl(var(--muted-foreground));
-  border-radius: 3px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: hsl(var(--foreground));
-}
-
-/* Hide scrollbar for horizontal scroll */
-.scrollbar-hide {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
-.scrollbar-hide::-webkit-scrollbar {
-  display: none;
-}
-
-/* Smooth scrolling */
-html {
-  scroll-behavior: smooth;
-}
-
-/* Focus styles with refined colors */
+/* High-contrast focus style */
 :focus-visible {
-  outline: 2px solid hsl(var(--ring));
+  outline: 2px solid #D9CBA3 !important;
   outline-offset: 2px;
 }
 
-/* Refined shadow utilities */
+/* Refined, subtle gray shadow */
 .shadow-refined {
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px 0 rgba(0, 0, 0, 0.03);
+  box-shadow: 0 2px 8px 0 rgba(217, 203, 163, 0.09);
 }
-
 .shadow-refined-lg {
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+  box-shadow: 0 6px 20px -2px rgba(217, 203, 163, 0.12);
 }
-
 .shadow-refined-xl {
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.03);
+  box-shadow: 0 20px 50px -12px rgba(217, 203, 163, 0.12);
 }
 
-/* Refined hover effects */
-.hover-lift {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+/* Remove default border radius for tighter UI, but preserved for buttons & cards */
+.rounded-xl, .rounded-2xl, .rounded-lg, .rounded-md {
+  border-radius: 1rem !important;
 }
 
-.hover-lift:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+/* Refine scrollbars for minimal look */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background: #ececec;
+}
+
+/* Ensure all backgrounds */
+.bg-white, .bg-background, .bg-card, .bg-accent {
+  background-color: #FAFAFA !important;
 }

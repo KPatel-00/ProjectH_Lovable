@@ -8,7 +8,6 @@ export default {
 		"./app/**/*.{ts,tsx}",
 		"./src/**/*.{ts,tsx}",
 	],
-	prefix: "",
 	theme: {
 		container: {
 			center: true,
@@ -20,13 +19,11 @@ export default {
 		extend: {
 			fontFamily: {
 				'sans': ['Inter', 'Helvetica Neue', 'system-ui', '-apple-system', 'sans-serif'],
-				'editorial': ['Inter', 'Helvetica Neue', 'system-ui', '-apple-system', 'sans-serif'],
 			},
-			/* Editorial + Minimalist Color Theme */
 			colors: {
-				border: 'hsl(var(--border))',
-				input: 'hsl(var(--input))',
-				ring: 'hsl(var(--ring))',
+				border: '#D9CBA3', // soft gold for all borders
+				input: '#D9CBA3',
+				ring: '#D9CBA3',
 				background: '#FAFAFA',
 				foreground: '#1A1A1A',
 				primary: {
@@ -43,25 +40,12 @@ export default {
 				},
 				muted: {
 					DEFAULT: '#F7F5F1',
-					foreground: '#737373',
+					foreground: '#757575',
 				},
 				card: {
 					DEFAULT: '#FFFFFF',
 					foreground: '#1A1A1A',
 				},
-				// Additional refined colors
-				neutral: {
-					50: '#FAFAFA',
-					100: '#F4F4F4',
-					200: '#EAEAEA',
-					300: '#DADADA',
-					400: '#CFC6B8',
-					500: '#D9CBA3',
-					600: '#B8A682',
-					700: '#9B8B6B',
-					800: '#7D6F56',
-					900: '#625546'
-				}
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
