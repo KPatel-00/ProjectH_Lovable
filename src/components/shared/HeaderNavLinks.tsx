@@ -21,9 +21,9 @@ type HeaderNavLinksProps = {
 const HeaderNavLinks: React.FC<HeaderNavLinksProps> = ({
   links,
   navClassName = "flex gap-2",
-  btnClassName = "relative px-4 font-medium transition-all",
-  activeClassName = "text-primary after:absolute after:-bottom-px after:left-1/2 after:-translate-x-1/2 after:w-5/6 after:h-[2px] after:bg-primary after:rounded-full content-['']",
-  inactiveClassName = "text-muted-foreground hover:text-primary",
+  btnClassName = "relative px-4 font-medium text-xs uppercase tracking-wide transition-all duration-300 ease-out",
+  activeClassName = "text-primary after:absolute after:-bottom-px after:left-1/2 after:-translate-x-1/2 after:w-3/4 after:h-[2px] after:bg-primary after:rounded-full after:content-[''] after:animate-in after:slide-in-from-bottom-1",
+  inactiveClassName = "text-muted-foreground hover:text-primary hover:scale-105",
   button = false,
   onNavigate,
 }) => {
@@ -66,4 +66,3 @@ const HeaderNavLinks: React.FC<HeaderNavLinksProps> = ({
 };
 
 export default HeaderNavLinks;
-

@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { NavLink, useNavigate, useLocation } from "react-router-dom";
 import { Menu, Bell, User, LogOut, LayoutDashboard, List, HelpCircle, FileText, Settings } from "lucide-react";
@@ -73,7 +74,6 @@ const LandlordHomePageHeader = () => {
   };
 
   // Styling for scroll shadow
-  // Use a state to detect scroll
   const [scrolled] = useScrollShadow();
 
   const t = useT();
@@ -90,28 +90,36 @@ const LandlordHomePageHeader = () => {
 
   return (
     <header
-      className={`sticky top-0 z-50 bg-background/95 backdrop-blur border-b border-border transition-shadow duration-200 ${scrolled ? "shadow-md" : "shadow-none"}`}
+      className={`sticky top-0 z-50 bg-background/95 backdrop-blur-md border-b border-border transition-all duration-300 ${scrolled ? "shadow-lg" : "shadow-none"}`}
     >
       <a
         href="#main-content"
-        className="fixed left-2 top-2 z-[100] px-4 py-2 bg-white text-primary border border-primary rounded transition-transform -translate-y-16 focus:translate-y-0 focus:outline-none focus:ring-2 focus:ring-primary"
+        className="fixed left-2 top-2 z-[100] px-4 py-2 bg-white text-primary border border-primary rounded-lg transition-all duration-300 -translate-y-16 focus:translate-y-0 focus:outline-none focus:ring-2 focus:ring-primary"
         tabIndex={0}
       >
         {t("skipToMainContent") || "Skip to main content"}
       </a>
       <div className="container mx-auto px-2 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-2">
         {/* --- LEFT: Brand --- */}
-        <LandlordHeaderBrand onClick={() => navigate("/landlord/home")} />
+        <div className="transition-transform duration-300 hover:scale-105">
+          <LandlordHeaderBrand onClick={() => navigate("/landlord/home")} />
+        </div>
+        
         {/* --- CENTER: Navigation Menu --- */}
         <LandlordNavLinks />
+        
         {/* --- RIGHT: Actions --- */}
         <div className="flex items-center space-x-1">
           {/* Language Selector */}
-          <div className="hidden sm:block">
+          <div className="hidden sm:block transition-transform duration-200 hover:scale-105">
             <LanguageSelector />
           </div>
+          
           {/* Notifications */}
-          <HeaderNotificationsButton ariaLabel={t("notifications")} />
+          <div className="transition-transform duration-200 hover:scale-110">
+            <HeaderNotificationsButton ariaLabel={t("notifications")} />
+          </div>
+          
           {/* Avatar Dropdown (desktop) */}
           <HeaderAvatarMenuDesktop
             user={user}
@@ -131,6 +139,7 @@ const LandlordHomePageHeader = () => {
             }))}
             onNavigate={navigate}
           />
+          
           {/* Hamburger menu + avatar (mobile) */}
           <div className="flex items-center md:hidden gap-1">
             <HeaderAvatarMenuMobileSheet
@@ -156,8 +165,13 @@ const LandlordHomePageHeader = () => {
             />
             <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
               <SheetTrigger asChild>
-                <Button size="icon" variant="ghost" className="ml-1" type="button">
-                  <Menu className="w-6 h-6" />
+                <Button 
+                  size="icon" 
+                  variant="ghost" 
+                  className="ml-1 transition-all duration-200 hover:bg-accent hover:scale-110" 
+                  type="button"
+                >
+                  <Menu className="w-6 h-6 transition-transform duration-200" />
                 </Button>
               </SheetTrigger>
               <LandlordHeaderMobileMenu navLinks={translatedNavLinks} />
