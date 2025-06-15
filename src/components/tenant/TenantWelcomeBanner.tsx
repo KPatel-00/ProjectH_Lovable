@@ -1,32 +1,45 @@
 
 import React from "react";
+import { Button } from "@/components/ui/button";
 
 interface Props {
   firstName: string;
   moveInGoal?: string;
 }
+
 const TenantWelcomeBanner: React.FC<Props> = ({ firstName, moveInGoal }) => (
-  <section className="animate-fade-in bg-gradient-to-tr from-primary/5 to-secondary/10 border border-border rounded-2xl flex flex-col sm:flex-row items-center gap-5 py-6 px-6 mb-4 shadow-[0_4px_36px_-6px_rgba(80,85,140,0.10)]">
-    <div className="flex items-center gap-5">
-      <div className="h-20 w-20 sm:h-24 sm:w-24 rounded-2xl bg-gradient-to-br from-primary to-secondary shadow-md flex items-center justify-center font-bold text-4xl sm:text-5xl text-white uppercase">
-        {firstName[0]}
-      </div>
-      <div className="flex flex-col">
-        <span className="text-xl sm:text-2xl font-extrabold text-foreground mb-1">
-          Welcome back, {firstName}!
-        </span>
+  <section className="editorial-hero-section">
+    <div className="editorial-hero-content">
+      <div className="editorial-hero-text">
+        <h1 className="editorial-hero-headline">
+          WELCOME BACK, {firstName.toUpperCase()}
+        </h1>
+        <p className="editorial-hero-subtext">
+          Your personalized rental journey continues here
+        </p>
         {moveInGoal && (
-          <span className="inline-flex items-center gap-2 text-primary text-base mt-1">
-            <span className="block w-2 h-2 rounded-full bg-secondary" />
-            Move-in goal: <span className="font-bold">{moveInGoal}</span>
-          </span>
+          <div className="editorial-move-in-goal">
+            <span className="editorial-accent-dot" />
+            <span className="editorial-caption-text">
+              MOVE-IN GOAL: {moveInGoal.toUpperCase()}
+            </span>
+          </div>
         )}
       </div>
+      
+      {/* Editorial CTA */}
+      <div className="editorial-hero-actions">
+        <Button 
+          variant="outline" 
+          className="editorial-button-ghost"
+        >
+          COMPLETE YOUR PROFILE
+        </Button>
+      </div>
     </div>
-    {/* Optionally, you can place an illustration/image here for larger screens */}
-    {/* <div className="hidden sm:block ml-auto">
-      <img ... />
-    </div> */}
+    
+    {/* Subtle background element */}
+    <div className="editorial-hero-background" />
   </section>
 );
 

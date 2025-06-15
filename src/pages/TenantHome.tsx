@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -56,11 +57,14 @@ const TenantHome = () => {
       >
         {t("skipToMainContent") || "Skip to main content"}
       </a>
-      <main id="main-content" className="min-h-screen bg-muted/30 flex flex-col" tabIndex={-1}>
-        <div className="container mx-auto max-w-5xl px-2 py-4 sm:py-8 flex-1 flex flex-col gap-6">
+      
+      {/* Editorial main content with proper spacing */}
+      <main id="main-content" className="min-h-screen bg-background flex flex-col" tabIndex={-1}>
+        <div className="editorial-container mx-auto max-w-6xl px-6 md:px-12 py-8 md:py-16 flex-1 flex flex-col">
           <TenantHomeSections state={state} t={t} fetchData={fetchData} />
         </div>
       </main>
+      
       <Footer />
     </>
   );

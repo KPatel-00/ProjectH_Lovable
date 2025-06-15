@@ -10,90 +10,77 @@
 
 @layer base {
   :root {
-    /* Soft off-whites and light grays */
-    --background: 252 252 250; /* Soft off-white with subtle warmth */
-    --foreground: 35 35 35; /* Deep charcoal for text */
+    /* Editorial color palette */
+    --background: 248 248 248; /* Soft off-white #F8F8F8 */
+    --foreground: 26 26 26; /* Charcoal #1A1A1A */
 
-    --card: 255 255 255; /* Pure white for cards */
-    --card-foreground: 35 35 35; /* Deep charcoal */
+    --card: 255 255 255; /* Pure white */
+    --card-foreground: 26 26 26;
 
     --popover: 255 255 255;
-    --popover-foreground: 35 35 35;
+    --popover-foreground: 26 26 26;
 
-    /* Muted gold as primary accent */
-    --primary: 35 35 35; /* Deep charcoal for primary elements */
-    --primary-foreground: 252 252 250; /* Soft off-white text on dark */
+    --primary: 26 26 26; /* Charcoal for primary elements */
+    --primary-foreground: 248 248 248;
 
-    /* Natural beige/gold accent for verified badges and highlights */
-    --secondary: 183 154 108; /* Muted gold/beige */
-    --secondary-foreground: 255 255 255;
+    /* Editorial accent - muted beige */
+    --secondary: 229 220 195; /* Muted beige #E5DCC3 */
+    --secondary-foreground: 26 26 26;
 
-    /* Light grays for muted elements */
-    --muted: 248 248 246; /* Very light warm gray */
-    --muted-foreground: 102 102 102; /* Medium gray for secondary text */
+    --muted: 245 245 245; /* Very light gray */
+    --muted-foreground: 138 138 138; /* Medium gray #8A8A8A */
 
-    --accent: 245 245 243; /* Slightly darker off-white for accents */
-    --accent-foreground: 35 35 35;
+    --accent: 242 242 242;
+    --accent-foreground: 26 26 26;
 
-    --destructive: 185 51 51; /* Muted red for errors */
+    --destructive: 185 51 51;
     --destructive-foreground: 255 255 255;
 
-    /* Subtle borders and inputs */
-    --border: 240 240 237; /* Very light gray border */
-    --input: 240 240 237;
-    --ring: 35 35 35; /* Deep charcoal for focus rings */
+    --border: 235 235 235; /* Very light border */
+    --input: 235 235 235;
+    --ring: 26 26 26;
 
-    --radius: 1rem; /* Rounded corners for modern feel */
+    --radius: 0.5rem; /* Subtle rounded corners */
 
     /* Sidebar colors */
-    --sidebar-background: 252 252 250;
-    --sidebar-foreground: 35 35 35;
-    --sidebar-primary: 35 35 35;
-    --sidebar-primary-foreground: 252 252 250;
-    --sidebar-accent: 248 248 246;
-    --sidebar-accent-foreground: 35 35 35;
-    --sidebar-border: 240 240 237;
-    --sidebar-ring: 35 35 35;
+    --sidebar-background: 248 248 248;
+    --sidebar-foreground: 26 26 26;
+    --sidebar-primary: 26 26 26;
+    --sidebar-primary-foreground: 248 248 248;
+    --sidebar-accent: 245 245 245;
+    --sidebar-accent-foreground: 26 26 26;
+    --sidebar-border: 235 235 235;
+    --sidebar-ring: 26 26 26;
   }
 
   .dark {
-    /* Dark mode with inverted neutral palette */
-    --background: 35 35 35; /* Deep charcoal background */
-    --foreground: 252 252 250; /* Soft off-white text */
-
-    --card: 45 45 45; /* Slightly lighter charcoal for cards */
-    --card-foreground: 252 252 250;
-
-    --popover: 45 45 45;
-    --popover-foreground: 252 252 250;
-
-    --primary: 252 252 250; /* Light primary in dark mode */
-    --primary-foreground: 35 35 35;
-
-    --secondary: 183 154 108; /* Keep muted gold accent */
-    --secondary-foreground: 35 35 35;
-
-    --muted: 55 55 55; /* Dark gray for muted elements */
-    --muted-foreground: 170 170 170; /* Light gray text */
-
-    --accent: 55 55 55;
-    --accent-foreground: 252 252 250;
-
-    --destructive: 220 85 85; /* Lighter red for dark mode */
-    --destructive-foreground: 252 252 250;
-
-    --border: 65 65 65; /* Dark borders */
-    --input: 65 65 65;
-    --ring: 183 154 108; /* Gold ring for focus in dark mode */
-    
-    --sidebar-background: 35 35 35;
-    --sidebar-foreground: 252 252 250;
-    --sidebar-primary: 183 154 108;
-    --sidebar-primary-foreground: 35 35 35;
-    --sidebar-accent: 55 55 55;
-    --sidebar-accent-foreground: 252 252 250;
-    --sidebar-border: 65 65 65;
-    --sidebar-ring: 183 154 108;
+    --background: 26 26 26;
+    --foreground: 248 248 248;
+    --card: 35 35 35;
+    --card-foreground: 248 248 248;
+    --popover: 35 35 35;
+    --popover-foreground: 248 248 248;
+    --primary: 248 248 248;
+    --primary-foreground: 26 26 26;
+    --secondary: 229 220 195;
+    --secondary-foreground: 26 26 26;
+    --muted: 45 45 45;
+    --muted-foreground: 170 170 170;
+    --accent: 45 45 45;
+    --accent-foreground: 248 248 248;
+    --destructive: 220 85 85;
+    --destructive-foreground: 248 248 248;
+    --border: 55 55 55;
+    --input: 55 55 55;
+    --ring: 229 220 195;
+    --sidebar-background: 26 26 26;
+    --sidebar-foreground: 248 248 248;
+    --sidebar-primary: 229 220 195;
+    --sidebar-primary-foreground: 26 26 26;
+    --sidebar-accent: 45 45 45;
+    --sidebar-accent-foreground: 248 248 248;
+    --sidebar-border: 55 55 55;
+    --sidebar-ring: 229 220 195;
   }
 }
 
@@ -106,101 +93,224 @@
     @apply bg-background text-foreground;
     font-family: 'Helvetica Neue', 'Inter', system-ui, -apple-system, sans-serif;
     font-weight: 300;
-    line-height: 1.6;
-    letter-spacing: -0.01em;
+    line-height: 1.7;
+    letter-spacing: 0.02em;
   }
 
   /* Editorial Typography System */
   .editorial-display {
     font-family: 'Helvetica Neue', 'Inter', system-ui, -apple-system, sans-serif;
-    font-weight: 800;
+    font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.02em;
+    letter-spacing: 0.08em;
     line-height: 1.1;
   }
 
   .editorial-headline {
     font-family: 'Helvetica Neue', 'Inter', system-ui, -apple-system, sans-serif;
-    font-weight: 700;
-    letter-spacing: -0.02em;
-    line-height: 1.2;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    line-height: 1.3;
   }
 
   .editorial-subhead {
     font-family: 'Helvetica Neue', 'Inter', system-ui, -apple-system, sans-serif;
-    font-weight: 500;
-    letter-spacing: -0.005em;
-    line-height: 1.4;
+    font-weight: 400;
+    letter-spacing: 0.01em;
+    line-height: 1.5;
   }
 
   .editorial-body {
     font-family: 'Helvetica Neue', 'Inter', system-ui, -apple-system, sans-serif;
     font-weight: 300;
-    letter-spacing: -0.01em;
-    line-height: 1.6;
+    letter-spacing: 0.01em;
+    line-height: 1.7;
   }
 
   .editorial-caption {
     font-family: 'Helvetica Neue', 'Inter', system-ui, -apple-system, sans-serif;
     font-weight: 400;
-    letter-spacing: 0.01em;
-    line-height: 1.5;
+    letter-spacing: 0.04em;
+    line-height: 1.4;
     text-transform: uppercase;
     font-size: 0.75rem;
   }
 
-  /* Editorial Image Gallery Styles */
-  .editorial-image-gallery {
+  /* Editorial Layout System */
+  .editorial-layout {
     @apply w-full;
   }
 
-  .editorial-image-gallery img {
-    image-rendering: -webkit-optimize-contrast;
-    image-rendering: crisp-edges;
+  .editorial-section-spacing {
+    @apply mb-20 md:mb-28;
+  }
+
+  .editorial-divider {
+    @apply w-full h-px bg-gradient-to-r from-transparent via-border to-transparent mb-16 md:mb-20;
+  }
+
+  .editorial-content-section {
+    @apply w-full;
+  }
+
+  .editorial-section-header {
+    @apply mb-12 md:mb-16 flex flex-col items-center text-center;
+  }
+
+  .editorial-section-title {
+    @apply editorial-display text-2xl md:text-3xl text-foreground mb-6;
+  }
+
+  .editorial-section-line {
+    @apply w-16 h-px bg-secondary;
+  }
+
+  /* Editorial Hero */
+  .editorial-hero-section {
+    @apply relative bg-background py-16 md:py-24 px-6 md:px-12 rounded-lg overflow-hidden;
+  }
+
+  .editorial-hero-content {
+    @apply relative z-10 max-w-4xl mx-auto text-center;
+  }
+
+  .editorial-hero-headline {
+    @apply editorial-display text-4xl md:text-5xl lg:text-6xl text-foreground mb-6;
+  }
+
+  .editorial-hero-subtext {
+    @apply editorial-body text-lg md:text-xl text-muted-foreground mb-8 max-w-2xl mx-auto;
+  }
+
+  .editorial-move-in-goal {
+    @apply flex items-center justify-center gap-3 mb-8;
+  }
+
+  .editorial-accent-dot {
+    @apply w-2 h-2 rounded-full bg-secondary;
+  }
+
+  .editorial-caption-text {
+    @apply editorial-caption text-muted-foreground;
+  }
+
+  .editorial-hero-actions {
+    @apply flex justify-center;
+  }
+
+  .editorial-button-ghost {
+    @apply editorial-caption px-8 py-3 border border-border bg-transparent hover:bg-muted transition-all duration-300 rounded-sm;
+  }
+
+  .editorial-hero-background {
+    @apply absolute inset-0 bg-gradient-to-br from-secondary/5 to-background opacity-50;
+  }
+
+  /* Editorial Stats */
+  .editorial-stats-grid {
+    @apply grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12;
+  }
+
+  .editorial-stat-card {
+    @apply flex items-center gap-4 p-6 bg-card border border-border/30 rounded-lg hover:border-border/60 transition-all duration-300 hover:shadow-sm;
+  }
+
+  .editorial-stat-icon {
+    @apply w-12 h-12 rounded-full flex items-center justify-center text-white;
+  }
+
+  .editorial-stat-accent-1 {
+    @apply bg-gradient-to-br from-gray-600 to-gray-700;
+  }
+
+  .editorial-stat-accent-2 {
+    @apply bg-gradient-to-br from-gray-700 to-gray-800;
+  }
+
+  .editorial-stat-accent-3 {
+    @apply bg-gradient-to-br from-gray-800 to-gray-900;
+  }
+
+  .editorial-stat-content {
+    @apply flex flex-col;
+  }
+
+  .editorial-stat-number {
+    @apply text-3xl font-light text-foreground mb-1;
+  }
+
+  .editorial-stat-label {
+    @apply editorial-caption text-muted-foreground;
+  }
+
+  /* Editorial Property Cards */
+  .editorial-property-grid {
+    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12;
+  }
+
+  .editorial-property-card {
+    @apply bg-card border border-border/20 rounded-lg overflow-hidden hover:border-border/40 transition-all duration-500 hover:shadow-lg;
+  }
+
+  .editorial-property-image {
+    @apply relative aspect-[4/3] overflow-hidden;
+  }
+
+  .editorial-property-overlay {
+    @apply absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500;
+  }
+
+  .editorial-property-content {
+    @apply p-6 space-y-4;
+  }
+
+  .editorial-property-location {
+    @apply flex items-center gap-2;
+  }
+
+  .editorial-location-text {
+    @apply editorial-caption text-muted-foreground;
+  }
+
+  .editorial-property-title {
+    @apply editorial-subhead text-lg text-foreground leading-tight;
+  }
+
+  .editorial-property-price {
+    @apply editorial-headline text-xl text-foreground;
+  }
+
+  .editorial-price-period {
+    @apply editorial-caption text-muted-foreground ml-2;
+  }
+
+  .editorial-property-actions {
+    @apply flex gap-3 pt-2;
+  }
+
+  .editorial-action-button {
+    @apply editorial-caption text-xs px-4 py-2 border border-border/30 hover:border-border/60 transition-all duration-300 rounded-sm;
   }
 
   /* Studio-Quality Image Enhancement */
   .studio-image {
-    filter: contrast(1.05) saturate(0.95) brightness(1.02);
+    filter: contrast(1.03) saturate(0.97) brightness(1.01);
     image-rendering: crisp-edges;
     transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .studio-image:hover {
-    filter: contrast(1.08) saturate(1.0) brightness(1.03);
+    filter: contrast(1.05) saturate(1.0) brightness(1.02);
     transform: scale(1.02);
-  }
-
-  /* Gallery Frame Effects */
-  .gallery-frame {
-    position: relative;
-  }
-
-  .gallery-frame::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, transparent 0%, rgba(0,0,0,0.02) 100%);
-    pointer-events: none;
-    border-radius: inherit;
-  }
-
-  .gallery-frame::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    box-shadow: inset 0 0 0 1px rgba(0,0,0,0.05);
-    border-radius: inherit;
-    pointer-events: none;
   }
 
   /* Typography Scale */
   h1 {
-    @apply editorial-display text-4xl md:text-6xl lg:text-7xl;
+    @apply editorial-display text-4xl md:text-5xl lg:text-6xl;
   }
 
   h2 {
-    @apply editorial-headline text-2xl md:text-3xl lg:text-4xl;
+    @apply editorial-headline text-2xl md:text-3xl;
   }
 
   h3 {
@@ -221,42 +331,12 @@
 
   p {
     @apply editorial-body text-base md:text-lg;
-    margin-bottom: 1.5rem;
-  }
-
-  /* Property Cards Typography */
-  .property-title {
-    @apply editorial-subhead text-lg font-medium;
-    letter-spacing: -0.01em;
-  }
-
-  .property-price {
-    @apply editorial-headline text-xl font-bold;
-    letter-spacing: -0.02em;
-  }
-
-  .property-details {
-    @apply editorial-body text-sm font-light;
-    letter-spacing: 0.005em;
-  }
-
-  /* UI Labels */
-  .ui-label {
-    @apply editorial-caption text-xs;
-    color: hsl(var(--muted-foreground));
-  }
-
-  /* Callouts */
-  .callout {
-    @apply editorial-subhead text-base font-medium;
-    letter-spacing: -0.005em;
-    line-height: 1.5;
   }
 }
 
 /* Custom scrollbar with refined colors */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
 }
 
 ::-webkit-scrollbar-track {
@@ -265,7 +345,7 @@
 
 ::-webkit-scrollbar-thumb {
   background: hsl(var(--muted-foreground));
-  border-radius: 4px;
+  border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {

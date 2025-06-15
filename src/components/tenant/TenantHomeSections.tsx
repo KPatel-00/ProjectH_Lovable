@@ -29,57 +29,84 @@ type Props = {
   fetchData: () => void;
 };
 
-/**
- * Encapsulates all content sections on TenantHome (except for header/footer).
- */
 const TenantHomeSections: React.FC<Props> = ({ state, t, fetchData }) => {
-  // Helper to check if we should show loading state
   const shouldShowLoading = state.loading || !state.data;
 
   return (
-    <>
+    <div className="editorial-layout">
       <TenantSearchBarSticky />
 
       {state.error && (
         <ErrorBanner message={state.error} onRetry={fetchData} className="mt-2" />
       )}
       
-      {shouldShowLoading ? <TenantWelcomeBannerSkeleton /> :
-        <TenantWelcomeBanner firstName={state.data.mockUser.firstName} />
-      }
+      {/* Editorial spacing section */}
+      <div className="editorial-section-spacing">
+        {shouldShowLoading ? <TenantWelcomeBannerSkeleton /> :
+          <TenantWelcomeBanner firstName={state.data.mockUser.firstName} />
+        }
+      </div>
       
-      {shouldShowLoading ? <TenantQuickStatsSkeleton /> :
-        <TenantQuickStats
-          saved={state.data.mockQuickStats.saved}
-          applications={state.data.mockQuickStats.applications}
-          messages={state.data.mockQuickStats.messages}
-        />
-      }
+      {/* Quick stats with editorial margins */}
+      <div className="editorial-section-spacing">
+        {shouldShowLoading ? <TenantQuickStatsSkeleton /> :
+          <TenantQuickStats
+            saved={state.data.mockQuickStats.saved}
+            applications={state.data.mockQuickStats.applications}
+            messages={state.data.mockQuickStats.messages}
+          />
+        }
+      </div>
       
-      {shouldShowLoading ? <TenantSavedListingsSkeleton /> :
-        <TenantSavedListings listings={state.data.mockSavedListings} />
-      }
+      {/* Editorial divider */}
+      <div className="editorial-divider" />
       
-      {shouldShowLoading ? <TenantRecommendedSkeleton /> :
-        <TenantRecommended listings={state.data.mockRecommended} />
-      }
+      <div className="editorial-section-spacing">
+        {shouldShowLoading ? <TenantSavedListingsSkeleton /> :
+          <TenantSavedListings listings={state.data.mockSavedListings} />
+        }
+      </div>
       
-      {shouldShowLoading ? <TenantStatsSummarySkeleton /> :
-        <TenantApplicationStatuses applications={state.data.mockApplications} />
-      }
+      <div className="editorial-divider" />
       
-      {shouldShowLoading ? <TenantMessagesPreviewSkeleton /> :
-        <TenantMessagesPreview messages={state.data.mockMessages} />
-      }
+      <div className="editorial-section-spacing">
+        {shouldShowLoading ? <TenantRecommendedSkeleton /> :
+          <TenantRecommended listings={state.data.mockRecommended} />
+        }
+      </div>
       
-      {shouldShowLoading ? <TenantExploreCitiesSkeleton /> :
-        <TenantExploreCities cities={state.data.mockCities} />
-      }
+      <div className="editorial-divider" />
       
-      {shouldShowLoading ? <TenantTrustSupportSkeleton /> :
-        <TenantTrustSupport />
-      }
-    </>
+      <div className="editorial-section-spacing">
+        {shouldShowLoading ? <TenantStatsSummarySkeleton /> :
+          <TenantApplicationStatuses applications={state.data.mockApplications} />
+        }
+      </div>
+      
+      <div className="editorial-divider" />
+      
+      <div className="editorial-section-spacing">
+        {shouldShowLoading ? <TenantMessagesPreviewSkeleton /> :
+          <TenantMessagesPreview messages={state.data.mockMessages} />
+        }
+      </div>
+      
+      <div className="editorial-divider" />
+      
+      <div className="editorial-section-spacing">
+        {shouldShowLoading ? <TenantExploreCitiesSkeleton /> :
+          <TenantExploreCities cities={state.data.mockCities} />
+        }
+      </div>
+      
+      <div className="editorial-divider" />
+      
+      <div className="editorial-section-spacing">
+        {shouldShowLoading ? <TenantTrustSupportSkeleton /> :
+          <TenantTrustSupport />
+        }
+      </div>
+    </div>
   );
 };
 
