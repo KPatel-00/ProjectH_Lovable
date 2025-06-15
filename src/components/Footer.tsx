@@ -3,7 +3,6 @@ import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Globe, Facebook, Twitter, Instagram, Linkedin, Mail, Phone, MapPin, UserPlus, MessageCircle, ThumbsUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 
 const Footer = () => {
   const navigate = useNavigate();
@@ -26,9 +25,6 @@ const Footer = () => {
     }, {
       label: 'Pricing',
       href: '#'
-    }, {
-      label: 'Mobile App',
-      href: '#'
     }]
   }, {
     title: 'Support',
@@ -40,9 +36,6 @@ const Footer = () => {
       href: '/contact'
     }, {
       label: 'Safety Tips',
-      href: '#'
-    }, {
-      label: 'Report Issue',
       href: '#'
     }, {
       label: 'Community Guidelines',
@@ -58,9 +51,6 @@ const Footer = () => {
       href: '#'
     }, {
       label: 'Press',
-      href: '#'
-    }, {
-      label: 'Investor Relations',
       href: '#'
     }, {
       label: 'Blog',
@@ -83,11 +73,9 @@ const Footer = () => {
     }, {
       label: 'Accessibility',
       href: '#'
-    }, {
-      label: 'Sitemap',
-      href: '#'
     }]
   }];
+
   const socialLinks = [{
     icon: Facebook,
     href: 'https://facebook.com',
@@ -127,27 +115,22 @@ const Footer = () => {
     window.alert('Thank you for providing feedback! (functionality demo)');
   };
 
-  const handleNewsletterSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log('Newsletter subscription submitted');
-  };
-
   return (
-    <footer className="bg-background border-t border-border">
+    <footer className="bg-white border-t border-gray-100">
       {/* Tenant Logged-in Features */}
       {isTenant && (
-        <div className="border-b border-border bg-muted/30 py-4">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row gap-2 sm:gap-4 items-center justify-center">
-            <Button variant="secondary" className="gap-2" onClick={handleSupport}>
-              <MessageCircle size={18} />
+        <div className="border-b border-gray-100 bg-gray-50/50 py-6">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row gap-3 sm:gap-4 items-center justify-center">
+            <Button variant="outline" size="sm" className="gap-2 bg-white border-gray-200" onClick={handleSupport}>
+              <MessageCircle size={16} />
               Contact Support
             </Button>
-            <Button variant="secondary" className="gap-2" onClick={handleInvite}>
-              <UserPlus size={18} />
+            <Button variant="outline" size="sm" className="gap-2 bg-white border-gray-200" onClick={handleInvite}>
+              <UserPlus size={16} />
               Invite a Friend
             </Button>
-            <Button variant="secondary" className="gap-2" onClick={handleFeedback}>
-              <ThumbsUp size={18} />
+            <Button variant="outline" size="sm" className="gap-2 bg-white border-gray-200" onClick={handleFeedback}>
+              <ThumbsUp size={16} />
               Give Feedback
             </Button>
           </div>
@@ -156,49 +139,50 @@ const Footer = () => {
 
       {/* Main Footer Content */}
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid lg:grid-cols-6 gap-8">
+        <div className="grid lg:grid-cols-5 gap-12">
           {/* Company Info */}
           <div className="lg:col-span-2 space-y-6">
             <div className="flex items-center space-x-3 cursor-pointer" onClick={() => navigate('/')}>
-              <div className="w-10 h-10 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center">
-                <span className="text-primary-foreground font-bold">R</span>
+              <div className="w-10 h-10 bg-gray-900 rounded-xl flex items-center justify-center">
+                <span className="text-white font-bold text-lg">R</span>
               </div>
-              <span className="text-2xl font-bold text-foreground">RentConnect</span>
+              <span className="text-2xl font-bold text-gray-900">RentConnect</span>
             </div>
-            <p className="text-muted-foreground leading-relaxed max-w-md">
-              Connecting landlords and tenants through innovative technology, making the rental process simple, secure, and seamless for everyone.
+            <p className="text-gray-600 leading-relaxed max-w-md text-base">
+              Making rental connections simple and secure. Find your perfect home or reach qualified tenants with ease.
             </p>
             <div className="space-y-3">
-              <div className="flex items-center space-x-3 text-muted-foreground">
-                <Mail className="w-5 h-5" />
-                <span>hello@rentconnect.com</span>
+              <div className="flex items-center space-x-3 text-gray-600">
+                <Mail className="w-4 h-4" />
+                <span className="text-sm">hello@rentconnect.com</span>
               </div>
-              <div className="flex items-center space-x-3 text-muted-foreground">
-                <Phone className="w-5 h-5" />
-                <span>+1 (555) 123-4567</span>
+              <div className="flex items-center space-x-3 text-gray-600">
+                <Phone className="w-4 h-4" />
+                <span className="text-sm">+49 30 1234 5678</span>
               </div>
-              <div className="flex items-center space-x-3 text-muted-foreground">
-                <MapPin className="w-5 h-5" />
-                <span>San Francisco, CA</span>
+              <div className="flex items-center space-x-3 text-gray-600">
+                <MapPin className="w-4 h-4" />
+                <span className="text-sm">Berlin, Germany</span>
               </div>
             </div>
-            <div className="flex space-x-4">
+            <div className="flex space-x-3">
               {socialLinks.map(social => (
                 <button
                   key={social.label}
                   onClick={() => handleLinkClick(social.href)}
-                  className="w-10 h-10 bg-muted rounded-lg flex items-center justify-center text-muted-foreground hover:bg-primary hover:text-primary-foreground transition-all duration-200 hover:scale-110"
+                  className="w-9 h-9 bg-gray-100 rounded-lg flex items-center justify-center text-gray-600 hover:bg-gray-900 hover:text-white transition-all duration-200"
                   aria-label={social.label}
                 >
-                  <social.icon className="w-5 h-5" />
+                  <social.icon className="w-4 h-4" />
                 </button>
               ))}
             </div>
           </div>
+          
           {/* Footer Links */}
           {footerSections.map(section => (
             <div key={section.title} className="space-y-4">
-              <h4 className="font-semibold text-foreground text-lg">
+              <h4 className="font-semibold text-gray-900 text-base">
                 {section.title}
               </h4>
               <ul className="space-y-3">
@@ -206,7 +190,7 @@ const Footer = () => {
                   <li key={link.label}>
                     <button
                       onClick={() => handleLinkClick(link.href)}
-                      className="text-muted-foreground hover:text-foreground transition-colors duration-200 hover:underline text-left"
+                      className="text-gray-600 hover:text-gray-900 transition-colors duration-200 text-sm text-left"
                     >
                       {link.label}
                     </button>
@@ -217,26 +201,27 @@ const Footer = () => {
           ))}
         </div>
       </div>
+      
       {/* Bottom Bar */}
-      <div className="border-t border-border">
+      <div className="border-t border-gray-100 bg-gray-50/50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
-            <div className="text-muted-foreground text-sm">
+            <div className="text-gray-600 text-sm">
               © 2025 RentConnect. All rights reserved.
             </div>
             <div className="flex items-center space-x-6">
-              <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground">
+              <Button variant="ghost" size="sm" className="text-gray-600 hover:text-gray-900 h-8">
                 <Globe className="w-4 h-4 mr-2" />
                 English
               </Button>
-              <div className="flex items-center space-x-4 text-sm text-muted-foreground">
-                <button onClick={() => handleLinkClick('#')} className="hover:text-foreground transition-colors">
+              <div className="flex items-center space-x-4 text-sm text-gray-600">
+                <button onClick={() => handleLinkClick('#')} className="hover:text-gray-900 transition-colors">
                   Privacy
                 </button>
-                <button onClick={() => handleLinkClick('#')} className="hover:text-foreground transition-colors">
+                <button onClick={() => handleLinkClick('#')} className="hover:text-gray-900 transition-colors">
                   Terms
                 </button>
-                <button onClick={() => handleLinkClick('#')} className="hover:text-foreground transition-colors">
+                <button onClick={() => handleLinkClick('#')} className="hover:text-gray-900 transition-colors">
                   Cookies
                 </button>
               </div>
