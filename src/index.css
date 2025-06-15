@@ -1,4 +1,3 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -95,15 +94,16 @@
   .btn-outline, .shadcn-btn-outline {
     background: #fff !important;
     color: #1A1A1A !important;
-    border: 2px solid #9FB5C8 !important;
+    border: 1.5px solid #B6C3D1 !important; /* slightly more visible blue-gray */
     font-weight: 700;
     font-size: 1rem;
     border-radius: 0.75rem;
     transition: border 0.2s, background 0.2s;
+    box-shadow: none !important;
   }
   .btn-outline:hover, .shadcn-btn-outline:hover {
-    background: #F4F4F4 !important;
-    border-color: #333 !important;
+    background: #F4F6F8 !important;
+    border-color: #7697B4 !important; /* darker on hover */
   }
   .btn-secondary, .shadcn-btn-secondary {
     background-color: #9FB5C8 !important;
@@ -122,34 +122,46 @@
     border: none !important;
   }
 
-  .card-refined, .search-bar-refined {
+  /* REFINED SECTION BLOCK - for card areas, main "white block" look */
+  .section-block {
     background: #fff !important;
-    border: 2px solid #9FB5C8 !important;
-    border-radius: 1rem !important;
-    box-shadow: 0 2px 8px 0 rgba(159, 181, 200, 0.10);
+    border: 2px solid #E4E8EF !important;
+    border-radius: 1.2rem !important;
+    box-shadow: 0 2px 12px 0 rgba(159, 181, 200, 0.10);
+    padding: 2.5rem 2rem !important;
+    margin-bottom: 2.25rem !important;
+    position: relative;
   }
-}
 
-/* High-contrast focus style */
-:focus-visible {
-  outline: 2px solid #9FB5C8 !important;
-  outline-offset: 2px;
-}
+  /* For visually splitting sections */
+  .section-divider {
+    height: 1px;
+    width: 100%;
+    background: linear-gradient(90deg, rgba(179,196,220,0.14) 0%, rgba(149,167,190,0.19) 100%);
+    border: none;
+    margin: 2rem 0 2rem 0;
+  }
 
-/* Refined, subtle blue shadow */
-.shadow-refined {
-  box-shadow: 0 2px 8px 0 rgba(159, 181, 200, 0.09);
-}
-.shadow-refined-lg {
-  box-shadow: 0 6px 20px -2px rgba(159, 181, 200, 0.12);
-}
-.shadow-refined-xl {
-  box-shadow: 0 20px 50px -12px rgba(159, 181, 200, 0.12);
-}
+  /* Card accent for messages/application/announcements */
+  .card-accent {
+    border: 1.5px solid #E3EAFF !important;
+    background: #FAFCFF !important;
+    border-radius: 1rem !important;
+    box-shadow: 0 2px 8px 0 rgba(160, 181, 200, 0.05);
+  }
+  .shadow-refined {
+    box-shadow: 0 2px 8px 0 rgba(159, 181, 200, 0.09);
+  }
+  .shadow-refined-lg {
+    box-shadow: 0 6px 20px -2px rgba(159, 181, 200, 0.12);
+  }
+  .shadow-refined-xl {
+    box-shadow: 0 20px 50px -12px rgba(159, 181, 200, 0.12);
+  }
 
-.rounded-xl, .rounded-2xl, .rounded-lg, .rounded-md {
-  border-radius: 1rem !important;
-}
+  .rounded-xl, .rounded-2xl, .rounded-lg, .rounded-md {
+    border-radius: 1rem !important;
+  }
 
 /* Scrollbars */
 ::-webkit-scrollbar {
@@ -162,4 +174,4 @@
 .bg-white, .bg-background, .bg-card, .bg-accent {
   background-color: #FAFAFA !important;
 }
-
+}

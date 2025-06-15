@@ -22,8 +22,8 @@ export default {
 				'sans': ['Inter', 'Helvetica Neue', 'system-ui', '-apple-system', 'sans-serif'],
 			},
 			colors: {
-				border: '#9FB5C8', // refined blue-gray for borders
-				input: '#9FB5C8',
+				border: '#B6C3D1', // update default border for better contrast
+				input: '#B6C3D1',
 				ring: '#9FB5C8',
 				background: '#FAFAFA',
 				foreground: '#1A1A1A',
@@ -32,11 +32,11 @@ export default {
 					foreground: '#FAFAFA',
 				},
 				secondary: {
-					DEFAULT: '#9FB5C8', // blue-gray as accent
+					DEFAULT: '#9FB5C8',
 					foreground: '#1A1A1A',
 				},
 				accent: {
-					DEFAULT: '#F4F4F4',
+					DEFAULT: '#F4F6F8',
 					foreground: '#1A1A1A',
 				},
 				muted: {
