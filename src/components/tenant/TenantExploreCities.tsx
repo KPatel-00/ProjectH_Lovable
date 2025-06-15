@@ -14,8 +14,10 @@ type Props = { cities: City[] };
 const TenantExploreCities: React.FC<Props> = ({ cities }) => {
   const navigate = useNavigate();
   return (
-    <section className="mt-8">
-      <h2 className="text-lg font-semibold mb-3">Explore Popular Cities</h2>
+    <section className="mt-10">
+      <h2 className="text-lg sm:text-xl font-bold text-foreground tracking-tight mb-3">
+        Explore Popular Cities
+      </h2>
       {cities.length === 0 ? (
         <EmptyState
           icon={Globe2}
@@ -23,16 +25,16 @@ const TenantExploreCities: React.FC<Props> = ({ cities }) => {
           description="Come back later to see top cities or browse listings by search."
         />
       ) : (
-        <div className="flex gap-4 overflow-x-auto">
+        <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
           {cities.map(city =>
             <div
               key={city.name}
-              className="min-w-[180px] max-w-[210px] rounded-xl overflow-hidden bg-white shadow group hover:scale-105 transition-transform cursor-pointer"
+              className="min-w-[180px] max-w-[210px] rounded-2xl overflow-hidden bg-white/90 border border-border shadow-[0_2px_16px_-4px_rgba(146,153,188,0.11)] group hover:scale-105 transition-transform cursor-pointer flex-shrink-0"
               onClick={() => navigate(`/browse?city=${encodeURIComponent(city.name)}`)}
             >
               <img src={city.image} alt={city.name} className="h-28 w-full object-cover" />
               <div className="p-3">
-                <div className="font-bold">{city.name}</div>
+                <div className="font-bold mb-0.5 text-foreground">{city.name}</div>
                 <div className="text-xs text-muted-foreground">{city.subtitle}</div>
               </div>
             </div>
