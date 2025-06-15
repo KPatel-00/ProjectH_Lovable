@@ -20,15 +20,14 @@ const TenantMessagesPreview: React.FC<Props> = ({ messages }) => {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-xl font-light tracking-wide text-foreground uppercase">
-          Messages from Landlords
-        </h2>
+      <div className="flex items-center justify-between mb-4">
+        {/* Spacer - H2 is now rendered by parent */}
+        <span />
         <Button 
           variant="ghost" 
           size="sm"
           onClick={() => navigate("/messages")}
-          className="text-xs uppercase tracking-widest text-muted-foreground hover:text-foreground p-0 h-auto font-medium"
+          className="rounded-full border px-4 py-1 text-xs uppercase tracking-wider border-border bg-white hover:bg-muted text-foreground shadow-sm transition-all font-normal"
         >
           Go to Inbox
           <ArrowRight className="w-3 h-3 ml-2" />
@@ -46,7 +45,7 @@ const TenantMessagesPreview: React.FC<Props> = ({ messages }) => {
           {messages.slice(0, 3).map(msg => (
             <div
               key={msg.id}
-              className="bg-white border border-border rounded-xl p-4 hover:border-primary/20 transition-colors duration-300 group cursor-pointer card-refined"
+              className="bg-background border border-border rounded-xl p-4 hover:border-primary/40 transition-colors duration-300 group cursor-pointer"
               onClick={() => navigate("/messages")}
             >
               <div className="flex items-center gap-4">
@@ -78,3 +77,4 @@ const TenantMessagesPreview: React.FC<Props> = ({ messages }) => {
 };
 
 export default TenantMessagesPreview;
+
