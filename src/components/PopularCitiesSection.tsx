@@ -31,28 +31,34 @@ const PopularCitiesSection = () => {
   ];
 
   return (
-    <section className="py-16 bg-muted/30">
+    <section className="py-24 bg-muted/20">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-foreground mb-4">Popular Cities</h2>
+        <div className="text-center mb-16">
+          <h2 className="editorial-headline text-editorial-4xl font-editorial-bold text-foreground mb-4 tracking-editorial-tight">
+            Popular Cities
+          </h2>
         </div>
         
-        <div className="flex gap-6 overflow-x-auto pb-4 scrollbar-hide">
+        <div className="flex gap-8 overflow-x-auto pb-4 scrollbar-hide">
           {cities.map((city, index) => (
             <div
               key={index}
-              className="min-w-[240px] rounded-2xl overflow-hidden bg-white shadow-sm border border-border group hover:shadow-lg transition-all duration-300 cursor-pointer flex-shrink-0"
+              className="min-w-[280px] rounded-3xl overflow-hidden bg-white shadow-sm border border-border group hover:shadow-xl transition-all duration-500 cursor-pointer flex-shrink-0"
             >
-              <div className="relative h-40 overflow-hidden">
+              <div className="relative h-48 overflow-hidden">
                 <img 
                   src={city.image} 
                   alt={city.name}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                 />
               </div>
-              <div className="p-4">
-                <h3 className="font-bold text-lg text-foreground mb-1">{city.name}</h3>
-                <p className="text-sm text-muted-foreground">{city.subtitle}</p>
+              <div className="p-6">
+                <h3 className="property-title text-foreground mb-2 tracking-editorial-normal">
+                  {city.name}
+                </h3>
+                <p className="ui-label text-muted-foreground tracking-editorial-wide">
+                  {city.subtitle}
+                </p>
               </div>
             </div>
           ))}

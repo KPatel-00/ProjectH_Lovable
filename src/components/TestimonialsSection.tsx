@@ -22,17 +22,17 @@ const TestimonialsSection = () => {
   ];
 
   return (
-    <section className="py-16 bg-muted/30">
+    <section className="py-24 bg-muted/20">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <div className="flex items-center justify-center gap-2 mb-4">
+        <div className="text-center mb-16">
+          <div className="flex items-center justify-center gap-4 mb-8">
             <div className="flex">
               {[...Array(5)].map((_, i) => (
-                <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />
+                <Star key={i} className="w-6 h-6 fill-yellow-400 text-yellow-400" />
               ))}
             </div>
-            <span className="text-lg font-semibold">4.8/5</span>
-            <span className="text-muted-foreground">(2,847 reviews)</span>
+            <span className="editorial-subhead text-editorial-xl font-editorial-semibold">4.8/5</span>
+            <span className="editorial-body text-muted-foreground">(2,847 reviews)</span>
           </div>
         </div>
         
@@ -40,25 +40,29 @@ const TestimonialsSection = () => {
           {testimonials.map((testimonial, index) => (
             <div
               key={index}
-              className="bg-white rounded-xl p-6 shadow-sm border border-border"
+              className="bg-white rounded-3xl p-8 shadow-sm border border-border"
             >
-              <div className="flex mb-4">
+              <div className="flex mb-6">
                 {[...Array(testimonial.rating)].map((_, i) => (
-                  <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                  <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />
                 ))}
               </div>
-              <p className="text-foreground mb-4 italic">"{testimonial.text}"</p>
-              <p className="text-sm font-semibold text-muted-foreground">— {testimonial.author}</p>
+              <p className="callout text-foreground mb-6 italic">
+                "{testimonial.text}"
+              </p>
+              <p className="ui-label text-muted-foreground">
+                — {testimonial.author}
+              </p>
             </div>
           ))}
         </div>
 
-        <div className="text-center mt-12">
-          <p className="text-muted-foreground mb-4">Trusted by</p>
-          <div className="flex items-center justify-center gap-8 text-muted-foreground">
-            <span className="font-semibold">TechCrunch</span>
-            <span className="font-semibold">Forbes</span>
-            <span className="font-semibold">Handelsblatt</span>
+        <div className="text-center mt-16">
+          <p className="ui-label text-muted-foreground mb-8">Trusted by</p>
+          <div className="flex items-center justify-center gap-12 text-muted-foreground">
+            <span className="editorial-subhead font-editorial-semibold text-editorial-lg">TechCrunch</span>
+            <span className="editorial-subhead font-editorial-semibold text-editorial-lg">Forbes</span>
+            <span className="editorial-subhead font-editorial-semibold text-editorial-lg">Handelsblatt</span>
           </div>
         </div>
       </div>

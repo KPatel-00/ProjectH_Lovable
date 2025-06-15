@@ -36,10 +36,10 @@ const Hero = () => {
   };
 
   return (
-    <section className="relative bg-background overflow-hidden" id="main-content">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-16 text-center">
+    <section className="relative bg-background overflow-hidden min-h-[85vh] flex items-center" id="main-content">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
         {/* Audience Toggle */}
-        <div className="flex justify-center mb-8">
+        <div className="flex justify-center mb-16">
           <AudienceToggle
             options={audienceOptions}
             selected={selectedAudience}
@@ -50,26 +50,26 @@ const Hero = () => {
         {selectedAudience === 'tenant' ? (
           <div className="animate-fade-in">
             {/* Why Choose Us Section */}
-            <div className="mb-8">
-              <h2 className="text-2xl font-bold text-foreground mb-4">Why Choose RentConnect?</h2>
-              <div className="flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-6 text-base text-muted-foreground">
-                <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-5 h-5 text-green-500" />
-                  <span>Browse verified listings</span>
+            <div className="mb-16">
+              <h6 className="ui-label mb-8 text-muted-foreground">Why Choose RentConnect?</h6>
+              <div className="flex flex-col sm:flex-row justify-center items-center gap-8 sm:gap-12">
+                <div className="flex items-center gap-3">
+                  <CheckCircle2 className="w-5 h-5 text-green-500 flex-shrink-0" />
+                  <span className="editorial-body text-editorial-base text-muted-foreground">Browse verified listings</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-5 h-5 text-green-500" />
-                  <span>Easy & quick applications</span>
+                <div className="flex items-center gap-3">
+                  <CheckCircle2 className="w-5 h-5 text-green-500 flex-shrink-0" />
+                  <span className="editorial-body text-editorial-base text-muted-foreground">Easy & quick applications</span>
                 </div>
               </div>
             </div>
 
             {/* Main Hero Content */}
-            <div className="max-w-4xl mx-auto mb-8">
-              <h1 className="text-4xl md:text-5xl font-bold text-foreground tracking-tight mb-4">
+            <div className="max-w-5xl mx-auto mb-16">
+              <h1 className="editorial-display text-editorial-5xl md:text-editorial-6xl lg:text-editorial-7xl text-foreground tracking-editorial-wide mb-8 leading-editorial-tight">
                 Find Your Dream Home in Minutes
               </h1>
-              <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
+              <p className="editorial-body text-editorial-xl text-muted-foreground mb-16 max-w-3xl mx-auto leading-editorial-relaxed">
                 From student rooms to full apartments – across Germany.
               </p>
 
@@ -79,20 +79,22 @@ const Hero = () => {
                 onSubmit={handleSearch}
                 showMoveInDate={true}
                 buttonText="Search"
-                className="shadow-lg rounded-xl p-4 bg-white border border-gray-200"
+                className="shadow-2xl rounded-3xl p-6 bg-white border border-gray-100"
               />
             </div>
           </div>
         ) : (
-          <div className="mt-8 animate-fade-in max-w-2xl mx-auto">
-            <h1 className="text-4xl md:text-5xl font-bold text-foreground tracking-tight mb-4">List Your Property with Ease</h1>
-            <p className="text-lg text-muted-foreground mb-8">
+          <div className="mt-8 animate-fade-in max-w-4xl mx-auto">
+            <h1 className="editorial-display text-editorial-5xl md:text-editorial-6xl lg:text-editorial-7xl text-foreground tracking-editorial-wide mb-8 leading-editorial-tight">
+              List Your Property with Ease
+            </h1>
+            <p className="editorial-body text-editorial-xl text-muted-foreground mb-16 leading-editorial-relaxed">
               Reach thousands of qualified tenants and manage your listings all in one place.
             </p>
             <Button
                 size="lg"
                 onClick={() => handleCTAClick('list-property')}
-                className="bg-primary text-primary-foreground px-8 py-3 rounded-lg font-semibold hover:opacity-90 transition-opacity"
+                className="editorial-subhead bg-primary text-primary-foreground px-12 py-4 rounded-2xl font-editorial-medium hover:opacity-90 transition-opacity text-editorial-lg"
             >
                 List a Property
             </Button>
