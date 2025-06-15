@@ -1,5 +1,12 @@
+
 import React from "react";
-import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator
+} from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { LogOut } from "lucide-react";
@@ -72,12 +79,27 @@ export const AvatarMenuDropdown: React.FC<Props> = ({ user, menu, onNavigate, on
           <DropdownMenuItem
             key={item.label}
             onClick={() => onNavigate(item.path)}
+            className={`
+              transition-transform duration-150
+              hover:scale-[1.03] active:scale-[0.96]
+              hover:bg-accent focus:bg-accent
+              cursor-pointer
+            `}
           >
             <item.icon className="mr-2 h-4 w-4" /> {item.label}
           </DropdownMenuItem>
         )}
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={onSignOut} className="text-destructive">
+        <DropdownMenuItem
+          onClick={onSignOut}
+          className={`
+            text-destructive 
+            transition-transform duration-150
+            hover:scale-[1.03] active:scale-[0.96]
+            hover:bg-accent/90 focus:bg-accent/90
+            cursor-pointer
+          `}
+        >
           <LogOut className="mr-2 h-4 w-4" /> Log Out
         </DropdownMenuItem>
       </DropdownMenuContent>
