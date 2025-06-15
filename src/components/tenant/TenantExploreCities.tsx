@@ -17,7 +17,7 @@ const TenantExploreCities: React.FC<Props> = ({ cities }) => {
 
   return (
     <div>
-      <h2 className="text-2xl font-light tracking-wide text-[#1A1A1A] uppercase mb-8">
+      <h2 className="text-2xl font-light tracking-wide text-foreground uppercase mb-8">
         Explore Popular Cities
       </h2>
       
@@ -32,10 +32,10 @@ const TenantExploreCities: React.FC<Props> = ({ cities }) => {
           {cities.map(city => (
             <div
               key={city.name}
-              className="min-w-[280px] max-w-[320px] bg-white border border-[#EBEBEB] rounded-2xl overflow-hidden hover:border-[#1A1A1A] transition-all duration-300 hover:shadow-[0_8px_32px_-8px_rgba(0,0,0,0.12)] cursor-pointer group flex-shrink-0"
+              className="min-w-[280px] max-w-[320px] bg-white border border-border rounded-2xl overflow-hidden hover:border-primary/20 transition-all duration-300 hover:shadow-refined-lg cursor-pointer group flex-shrink-0 card-refined"
               onClick={() => navigate(`/browse?city=${encodeURIComponent(city.name)}`)}
             >
-              <div className="aspect-[4/3] overflow-hidden bg-[#F8F8F8]">
+              <div className="aspect-[4/3] overflow-hidden bg-accent">
                 <img 
                   src={city.image} 
                   alt={city.name} 
@@ -43,10 +43,10 @@ const TenantExploreCities: React.FC<Props> = ({ cities }) => {
                 />
               </div>
               <div className="p-6">
-                <h3 className="font-medium text-[#1A1A1A] text-lg mb-2">
+                <h3 className="font-medium text-foreground text-lg mb-2">
                   {city.name}
                 </h3>
-                <p className="text-sm text-[#8A8A8A] font-light">
+                <p className="text-sm text-muted-foreground font-light">
                   {city.subtitle}
                 </p>
               </div>

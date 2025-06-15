@@ -59,7 +59,7 @@ const TenantHome = () => {
       </a>
       
       {/* Main content with refined spacing */}
-      <main id="main-content" className="min-h-screen bg-[#F8F8F8] flex flex-col" tabIndex={-1}>
+      <main id="main-content" className="min-h-screen bg-background flex flex-col" tabIndex={-1}>
         <div className="mx-auto max-w-6xl px-6 md:px-12 py-8 flex-1 flex flex-col">
           <TenantHomeSections state={state} t={t} fetchData={fetchData} />
         </div>

@@ -21,14 +21,14 @@ const TenantMessagesPreview: React.FC<Props> = ({ messages }) => {
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-xl font-light tracking-wide text-[#1A1A1A] uppercase">
+        <h2 className="text-xl font-light tracking-wide text-foreground uppercase">
           Messages from Landlords
         </h2>
         <Button 
           variant="ghost" 
           size="sm"
           onClick={() => navigate("/messages")}
-          className="text-xs uppercase tracking-widest text-[#8A8A8A] hover:text-[#1A1A1A] p-0 h-auto font-medium"
+          className="text-xs uppercase tracking-widest text-muted-foreground hover:text-foreground p-0 h-auto font-medium"
         >
           Go to Inbox
           <ArrowRight className="w-3 h-3 ml-2" />
@@ -46,7 +46,7 @@ const TenantMessagesPreview: React.FC<Props> = ({ messages }) => {
           {messages.slice(0, 3).map(msg => (
             <div
               key={msg.id}
-              className="bg-white border border-[#EBEBEB] rounded-xl p-4 hover:border-[#1A1A1A] transition-colors duration-300 group cursor-pointer"
+              className="bg-white border border-border rounded-xl p-4 hover:border-primary/20 transition-colors duration-300 group cursor-pointer card-refined"
               onClick={() => navigate("/messages")}
             >
               <div className="flex items-center gap-4">
@@ -57,14 +57,14 @@ const TenantMessagesPreview: React.FC<Props> = ({ messages }) => {
                 />
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between mb-1">
-                    <h3 className="font-medium text-[#1A1A1A] text-sm truncate">
+                    <h3 className="font-medium text-foreground text-sm truncate">
                       {msg.landlordName}
                     </h3>
-                    <span className="text-xs text-[#8A8A8A] whitespace-nowrap">
+                    <span className="text-xs text-muted-foreground whitespace-nowrap">
                       {msg.timestamp}
                     </span>
                   </div>
-                  <p className="text-sm text-[#8A8A8A] truncate">
+                  <p className="text-sm text-muted-foreground truncate">
                     {msg.text}
                   </p>
                 </div>
