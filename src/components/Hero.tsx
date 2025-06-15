@@ -1,48 +1,103 @@
 
-import React from "react";
-import { Button } from "@/components/ui/button";
-import { useNavigate } from "react-router-dom";
-import { useT } from "@/i18n";
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import AudienceToggle from "./AudienceToggle";
+import { CheckCircle2 } from 'lucide-react';
+import SearchFiltersBar from './SearchFiltersBar';
+import { Button } from './ui/button';
 
-// Hero section redesign: modern grid, bolder text, visual photo
+const audienceOptions = [
+  { value: "tenant", label: "I'm a Tenant" },
+  { value: "landlord", label: "I'm a Landlord" }
+];
+
 const Hero = () => {
+  const [selectedAudience, setSelectedAudience] = useState('tenant');
+  const [filters, setFilters] = useState({
+    location: '',
+    propertyType: '',
+    moveInDate: ''
+  });
   const navigate = useNavigate();
-  const t = useT();
+
+  const handleSearch = () => {
+    const params = new URLSearchParams();
+    if (filters.location) params.set('location', filters.location);
+    if (filters.propertyType) params.set('propertyType', filters.propertyType);
+    if (filters.moveInDate) params.set('moveInDate', filters.moveInDate);
+
+    navigate(`/search?${params.toString()}`);
+  };
+
+  const handleCTAClick = (action: string) => {
+    if (action === 'list-property') {
+      navigate('/list-property');
+    }
+  };
 
   return (
-    <section className="container mx-auto px-3 py-14 flex flex-col md:flex-row items-center gap-16 md:gap-6 min-h-[56vh]">
-      <div className="flex-1 flex flex-col items-start justify-center max-w-xl animate-fade-in">
-        <h1 className="text-4xl sm:text-5xl font-extrabold text-foreground mb-5 leading-tight tracking-tight drop-shadow-sm">
-          Seamless Renting. <span className="text-primary">Modern. Simple. Secure.</span>
-        </h1>
-        <p className="text-lg text-muted-foreground mb-10 font-medium max-w-md">
-          Discover, apply, and rent with ease. RentConnect makes the rental process stress-free and transparent for everyone.
-        </p>
-        <div className="flex gap-4 flex-wrap items-center">
-          <Button
-            size="lg"
-            className="rounded-lg px-8 font-semibold bg-primary text-primary-foreground shadow-lg hover:bg-primary/90"
-            onClick={() => navigate("/listings")}
-          >
-            {t("browseListings") || "Browse Listings"}
-          </Button>
-          <Button
-            variant="outline"
-            size="lg"
-            className="rounded-lg px-8 font-semibold border-primary text-primary hover:bg-primary/10"
-            onClick={() => navigate("/list-property")}
-          >
-            {t("listProperty") || "List Property"}
-          </Button>
+    <section className="relative bg-background overflow-hidden" id="main-content">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-24 text-center">
+        {/* Audience Toggle */}
+        <div className="flex justify-center mb-12">
+          <AudienceToggle
+            options={audienceOptions}
+            selected={selectedAudience}
+            onSelect={setSelectedAudience}
+          />
         </div>
-      </div>
-      <div className="flex-1 flex justify-center animate-scale-in">
-        <img
-          src="https://images.unsplash.com/photo-1649972904349-6e44c42644a7?w=600&q=80"
-          alt="A woman sitting on a bed using a laptop"
-          className="rounded-2xl max-w-xs sm:max-w-sm shadow-lg border border-border object-cover"
-          loading="eager"
-        />
+
+        {selectedAudience === 'tenant' ? (
+          <div className="animate-fade-in">
+            {/* Why Choose Us Section */}
+            <div className="mb-12">
+              <h2 className="text-3xl font-bold text-foreground mb-6">Why Choose RentConnect?</h2>
+              <div className="flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-8 text-lg text-muted-foreground">
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="w-6 h-6 text-green-500" />
+                  <span>Browse verified listings</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="w-6 h-6 text-green-500" />
+                  <span>Easy & quick applications</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Main Hero Content */}
+            <div className="max-w-4xl mx-auto">
+              <h1 className="text-5xl md:text-6xl font-extrabold text-foreground tracking-tighter mb-4">
+                Find Your Dream Home in Minutes
+              </h1>
+              <p className="text-xl text-muted-foreground mb-10 max-w-2xl mx-auto">
+                From student rooms to full apartments – across Germany.
+              </p>
+
+              <SearchFiltersBar
+                filters={filters}
+                setFilters={(newFilters) => setFilters(prev => ({...prev, ...newFilters}))}
+                onSubmit={handleSearch}
+                showMoveInDate={true}
+                buttonText="Search"
+                className="shadow-xl rounded-xl p-3"
+              />
+            </div>
+          </div>
+        ) : (
+          <div className="mt-12 animate-fade-in max-w-2xl mx-auto">
+            <h1 className="text-5xl md:text-6xl font-extrabold text-foreground tracking-tighter mb-4">List Your Property with Ease</h1>
+            <p className="text-xl text-muted-foreground mb-10">
+              Reach thousands of qualified tenants and manage your listings all in one place.
+            </p>
+            <Button
+                size="lg"
+                onClick={() => handleCTAClick('list-property')}
+                className="bg-primary text-primary-foreground px-10 py-6 rounded-lg font-semibold text-lg hover:opacity-90 transition-opacity"
+            >
+                List a Property
+            </Button>
+          </div>
+        )}
       </div>
     </section>
   );
