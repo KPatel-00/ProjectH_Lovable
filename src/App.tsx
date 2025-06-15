@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -15,10 +16,8 @@ import LandlordHome from "./pages/LandlordHome";
 import Search from "./pages/Search";
 import RentalApplicationPage from "./pages/RentalApplication";
 import LandlordDashboard from "./pages/LandlordDashboard";
-import { I18nProvider } from "./hooks/useI18n"; // Add this import
-
-// Remove LandlordListings import
-// import LandlordListings from "./pages/LandlordListings";
+import { I18nProvider } from "./hooks/useI18n";
+import AdminVerification from "./pages/AdminVerification"; // fixed import
 
 const queryClient = new QueryClient();
 
@@ -43,7 +42,7 @@ const App: React.FC = () => (
             <Route path="/search" element={<Search />} />
             {/* Only use nested routing for dashboard */}
             <Route path="/landlord/dashboard/*" element={<LandlordDashboard />} />
-            <Route path="/admin/verification" element={<React.Suspense fallback={<div>Loading...</div>}><import("@/pages/AdminVerification").then(m => <m.default />)}</React.Suspense>} />
+            <Route path="/admin/verification" element={<AdminVerification />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
