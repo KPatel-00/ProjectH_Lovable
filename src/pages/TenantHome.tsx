@@ -60,14 +60,18 @@ const TenantHome = () => {
         {t("skipToMainContent") || "Skip to main content"}
       </a>
 
-      {/* Responsive Search Bar (handles its own mobile/desktop logic) */}
-      <div className="mt-1 mb-4 sm:mb-8 flex">
+      {/* Responsive Search Bar */}
+      <div className="mt-1 mb-4 sm:mb-8 flex px-2 sm:px-6 md:px-12">
         <TenantSearchBar />
       </div>
 
-      {/* Main content with refined spacing */}
-      <main id="main-content" className="min-h-screen bg-background flex flex-col" tabIndex={-1}>
-        <div className="mx-auto max-w-6xl px-2 sm:px-6 md:px-12 py-4 sm:py-8 flex-1 flex flex-col">
+      {/* Main content with responsive spacing */}
+      <main
+        id="main-content"
+        className="min-h-screen bg-background flex flex-col"
+        tabIndex={-1}
+      >
+        <div className="mx-auto w-full max-w-6xl px-1 sm:px-6 md:px-12 py-3 sm:py-8 flex-1 flex flex-col">
           <TenantHomeSections state={state} t={t} fetchData={fetchData} />
         </div>
       </main>

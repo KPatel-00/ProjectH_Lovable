@@ -1,4 +1,3 @@
-
 import React from "react";
 import TenantSearchBarSticky from "@/components/tenant/TenantSearchBarSticky";
 import TenantWelcomeBanner from "@/components/tenant/TenantWelcomeBanner";
@@ -33,17 +32,17 @@ const TenantHomeSections: React.FC<Props> = ({ state, t, fetchData }) => {
   const shouldShowLoading = state.loading || !state.data;
 
   return (
-    <div className="w-full">
+    <div className="w-full px-1 sm:px-3 md:px-4 max-w-full">
       {/* Sticky Search Bar */}
       <TenantSearchBarSticky />
 
       {/* Error Banner */}
       {state.error && (
-        <ErrorBanner message={state.error} onRetry={fetchData} className="mt-6" />
+        <ErrorBanner message={state.error} onRetry={fetchData} className="mt-4 sm:mt-6" />
       )}
       
       {/* Welcome Banner with integrated stats */}
-      <section className="mb-10 md:mb-14">
+      <section className="mb-7 md:mb-12">
         {shouldShowLoading ? <TenantWelcomeBannerSkeleton /> :
           <TenantWelcomeBanner 
             firstName={state.data.mockUser.firstName}
@@ -57,16 +56,16 @@ const TenantHomeSections: React.FC<Props> = ({ state, t, fetchData }) => {
       </section>
       
       {/* Split Layout: Applications & Messages */}
-      <section className="mb-12 md:mb-16 w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <section className="mb-10 md:mb-14 w-full">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 md:gap-8">
           {/* Left: Application Statuses (Card Block) */}
-          <div className="card-accent p-0 pb-4 shadow-refined-lg border border-border rounded-2xl bg-white">
-            <div className="p-7 pb-4 border-b border-muted">
-              <h2 className="text-lg font-mono font-light tracking-widest text-foreground mb-0 uppercase">
+          <div className="card-accent p-0 pb-4 shadow-refined-lg border border-border rounded-2xl bg-white mb-4 lg:mb-0">
+            <div className="p-5 md:p-7 pb-2 md:pb-4 border-b border-muted">
+              <h2 className="text-base md:text-lg font-mono font-light tracking-widest text-foreground mb-0 uppercase">
                 Recent Application Statuses
               </h2>
             </div>
-            <div className="p-5 pt-4">
+            <div className="p-4 md:p-5 pt-3 md:pt-4">
               {shouldShowLoading ? <TenantStatsSummarySkeleton /> :
                 <TenantApplicationStatuses applications={state.data.mockApplications} />
               }
@@ -75,12 +74,12 @@ const TenantHomeSections: React.FC<Props> = ({ state, t, fetchData }) => {
           
           {/* Right: Messages Preview (Card Block) */}
           <div className="card-accent p-0 pb-4 shadow-refined-lg border border-border rounded-2xl bg-white">
-            <div className="p-7 pb-4 border-b border-muted">
-              <h2 className="text-lg font-mono font-light tracking-widest text-foreground mb-0 uppercase">
+            <div className="p-5 md:p-7 pb-2 md:pb-4 border-b border-muted">
+              <h2 className="text-base md:text-lg font-mono font-light tracking-widest text-foreground mb-0 uppercase">
                 Messages from Landlords
               </h2>
             </div>
-            <div className="p-5 pt-4">
+            <div className="p-4 md:p-5 pt-3 md:pt-4">
               {shouldShowLoading ? <TenantMessagesPreviewSkeleton /> :
                 <TenantMessagesPreview messages={state.data.mockMessages} />
               }
@@ -90,28 +89,28 @@ const TenantHomeSections: React.FC<Props> = ({ state, t, fetchData }) => {
       </section>
       
       {/* Saved Listings */}
-      <section className="mb-12 md:mb-16">
+      <section className="mb-10 md:mb-14">
         {shouldShowLoading ? <TenantSavedListingsSkeleton /> :
           <TenantSavedListings listings={state.data.mockSavedListings} />
         }
       </section>
       
       {/* Recommended Properties */}
-      <section className="mb-12 md:mb-16">
+      <section className="mb-10 md:mb-14">
         {shouldShowLoading ? <TenantRecommendedSkeleton /> :
           <TenantRecommended listings={state.data.mockRecommended} />
         }
       </section>
       
       {/* Explore Cities */}
-      <section className="mb-12 md:mb-16">
+      <section className="mb-10 md:mb-14">
         {shouldShowLoading ? <TenantExploreCitiesSkeleton /> :
           <TenantExploreCities cities={state.data.mockCities} />
         }
       </section>
       
       {/* Trust & Support */}
-      <section className="mb-8">
+      <section className="mb-6 md:mb-10">
         {shouldShowLoading ? <TenantTrustSupportSkeleton /> :
           <TenantTrustSupport />
         }
@@ -121,4 +120,3 @@ const TenantHomeSections: React.FC<Props> = ({ state, t, fetchData }) => {
 };
 
 export default TenantHomeSections;
-
