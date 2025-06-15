@@ -5,7 +5,7 @@ import LanguageSelector from '@/components/LanguageSelector';
 import BrandLogo from "@/components/shared/BrandLogo";
 import HeaderNotificationsButton from "@/components/shared/HeaderNotificationsButton";
 import HeaderAvatarMenuDesktop from "@/components/shared/HeaderAvatarMenuDesktop";
-import { UserRound } from "lucide-react"; // FIX: Import UserRound here
+import { UserRound } from "lucide-react";
 
 const mainNavLinks = [
   { name: 'BROWSE LISTINGS', path: '/tenant/home' },
@@ -33,15 +33,15 @@ function buildMenu(menuArray: typeof avatarMenu) {
   }));
 }
 
+// Helper get initials: returns capitalized first letters of user's name.
+const getInitials = (name: string) => {
+  if (!name) return '';
+  return name.trim().split(' ').map(n => n[0]?.toUpperCase()).join('');
+};
+
 const TenantHomePageHeader = () => {
   const navigate = useNavigate();
   const location = useLocation();
-
-  // Helper get initials: returns capitalized first letter of user's first name.
-  const getInitials = (name: string) => {
-    const firstWord = name?.trim().split(" ")[0] ?? "";
-    return firstWord.charAt(0).toUpperCase();
-  };
 
   return (
     <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md shadow-sm border-b border-[#EBEBEB] transition-all duration-300">
@@ -70,21 +70,29 @@ const TenantHomePageHeader = () => {
         </nav>
         
         {/* Actions */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
           {/* Language selector */}
           <div className="transition-transform duration-200 hover:scale-105">
             <LanguageSelector />
           </div>
           
-          {/* Notification bell */}
-          <HeaderNotificationsButton ariaLabel="Notifications" className="transition-all duration-200 hover:bg-gray-100 hover:scale-110" />
-
-          {/* Avatar (user initials in dark circle, with dropdown) */}
-          <HeaderAvatarMenuDesktop
-            user={user}
-            menu={buildMenu(avatarMenu)}
-            onNavigate={to => navigate(to)}
+          {/* Notification Bell - strong contrast, border, visible icon */}
+          <HeaderNotificationsButton 
+            ariaLabel="Notifications"
+            className="bg-white border border-border rounded-2xl h-12 w-12 flex items-center justify-center transition-all duration-200 hover:bg-accent hover:scale-105 shadow-sm"
           />
+
+          {/* Avatar (initials in bold white on black) */}
+          <div className="rounded-2xl h-12 w-12 flex items-center justify-center bg-black border border-border">
+            <span className="text-white font-bold text-base select-none">
+              {getInitials(user.name)}
+            </span>
+          </div>
+          {/* 
+          If you want avatar dropdown instead of static, 
+          just use HeaderAvatarMenuDesktop, but override its avatar fallback style with props. 
+          If dropdown not needed, this is simplest and guaranteed WCAG-visible. 
+          */}
         </div>
       </div>
     </header>
