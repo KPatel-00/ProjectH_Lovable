@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -44,6 +43,7 @@ const App: React.FC = () => (
             <Route path="/search" element={<Search />} />
             {/* Only use nested routing for dashboard */}
             <Route path="/landlord/dashboard/*" element={<LandlordDashboard />} />
+            <Route path="/admin/verification" element={<React.Suspense fallback={<div>Loading...</div>}><import("@/pages/AdminVerification").then(m => <m.default />)}</React.Suspense>} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
@@ -53,4 +53,3 @@ const App: React.FC = () => (
 );
 
 export default App;
-
