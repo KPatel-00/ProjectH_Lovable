@@ -15,9 +15,12 @@ interface Props {
 }
 const TenantRecommended: React.FC<Props> = ({ listings }) => {
   return (
-    <section className="mt-4">
+    <section className="mt-10">
       <div className="flex justify-between items-center mb-3">
-        <h2 className="text-lg font-semibold">Recommended for You</h2>
+        <h2 className="text-lg sm:text-xl font-bold text-foreground tracking-tight">
+          Recommended for You
+        </h2>
+        {/* Add filter or reload actions here if needed */}
       </div>
       {listings.length === 0 ? (
         <EmptyState
@@ -26,16 +29,20 @@ const TenantRecommended: React.FC<Props> = ({ listings }) => {
           description="We'll recommend properties based on your preferences once you start searching."
         />
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {listings.map((listing) => (
             <div
               key={listing.id}
-              className="bg-white rounded-xl shadow-md p-3 flex flex-col"
+              className="group bg-white/90 border border-border rounded-2xl shadow-[0_2px_16px_-4px_rgba(146,153,188,0.11)] p-4 flex flex-col hover:shadow-lg hover:scale-[1.02] transition-all duration-150"
             >
-              <img src={listing.image} alt={listing.title} className="h-32 w-full object-cover rounded-lg mb-2" />
-              <div className="font-bold mb-1">{listing.title}</div>
-              <div className="text-xs text-muted-foreground mb-2">{listing.location}</div>
-              <div className="font-medium text-primary text-sm">{listing.price}</div>
+              <img
+                src={listing.image}
+                alt={listing.title}
+                className="h-36 w-full object-cover rounded-xl mb-2"
+              />
+              <div className="font-semibold text-base truncate text-foreground mb-0.5">{listing.title}</div>
+              <div className="text-xs text-muted-foreground mb-1 truncate">{listing.location}</div>
+              <div className="text-lg font-bold text-primary">{listing.price}</div>
             </div>
           ))}
         </div>
