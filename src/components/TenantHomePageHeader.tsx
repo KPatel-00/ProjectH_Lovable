@@ -1,146 +1,69 @@
-import React, { useState } from 'react';
+
+import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Menu, Bell, User, LogOut, UsersRound, FileText, HelpCircle } from 'lucide-react';
+import { Bell, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import LanguageSelector from '@/components/LanguageSelector';
-import {
-  Sheet,
-  SheetContent,
-  SheetTrigger,
-} from "@/components/ui/sheet";
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import BrandLogo from "@/components/shared/BrandLogo";
-import HeaderNavLinks from "@/components/shared/HeaderNavLinks";
-import { toast } from '@/components/ui/use-toast';
-import { AvatarMenuDropdown } from "@/components/shared/AvatarMenuDropdown";
-import HeaderNotificationsButton from "@/components/shared/HeaderNotificationsButton";
-import HeaderAvatarMenuDesktop from "@/components/shared/HeaderAvatarMenuDesktop";
-import HeaderAvatarMenuMobileSheet from "@/components/shared/HeaderAvatarMenuMobileSheet";
-import { useSignOut } from "@/hooks/useSignOut";
 
-const navLinks = [
-  { name: 'Browse Listings', path: '/browse', id: 'browse' },
-  { name: 'Wishlist', path: '/wishlist', id: 'wishlist' },
-  { name: 'Help Center', path: '/help', id: 'help' },
-];
-
-const avatarMenu = [
-  { label: "My Profile", icon: User, path: "/profile" },
-  { label: "Saved Listings", icon: UsersRound, path: "/wishlist" },
-  { label: "My Applications", icon: FileText, path: "/applications" },
-  { label: "Settings", icon: HelpCircle, path: "/settings" },
+const mainNavLinks = [
+  { name: 'Browse Listings', path: '/tenant/home' },
+  { name: 'Wishlist', path: '/wishlist' },
+  { name: 'Help Center', path: '/help' },
 ];
 const TenantHomePageHeader = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [mobileNavOpen, setMobileNavOpen] = useState(false);
-  const [avatarSheetOpen, setAvatarSheetOpen] = useState(false);
 
-  // Hardcoded user data for demo
-  const user = {
-    name: 'Anna',
-    email: 'anna.tenant@example.com',
-    avatarUrl: '',
-    role: 'Tenant',
-  };
-
-  const handleSignOut = () => {
-    localStorage.clear();
-    sessionStorage.clear();
-    toast({
-      title: "Signed out",
-      description: "You have been signed out successfully.",
-    });
-    navigate('/');
-  };
-
-  // Utility to determine active link
-  const isActive = (to: string) => location.pathname.startsWith(to);
-
-  // Avatar fallback (initials)
-  const getInitials = (name: string) => {
-    if (!name) return "?";
-    return name.split(" ").map((n) => n[0]).join("").toUpperCase();
-  };
-
-  // Sheet content for avatar actions (mobile) - now handled by HeaderAvatarMenuMobileSheet
-
-  // Use global sign out
-  const signOut = useSignOut();
+  // Hardcoded tenant initials for demo
+  const initials = "JD";
 
   return (
-    <header className="sticky top-0 z-50 bg-background/95 backdrop-blur border-b border-border shadow-sm transition-all duration-200">
-      <div className="container mx-auto px-2 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-2">
-        {/* --- LEFT: Brand --- */}
-        <BrandLogo
-          showText={true}
-          showRoleTag={false}
-          onClick={() => navigate("/tenant/home")}
-        />
-        {/* --- CENTER: Navigation Menu --- */}
-        <HeaderNavLinks
-          links={navLinks.map(l => ({ name: l.name, to: l.path, id: l.id }))}
-          navClassName="hidden md:flex mx-auto flex-1 justify-center items-center gap-2"
-          btnClassName="relative px-4 font-medium transition-all"
-          button={true}
-          onNavigate={(to) => navigate(to)}
-        />
-        {/* --- RIGHT: Actions --- */}
-        <div className="flex items-center space-x-1">
-          {/* Language Selector */}
-          <div className="hidden sm:block">
-            <LanguageSelector />
-          </div>
-          {/* Notifications */}
-          <HeaderNotificationsButton />
-          {/* Avatar Dropdown (desktop) */}
-          <HeaderAvatarMenuDesktop
-            user={user}
-            menu={avatarMenu}
-            onNavigate={navigate}
-          />
-          {/* Hamburger menu + avatar (mobile) */}
-          <div className="flex items-center md:hidden gap-1">
-            <HeaderAvatarMenuMobileSheet
-              user={user}
-              avatarMenu={avatarMenu}
-              avatarSheetOpen={avatarSheetOpen}
-              setAvatarSheetOpen={setAvatarSheetOpen}
-              navigate={navigate}
-              roleLabel="Tenant"
-            />
-            <Sheet open={mobileNavOpen} onOpenChange={setMobileNavOpen}>
-              <SheetTrigger asChild>
-                <Button size="icon" variant="ghost" className="ml-1">
-                  <Menu className="w-6 h-6" />
-                </Button>
-              </SheetTrigger>
-              <SheetContent side="left" className="w-60 p-0 flex flex-col">
-                <div className="px-6 py-4 flex items-center gap-3 border-b">
-                  <div className="w-8 h-8 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center shadow-sm">
-                    <span className="text-primary-foreground font-bold text-sm">R</span>
-                  </div>
-                  <span className="font-bold text-lg">RentConnect</span>
-                </div>
-                <div className="flex flex-col mt-2">
-                  {navLinks.map((l) => (
-                    <Button
-                      key={l.id}
-                      variant={isActive(l.path) ? 'secondary' : 'ghost'}
-                      className="justify-start px-6 py-3 text-base rounded-none"
-                      onClick={() => { setMobileNavOpen(false); navigate(l.path); }}
-                    >
-                      {l.name}
-                    </Button>
-                  ))}
-                </div>
-              </SheetContent>
-            </Sheet>
-          </div>
+    <header className="sticky top-0 z-50 bg-white shadow-sm border-b border-[#EBEBEB]">
+      <div className="w-full max-w-screen-2xl mx-auto flex items-center justify-between px-6 h-16 gap-4">
+        {/* Brand */}
+        <div className="flex items-center gap-3">
+          <BrandLogo showText className="!p-0" />
+        </div>
+        {/* Nav (center) */}
+        <nav className="flex gap-2 sm:gap-8 flex-1 justify-center">
+          {mainNavLinks.map(link => (
+            <button
+              key={link.path}
+              onClick={() => navigate(link.path)}
+              className={`relative py-2 px-0 text-base font-medium transition-all ${
+                location.pathname === link.path
+                  ? "text-black after:absolute after:-bottom-1 after:left-0 after:w-full after:h-0.5 after:bg-black after:rounded-xl after:content-['']"
+                  : "text-gray-500 hover:text-black"
+              }`}
+              style={{ minWidth: 110 }}
+            >
+              {link.name}
+            </button>
+          ))}
+        </nav>
+        {/* Actions */}
+        <div className="flex items-center gap-2">
+          {/* Language selector */}
+          <LanguageSelector />
+          {/* Notification bell */}
+          <Button variant="ghost" size="icon" className="relative">
+            <Bell className="w-5 h-5" />
+            {/* Demo notifications dot */}
+            <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full" />
+          </Button>
+          {/* Avatar */}
+          <Button
+            variant="ghost"
+            size="icon"
+            className="rounded-full w-9 h-9 bg-gray-900 text-white font-bold"
+            aria-label="User menu"
+          >
+            <span className="flex items-center justify-center w-full h-full">{initials}</span>
+          </Button>
         </div>
       </div>
     </header>
   );
 };
-
 export default TenantHomePageHeader;
