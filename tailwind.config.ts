@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -21,9 +22,9 @@ export default {
 				'sans': ['Inter', 'Helvetica Neue', 'system-ui', '-apple-system', 'sans-serif'],
 			},
 			colors: {
-				border: '#D9CBA3', // soft gold for all borders
-				input: '#D9CBA3',
-				ring: '#D9CBA3',
+				border: '#9FB5C8', // refined blue-gray for borders
+				input: '#9FB5C8',
+				ring: '#9FB5C8',
 				background: '#FAFAFA',
 				foreground: '#1A1A1A',
 				primary: {
@@ -31,7 +32,7 @@ export default {
 					foreground: '#FAFAFA',
 				},
 				secondary: {
-					DEFAULT: '#D9CBA3',
+					DEFAULT: '#9FB5C8', // blue-gray as accent
 					foreground: '#1A1A1A',
 				},
 				accent: {
@@ -115,3 +116,4 @@ export default {
 	},
 	plugins: [require("tailwindcss-animate")],
 } satisfies Config;
+

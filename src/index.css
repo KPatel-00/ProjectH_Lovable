@@ -8,19 +8,19 @@
 
 @layer base {
   :root {
-    --background: 250 250 250; /* #FAFAFA */
-    --foreground: 26 26 26;    /* #1A1A1A */
-    --primary: 26 26 26;       /* #1A1A1A */
+    --background: 250 250 250;
+    --foreground: 26 26 26;
+    --primary: 26 26 26;
     --primary-foreground: 250 250 250;
-    --secondary: 217 203 163;  /* #D9CBA3 */
+    --secondary: 159 181 200;   /* #9FB5C8 - blue-gray accent */
     --secondary-foreground: 26 26 26;
-    --accent: 244 244 244;     /* #F4F4F4 */
+    --accent: 244 244 244;
     --card: 255 255 255;
-    --muted: 231 231 231;      /* lighter for inputs */
+    --muted: 231 231 231;
     --muted-foreground: 85 85 85;
-    --border: 217 203 163;     /* #D9CBA3 (gold!) */
-    --input: 217 203 163;
-    --ring: 217 203 163;
+    --border: 159 181 200;      /* #9FB5C8 */
+    --input: 159 181 200;
+    --ring: 159 181 200;
     --destructive: 185 51 51;
     --destructive-foreground: 255 255 255;
     --radius: 0.5rem;
@@ -31,10 +31,10 @@
     --card: 35 35 35;
     --primary: 250 250 250;
     --primary-foreground: 26 26 26;
-    --secondary: 217 203 163;
-    --border: 217 203 163;
-    --input: 217 203 163;
-    --ring: 217 203 163;
+    --secondary: 159 181 200;   /* #9FB5C8 */
+    --border: 159 181 200;
+    --input: 159 181 200;
+    --ring: 159 181 200;
   }
 }
 
@@ -51,7 +51,6 @@
     letter-spacing: 0.02em;
   }
 
-  /* Typography (Strong contrast for all) */
   h1, h2, h3, h4, h5, h6 {
     color: #1A1A1A !important;
     font-family: 'Inter', 'Helvetica Neue', system-ui, -apple-system, sans-serif;
@@ -61,7 +60,7 @@
     color: #1A1A1A;
   }
   ::placeholder {
-    color: #757575 !important; /* darker placeholder for readability */
+    color: #757575 !important;
     opacity: 1 !important;
   }
   .text-muted-foreground, .editorial-caption {
@@ -73,7 +72,7 @@
   input, select, textarea {
     background: #fff !important;
     color: #1A1A1A !important;
-    border: 2px solid #D9CBA3 !important; /* gold border */
+    border: 2px solid #9FB5C8 !important; /* blue-gray border */
     border-radius: 0.75rem !important;
     font-size: 1rem !important;
     font-weight: 500;
@@ -96,7 +95,7 @@
   .btn-outline, .shadcn-btn-outline {
     background: #fff !important;
     color: #1A1A1A !important;
-    border: 2px solid #D9CBA3 !important;
+    border: 2px solid #9FB5C8 !important;
     font-weight: 700;
     font-size: 1rem;
     border-radius: 0.75rem;
@@ -107,14 +106,13 @@
     border-color: #333 !important;
   }
   .btn-secondary, .shadcn-btn-secondary {
-    background-color: #D9CBA3 !important;
+    background-color: #9FB5C8 !important;
     color: #1A1A1A !important;
     font-weight: 700;
     border-radius: 0.75rem;
     border: none !important;
     font-size: 1rem;
   }
-  /* Black button for actions */
   .btn-black, .shadcn-btn-black {
     background: #1A1A1A !important;
     color: #FAFAFA !important;
@@ -124,38 +122,36 @@
     border: none !important;
   }
 
-  /* Card and search filter sections */
   .card-refined, .search-bar-refined {
     background: #fff !important;
-    border: 2px solid #D9CBA3 !important;
+    border: 2px solid #9FB5C8 !important;
     border-radius: 1rem !important;
-    box-shadow: 0 2px 8px 0 rgba(217, 203, 163, 0.10);
+    box-shadow: 0 2px 8px 0 rgba(159, 181, 200, 0.10);
   }
 }
 
 /* High-contrast focus style */
 :focus-visible {
-  outline: 2px solid #D9CBA3 !important;
+  outline: 2px solid #9FB5C8 !important;
   outline-offset: 2px;
 }
 
-/* Refined, subtle gray shadow */
+/* Refined, subtle blue shadow */
 .shadow-refined {
-  box-shadow: 0 2px 8px 0 rgba(217, 203, 163, 0.09);
+  box-shadow: 0 2px 8px 0 rgba(159, 181, 200, 0.09);
 }
 .shadow-refined-lg {
-  box-shadow: 0 6px 20px -2px rgba(217, 203, 163, 0.12);
+  box-shadow: 0 6px 20px -2px rgba(159, 181, 200, 0.12);
 }
 .shadow-refined-xl {
-  box-shadow: 0 20px 50px -12px rgba(217, 203, 163, 0.12);
+  box-shadow: 0 20px 50px -12px rgba(159, 181, 200, 0.12);
 }
 
-/* Remove default border radius for tighter UI, but preserved for buttons & cards */
 .rounded-xl, .rounded-2xl, .rounded-lg, .rounded-md {
   border-radius: 1rem !important;
 }
 
-/* Refine scrollbars for minimal look */
+/* Scrollbars */
 ::-webkit-scrollbar {
   width: 8px;
 }
@@ -163,7 +159,7 @@
   background: #ececec;
 }
 
-/* Ensure all backgrounds */
 .bg-white, .bg-background, .bg-card, .bg-accent {
   background-color: #FAFAFA !important;
 }
+
