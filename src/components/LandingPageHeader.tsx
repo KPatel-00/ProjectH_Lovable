@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Menu } from 'lucide-react';
@@ -9,12 +10,6 @@ import HeaderNavLinks from '@/components/shared/HeaderNavLinks';
 import { useI18n } from '@/hooks/useI18n';
 import { useT } from "@/i18n";
 import { Sheet, SheetTrigger, SheetContent } from "@/components/ui/sheet";
-
-const navLinks = [
-  { name: "dashboard", to: "/listings" },
-  { name: "getStarted", to: "/list-property" },
-  { name: "helpCenter", to: "/contact" },
-];
 
 const LandingPageHeader = () => {
   const navigate = useNavigate();
@@ -38,11 +33,11 @@ const LandingPageHeader = () => {
     setSheetOpen(false);
   };
 
-  // Use translations for nav links
+  // Use translations for nav links to match new design
   const translatedNavLinks = [
-    { name: t("dashboard"), to: "/listings" },
-    { name: t("getStarted"), to: "/list-property" },
-    { name: t("helpCenter"), to: "/contact" },
+    { name: t("browseListings") || "Browse Listings", to: "/listings" },
+    { name: t("listProperty") || "List Property", to: "/list-property" },
+    { name: t("helpCenter") || "Help Center", to: "/contact" },
   ];
 
   return (
@@ -64,22 +59,15 @@ const LandingPageHeader = () => {
             navClassName="hidden md:flex space-x-8"
             btnClassName="font-medium"
             inactiveClassName="text-muted-foreground hover:text-foreground"
-            activeClassName="text-foreground underline underline-offset-4"
+            activeClassName="text-foreground"
           />
           {/* Actions */}
           <div className="flex items-center space-x-2 sm:space-x-3">
             <div className="hidden sm:block"><LanguageSelector /></div>
+            {/* Removed Login button to match design, Signup is now "Get Started" */}
             <Button
               size="sm"
-              variant="ghost"
-              className="font-medium hidden md:inline-flex"
-              onClick={openLoginModal}
-            >
-              {t("login")}
-            </Button>
-            <Button
-              size="sm"
-              className="bg-gradient-to-r from-primary to-secondary font-medium px-6 hidden md:inline-flex"
+              className="bg-primary text-primary-foreground font-medium px-6 hidden md:inline-flex"
               onClick={openSignupModal}
             >
               {t("getStarted")}
@@ -121,17 +109,10 @@ const LandingPageHeader = () => {
                 {/* Language selector and Auth buttons */}
                 <div className="flex flex-col gap-3 px-5 py-4">
                   <LanguageSelector />
+                  {/* Removed Login button from mobile menu */}
                   <Button
                     size="sm"
-                    variant="ghost"
-                    className="font-medium"
-                    onClick={openLoginModal}
-                  >
-                    {t("login")}
-                  </Button>
-                  <Button
-                    size="sm"
-                    className="bg-gradient-to-r from-primary to-secondary font-medium px-6"
+                    className="bg-primary text-primary-foreground font-medium px-6"
                     onClick={openSignupModal}
                   >
                     {t("getStarted")}

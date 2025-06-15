@@ -1,5 +1,6 @@
 
 import React from "react";
+import { Home } from "lucide-react";
 
 type BrandLogoProps = {
   className?: string;
@@ -27,8 +28,8 @@ const BrandLogo: React.FC<BrandLogoProps> = ({
     role={onClick ? "button" : undefined}
     tabIndex={onClick ? 0 : undefined}
   >
-    <div className="w-8 h-8 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center shadow-sm">
-      <span className="text-primary-foreground font-bold text-sm">R</span>
+    <div className="w-8 h-8 bg-foreground text-background rounded-lg flex items-center justify-center shadow-sm">
+      <Home className="w-5 h-5" />
     </div>
     {showText && (
       <span className={textClassName}>RentConnect</span>
