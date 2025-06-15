@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -17,7 +16,8 @@ import Search from "./pages/Search";
 import RentalApplicationPage from "./pages/RentalApplication";
 import LandlordDashboard from "./pages/LandlordDashboard";
 import { I18nProvider } from "./hooks/useI18n";
-import AdminVerification from "./pages/AdminVerification"; // fixed import
+import AdminVerification from "./pages/AdminVerification";
+import AdminUsers from "./pages/AdminUsers";
 
 const queryClient = new QueryClient();
 
@@ -43,6 +43,7 @@ const App: React.FC = () => (
             {/* Only use nested routing for dashboard */}
             <Route path="/landlord/dashboard/*" element={<LandlordDashboard />} />
             <Route path="/admin/verification" element={<AdminVerification />} />
+            <Route path="/admin/users" element={<AdminUsers />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
