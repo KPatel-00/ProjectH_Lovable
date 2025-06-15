@@ -1,7 +1,7 @@
-
 import React from "react";
 import EmptyState from "@/components/EmptyState";
-import { Globe2 } from "lucide-react";
+import { Globe2, ArrowRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 
 type City = {
@@ -17,9 +17,20 @@ const TenantExploreCities: React.FC<Props> = ({ cities }) => {
 
   return (
     <div>
-      <h2 className="text-2xl font-light tracking-wide text-foreground uppercase mb-8">
-        Explore Popular Cities
-      </h2>
+      <div className="flex items-center justify-between mb-8">
+        <h2 className="text-2xl font-light tracking-wide text-foreground uppercase">
+          Explore Popular Cities
+        </h2>
+        <Button
+          variant="default"
+          size="sm"
+          onClick={() => navigate("/browse")}
+          className="rounded-xl px-5 py-2 text-base font-bold flex items-center gap-2"
+        >
+          View All
+          <ArrowRight className="w-4 h-4 ml-1" />
+        </Button>
+      </div>
       
       {cities.length === 0 ? (
         <EmptyState

@@ -1,4 +1,3 @@
-
 import React from "react";
 import EmptyState from "@/components/EmptyState";
 import { HeartOff, MapPin, Mail, Trash2, ArrowRight } from "lucide-react";
@@ -26,13 +25,14 @@ const TenantSavedListings: React.FC<Props> = ({ listings }) => {
         <h2 className="text-2xl font-light tracking-wide text-foreground uppercase">
           Your Saved Homes
         </h2>
-        <Button 
-          variant="ghost" 
+        <Button
+          variant="default"
+          size="sm"
           onClick={() => navigate("/wishlist")}
-          className="text-xs uppercase tracking-widest text-muted-foreground hover:text-foreground p-0 h-auto font-medium"
+          className="rounded-xl px-5 py-2 text-base font-bold flex items-center gap-2"
         >
           View All
-          <ArrowRight className="w-3 h-3 ml-2" />
+          <ArrowRight className="w-4 h-4 ml-1" />
         </Button>
       </div>
       
