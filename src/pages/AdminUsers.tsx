@@ -9,7 +9,21 @@ import { Badge } from "@/components/ui/badge";
 import { UserRound, Mail, Search, Users, UserPlus, UserMinus, Shield, Calendar } from "lucide-react";
 
 // ---- Mock Data ----
-const MOCK_USERS = [
+type Role = "tenant" | "landlord" | "admin";
+type UserStatus = "active" | "banned" | "unverified" | "pending";
+type UserType = {
+  id: string;
+  name: string;
+  email: string;
+  avatarUrl: string;
+  role: Role;
+  status: UserStatus;
+  createdAt: string;
+  verified: boolean;
+  banned: boolean;
+};
+
+const MOCK_USERS: UserType[] = [
   {
     id: "u1",
     name: "Alice Wang",
@@ -78,16 +92,14 @@ const MOCK_USERS = [
   },
 ];
 
-// ---- TYPES ----
-type UserType = typeof MOCK_USERS[number];
-
-const ROLES = [
+// ---- FILTER TYPES ----
+const ROLES: { label: string; value: "all" | Role }[] = [
   { label: "All", value: "all" },
   { label: "Tenant", value: "tenant" },
   { label: "Landlord", value: "landlord" },
   { label: "Admin", value: "admin" },
 ];
-const STATUSES = [
+const STATUSES: { label: string; value: "all" | UserStatus }[] = [
   { label: "All", value: "all" },
   { label: "Active", value: "active" },
   { label: "Banned", value: "banned" },
@@ -98,8 +110,8 @@ const STATUSES = [
 export default function AdminUsers() {
   const [users, setUsers] = useState<UserType[]>(MOCK_USERS);
   const [search, setSearch] = useState("");
-  const [roleFilter, setRoleFilter] = useState("all");
-  const [statusFilter, setStatusFilter] = useState("all");
+  const [roleFilter, setRoleFilter] = useState<"all" | Role>("all");
+  const [statusFilter, setStatusFilter] = useState<"all" | UserStatus>("all");
 
   // Filtering logic
   const filtered = useMemo(() => {
@@ -123,7 +135,7 @@ export default function AdminUsers() {
 
   // Stats per role
   const stats = useMemo(() => {
-    const out: Record<string, number> = { tenant: 0, landlord: 0, admin: 0 };
+    const out: Record<Role, number> = { tenant: 0, landlord: 0, admin: 0 };
     users.forEach(u => out[u.role]++);
     return out;
   }, [users]);
@@ -135,7 +147,7 @@ export default function AdminUsers() {
   function handleUnban(id: string) {
     setUsers(us => us.map(u => u.id === id ? { ...u, banned: false, status: "active" } : u));
   }
-  function handleRole(id: string, role: "tenant" | "landlord" | "admin") {
+  function handleRole(id: string, role: Role) {
     setUsers(us => us.map(u => u.id === id ? { ...u, role } : u));
   }
   function handleVerify(id: string) {
@@ -191,7 +203,7 @@ export default function AdminUsers() {
           <select
             className="border rounded py-2 px-3 text-sm"
             value={roleFilter}
-            onChange={e => setRoleFilter(e.target.value)}
+            onChange={e => setRoleFilter(e.target.value as "all" | Role)}
           >
             {ROLES.map(r => <option key={r.value} value={r.value}>{r.label}</option>)}
           </select>
@@ -200,7 +212,7 @@ export default function AdminUsers() {
           <select
             className="border rounded py-2 px-3 text-sm"
             value={statusFilter}
-            onChange={e => setStatusFilter(e.target.value)}
+            onChange={e => setStatusFilter(e.target.value as "all" | UserStatus)}
           >
             {STATUSES.map(s => <option key={s.value} value={s.value}>{s.label}</option>)}
           </select>
