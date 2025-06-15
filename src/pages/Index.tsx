@@ -2,9 +2,11 @@
 import React from 'react';
 import Header from '@/components/Header';
 import Hero from '@/components/Hero';
+import EditorialFeatured from '@/components/EditorialFeatured';
+import EditorialBenefits from '@/components/EditorialBenefits';
+import EditorialStorytellingSection from '@/components/EditorialStorytellingSection';
 import StatsSection from '@/components/StatsSection';
 import PopularCitiesSection from '@/components/PopularCitiesSection';
-import FeaturedPropertiesSection from '@/components/FeaturedPropertiesSection';
 import TestimonialsSection from '@/components/TestimonialsSection';
 import FAQ from '@/components/FAQ';
 import Footer from '@/components/Footer';
@@ -17,9 +19,11 @@ const Index = () => {
       <Header />
       <main>
         <Hero />
+        <EditorialFeatured />
+        <EditorialBenefits />
+        <EditorialStorytellingSection />
         <StatsSection />
         <PopularCitiesSection />
-        <FeaturedPropertiesSection />
         <TestimonialsSection />
         <FAQ />
       </main>
