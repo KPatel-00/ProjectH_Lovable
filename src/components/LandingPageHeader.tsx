@@ -18,7 +18,6 @@ const LandingPageHeader = () => {
 
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [authDefaultTab, setAuthDefaultTab] = useState<'login'|'signup'>('login');
-
   const [sheetOpen, setSheetOpen] = useState(false);
 
   const openLoginModal = () => {
@@ -33,7 +32,6 @@ const LandingPageHeader = () => {
     setSheetOpen(false);
   };
 
-  // Use translations for nav links to match new design
   const translatedNavLinks = [
     { name: t("browseListings") || "Browse Listings", to: "/listings" },
     { name: t("listProperty") || "List Property", to: "/list-property" },
@@ -45,89 +43,134 @@ const LandingPageHeader = () => {
       {/* Skip to Main Content Link */}
       <a
         href="#main-content"
-        className="fixed left-2 top-2 z-[100] px-4 py-2 bg-white text-primary border border-primary rounded transition-transform -translate-y-16 focus:translate-y-0 focus:outline-none focus:ring-2 focus:ring-primary"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 z-[100] px-4 py-2 bg-white text-primary border border-primary rounded-lg transition-all duration-200"
         tabIndex={0}
       >
         Skip to main content
       </a>
-      <header className="sticky top-0 z-50 bg-background/95 backdrop-blur-md border-b border-border transition-shadow duration-200">
-        <div className="container mx-auto px-2 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <BrandLogo showText={true} showRoleTag={false} onClick={() => navigate("/")} />
-          {/* Nav (desktop only) */}
-          <HeaderNavLinks
-            links={translatedNavLinks}
-            navClassName="hidden md:flex space-x-8"
-            btnClassName="font-medium"
-            inactiveClassName="text-muted-foreground hover:text-foreground"
-            activeClassName="text-foreground"
+      
+      <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-100 transition-all duration-200">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+          {/* Logo */}
+          <BrandLogo 
+            showText={true} 
+            showRoleTag={false} 
+            onClick={() => navigate("/")}
+            textClassName="text-2xl font-bold text-gray-900 hidden sm:inline-block tracking-tight"
           />
+          
+          {/* Navigation Links - Desktop */}
+          <nav className="hidden lg:flex items-center space-x-8">
+            {translatedNavLinks.map(link => (
+              <button
+                key={link.to}
+                onClick={() => navigate(link.to)}
+                className="text-gray-600 hover:text-gray-900 font-medium transition-colors duration-200 text-base"
+              >
+                {link.name}
+              </button>
+            ))}
+          </nav>
+          
           {/* Actions */}
-          <div className="flex items-center space-x-2 sm:space-x-3">
-            <div className="hidden sm:block"><LanguageSelector /></div>
-            {/* Removed Login button to match design, Signup is now "Get Started" */}
+          <div className="flex items-center space-x-4">
+            {/* Language Selector - Desktop */}
+            <div className="hidden sm:block">
+              <LanguageSelector />
+            </div>
+            
+            {/* Login Button - Desktop */}
+            <Button
+              variant="ghost"
+              size="sm"
+              className="hidden md:inline-flex text-gray-600 hover:text-gray-900 font-medium"
+              onClick={openLoginModal}
+            >
+              {t("login") || "Log in"}
+            </Button>
+            
+            {/* Get Started Button - Desktop */}
             <Button
               size="sm"
-              className="bg-primary text-primary-foreground font-medium px-6 hidden md:inline-flex"
+              className="hidden md:inline-flex bg-gray-900 text-white hover:bg-gray-800 font-medium px-6 py-2 rounded-lg transition-all duration-200"
               onClick={openSignupModal}
             >
-              {t("getStarted")}
+              {t("getStarted") || "Get Started"}
             </Button>
-            {/* Mobile nav trigger */}
+            
+            {/* Mobile Menu Trigger */}
             <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
               <SheetTrigger asChild>
                 <Button
                   size="sm"
                   variant="ghost"
-                  className="md:hidden"
+                  className="lg:hidden p-2"
                   aria-label="Open navigation menu"
                 >
-                  <Menu />
+                  <Menu className="w-6 h-6" />
                 </Button>
               </SheetTrigger>
-              <SheetContent side="right"
-                className="p-0 pt-2 w-full min-w-0 max-w-xs sm:w-72 max-w-full flex flex-col"
-                style={{ maxWidth: '100vw', width: '100vw', minWidth: 0 }}
+              
+              <SheetContent 
+                side="right"
+                className="w-full max-w-sm p-0 flex flex-col bg-white"
               >
-                {/* Logo at top of drawer */}
-                <div className="px-5 pt-1 pb-6 border-b flex items-center">
-                  <BrandLogo showText={true} showRoleTag={false} onClick={() => {navigate("/"); setSheetOpen(false);}} />
+                {/* Mobile Header */}
+                <div className="px-6 pt-6 pb-4 border-b border-gray-100">
+                  <BrandLogo 
+                    showText={true} 
+                    showRoleTag={false} 
+                    onClick={() => {navigate("/"); setSheetOpen(false);}}
+                    textClassName="text-xl font-bold text-gray-900"
+                  />
                 </div>
-                {/* Nav links */}
-                <nav className="flex flex-col gap-3 mt-4 px-5">
+                
+                {/* Mobile Navigation */}
+                <nav className="flex flex-col px-6 py-4 space-y-1">
                   {translatedNavLinks.map(link => (
                     <Button
                       key={link.to}
                       variant="ghost"
-                      className="justify-start w-full text-base font-medium"
+                      className="justify-start text-left text-gray-600 hover:text-gray-900 hover:bg-gray-50 font-medium py-3"
                       onClick={() => { navigate(link.to); setSheetOpen(false); }}
                     >
                       {link.name}
                     </Button>
                   ))}
                 </nav>
-                <div className="border-t mt-6 mb-0" />
-                {/* Language selector and Auth buttons */}
-                <div className="flex flex-col gap-3 px-5 py-4">
+                
+                <div className="border-t border-gray-100 mt-auto" />
+                
+                {/* Mobile Actions */}
+                <div className="flex flex-col gap-3 px-6 py-6">
                   <LanguageSelector />
-                  {/* Removed Login button from mobile menu */}
+                  
                   <Button
-                    size="sm"
-                    className="bg-primary text-primary-foreground font-medium px-6"
+                    variant="ghost"
+                    className="justify-start text-gray-600 hover:text-gray-900 font-medium"
+                    onClick={openLoginModal}
+                  >
+                    {t("login") || "Log in"}
+                  </Button>
+                  
+                  <Button
+                    className="bg-gray-900 text-white hover:bg-gray-800 font-medium py-3 rounded-lg"
                     onClick={openSignupModal}
                   >
-                    {t("getStarted")}
+                    {t("getStarted") || "Get Started"}
                   </Button>
                 </div>
               </SheetContent>
             </Sheet>
           </div>
-          <AuthModal
-            isOpen={authModalOpen}
-            onClose={() => setAuthModalOpen(false)}
-            defaultTab={authDefaultTab}
-          />
         </div>
       </header>
+      
+      <AuthModal
+        isOpen={authModalOpen}
+        onClose={() => setAuthModalOpen(false)}
+        defaultTab={authDefaultTab}
+      />
     </>
   );
 };
