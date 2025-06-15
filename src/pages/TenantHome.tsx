@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -6,6 +7,7 @@ import { toast } from "@/hooks/use-toast";
 import TenantHomeSections from "@/components/tenant/TenantHomeSections";
 import useSkipLinkFocus from "@/hooks/useSkipLinkFocus";
 import TenantSearchBar from "@/components/TenantSearchBar";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 import {
   mockUser,
@@ -25,6 +27,7 @@ const TenantHome = () => {
     data: null | any;
   }>({ loading: true, error: null, data: null });
   const t = useT();
+  const isMobile = useIsMobile();
 
   const fetchData = () => {
     setState({ loading: true, error: null, data: null });
@@ -59,8 +62,9 @@ const TenantHome = () => {
         {t("skipToMainContent") || "Skip to main content"}
       </a>
 
-      {/* Responsive Search Bar */}
-      <div className="mt-1 mb-4 sm:mb-8 flex px-2 sm:px-6 md:px-12 w-full">
+      {/* Responsive Search Bar: Sticky on desktop/tablet, not sticky on mobile */}
+      <div className={`mt-1 mb-4 sm:mb-8 flex px-2 sm:px-6 md:px-12 w-full 
+        ${!isMobile ? "sticky top-16 z-30 bg-white/95 backdrop-blur-md border-b border-border" : ""}`}>
         <TenantSearchBar />
       </div>
 
