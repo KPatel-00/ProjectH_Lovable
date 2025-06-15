@@ -18,6 +18,7 @@ import LandlordDashboard from "./pages/LandlordDashboard";
 import { I18nProvider } from "./hooks/useI18n";
 import AdminVerification from "./pages/AdminVerification";
 import AdminUsers from "./pages/AdminUsers";
+import AdminDashboard from "./pages/AdminDashboard";
 
 const queryClient = new QueryClient();
 
@@ -42,6 +43,7 @@ const App: React.FC = () => (
             <Route path="/search" element={<Search />} />
             {/* Only use nested routing for dashboard */}
             <Route path="/landlord/dashboard/*" element={<LandlordDashboard />} />
+            <Route path="/admin/dashboard" element={<AdminDashboard />} />
             <Route path="/admin/verification" element={<AdminVerification />} />
             <Route path="/admin/users" element={<AdminUsers />} />
             <Route path="*" element={<NotFound />} />
