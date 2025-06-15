@@ -1,10 +1,6 @@
-
 import React from "react";
-import TenantSearchBarSticky from "@/components/tenant/TenantSearchBarSticky";
 import TenantWelcomeBanner from "@/components/tenant/TenantWelcomeBanner";
 import TenantWelcomeBannerSkeleton from "@/components/tenant/TenantWelcomeBannerSkeleton";
-import TenantQuickStats from "@/components/tenant/TenantQuickStats";
-import TenantQuickStatsSkeleton from "@/components/tenant/TenantQuickStatsSkeleton";
 import TenantSavedListings from "@/components/tenant/TenantSavedListings";
 import TenantSavedListingsSkeleton from "@/components/tenant/TenantSavedListingsSkeleton";
 import TenantRecommended from "@/components/tenant/TenantRecommended";
@@ -36,8 +32,7 @@ const TenantHomeSections: React.FC<Props> = ({ state, t, fetchData }) => {
 
   return (
     <div className="w-full px-0 sm:px-3 md:px-4 max-w-full">
-      {/* Only show sticky search on non-mobile (desktop/tablet) */}
-      {!isMobile && <TenantSearchBarSticky />}
+      {/* Removed TenantSearchBarSticky */}
       {/* Error Banner */}
       {state.error && (
         <ErrorBanner message={state.error} onRetry={fetchData} className="mt-4 sm:mt-6" />
@@ -115,4 +110,3 @@ const TenantHomeSections: React.FC<Props> = ({ state, t, fetchData }) => {
 };
 
 export default TenantHomeSections;
-
