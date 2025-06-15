@@ -65,6 +65,9 @@ const Footer = () => {
     }, {
       label: 'Blog',
       href: '#'
+    }, {
+      label: 'Admin',
+      href: '/admin/dashboard'
     }]
   }, {
     title: 'Legal',
