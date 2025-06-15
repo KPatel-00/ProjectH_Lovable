@@ -2,12 +2,10 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import PropertyImageGallery from "@/components/PropertyImageGallery";
-import PropertySummary from "@/components/PropertySummary";
-import PropertyAmenities from "@/components/PropertyAmenities";
-import LandlordCard from "@/components/LandlordCard";
-import ActionPanel from "@/components/ActionPanel";
-import Map from "@/components/Map";
+import LuxuryPropertyHero from "@/components/LuxuryPropertyHero";
+import LuxuryPropertyFeatures from "@/components/LuxuryPropertyFeatures";
+import LuxuryPropertyDescription from "@/components/LuxuryPropertyDescription";
+import LuxuryLandlordSection from "@/components/LuxuryLandlordSection";
 import RecommendedListings from "@/components/RecommendedListings";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -190,21 +188,21 @@ const PropertyDetail: React.FC = () => {
   }, [id, navigate]);
 
   if (loading) {
-    // Loading skeletons
+    // Loading skeletons with luxury styling
     return (
       <div className="min-h-screen bg-background">
         <Header />
-        <main className="container mx-auto px-4 pt-24 pb-16">
-          <Skeleton className="h-80 w-full mb-6 rounded-xl" />
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <div className="lg:col-span-2 space-y-5">
-              <Skeleton className="h-10 w-1/3" />
-              <Skeleton className="h-6 w-2/3" />
-              <Skeleton className="h-32 w-full" />
-              <Skeleton className="h-6 w-40" />
-            </div>
-            <div>
-              <Skeleton className="h-64 w-full rounded-xl" />
+        <main className="pt-24">
+          <div className="container mx-auto px-4">
+            <Skeleton className="h-96 lg:h-[600px] w-full mb-8 rounded-3xl" />
+            <div className="max-w-4xl mx-auto space-y-8">
+              <Skeleton className="h-12 w-2/3 mx-auto" />
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                {[...Array(4)].map((_, i) => (
+                  <Skeleton key={i} className="h-24 rounded-2xl" />
+                ))}
+              </div>
+              <Skeleton className="h-32 w-full rounded-2xl" />
             </div>
           </div>
         </main>
@@ -218,60 +216,52 @@ const PropertyDetail: React.FC = () => {
   return (
     <div className="min-h-screen bg-background">
       <Header />
-      <main className="container mx-auto px-2 sm:px-4 lg:px-8 pt-24 pb-16">
-        {/* Image Gallery */}
-        <PropertyImageGallery images={listing.images} />
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-8">
-          <div className="lg:col-span-2 space-y-8">
-            {/* Title and Info */}
-            <div className="flex flex-wrap items-center gap-3 mb-1">
-              <h1 className="text-3xl font-bold text-foreground">{listing.title}</h1>
-              {listing.verified && (
-                <span className="bg-green-600 text-white text-xs px-2 py-1 rounded-full">Verified</span>
-              )}
-              <span className="text-sm text-muted-foreground">Listed {Math.floor((Date.now() - listing.listedAt) / 86400000)} days ago</span>
-            </div>
-            <div className="flex gap-3 flex-wrap items-center text-muted-foreground text-base mb-3">
-              <span>{listing.city}</span>
-              <span>•</span>
-              <span>{listing.neighborhood}</span>
-            </div>
-            <div className="text-2xl font-bold text-primary mb-4">€{listing.rent}/month</div>
-            <PropertySummary
-              type={listing.type}
-              size={listing.size}
-              rooms={listing.rooms}
-              floor={listing.floor}
-              furnishing={listing.furnishing}
-              moveInDate={listing.moveInDate}
-            />
-            <PropertyAmenities amenities={listing.amenities} />
-            <div>
-              <h2 className="text-xl font-bold mt-6 mb-2">Description</h2>
-              <p className="text-muted-foreground leading-relaxed">{listing.description}</p>
-            </div>
-          </div>
-          {/* Sticky Action Panel & Landlord */}
-          <div className="relative h-fit mt-6 lg:mt-0">
-            <div className="lg:sticky lg:top-28 flex flex-col gap-6">
-              <ActionPanel listingId={listing.id} />
-              <LandlordCard landlord={listing.landlord} />
-            </div>
-          </div>
+      
+      <main className="pt-24">
+        {/* Hero Section */}
+        <div className="container mx-auto px-4 lg:px-8">
+          <LuxuryPropertyHero
+            images={listing.images}
+            title={listing.title}
+            city={listing.city}
+            neighborhood={listing.neighborhood}
+            rent={listing.rent}
+            verified={listing.verified}
+            listedAt={listing.listedAt}
+            type={listing.type}
+            rooms={listing.rooms}
+          />
         </div>
 
-        {/* Map */}
-        {/* 
-        <div className="mt-12 max-w-4xl mx-auto">
-          <h2 className="text-xl font-bold mb-3">Location</h2>
-          <Map center={listing.location} />
-        </div>
-        */}
+        {/* Features Section */}
+        <LuxuryPropertyFeatures
+          amenities={listing.amenities}
+          type={listing.type}
+          size={listing.size}
+          rooms={listing.rooms}
+          floor={listing.floor}
+          furnishing={listing.furnishing}
+          moveInDate={listing.moveInDate}
+        />
 
-        <div className="mt-12">
+        {/* Description Section */}
+        <LuxuryPropertyDescription
+          description={listing.description}
+          furnishing={listing.furnishing}
+        />
+
+        {/* Landlord Section */}
+        <LuxuryLandlordSection
+          landlord={listing.landlord}
+          listingId={listing.id}
+        />
+
+        {/* Recommended Properties */}
+        <div className="py-16 px-4 lg:px-12 bg-muted/10">
           <RecommendedListings listing={listing} />
         </div>
       </main>
+      
       <Footer />
     </div>
   );
