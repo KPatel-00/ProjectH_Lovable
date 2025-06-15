@@ -1,7 +1,7 @@
 
 import "@testing-library/jest-dom";
 import React from "react";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, fireEvent } from "@testing-library/react";
 import SearchFiltersBar from "../components/SearchFiltersBar";
 
 describe("SearchFiltersBar", () => {
@@ -15,7 +15,7 @@ describe("SearchFiltersBar", () => {
   });
 
   it("renders SearchFiltersBar and updates location", () => {
-    render(
+    const { getByPlaceholderText } = render(
       <SearchFiltersBar
         filters={filters}
         setFilters={setFilters}
@@ -24,13 +24,13 @@ describe("SearchFiltersBar", () => {
       />
     );
 
-    const locationInput = screen.getByPlaceholderText(/city \/ area \/ zip code/i);
+    const locationInput = getByPlaceholderText(/city \/ area \/ zip code/i);
     fireEvent.change(locationInput, { target: { value: "Berlin" } });
     expect(setFilters).toHaveBeenCalledWith({ location: "Berlin" });
   });
 
   it("submits when Search button is clicked", () => {
-    render(
+    const { getByRole } = render(
       <SearchFiltersBar
         filters={filters}
         setFilters={setFilters}
@@ -38,13 +38,13 @@ describe("SearchFiltersBar", () => {
         showMoveInDate={true}
       />
     );
-    const button = screen.getByRole("button", { name: /search now/i });
+    const button = getByRole("button", { name: /search now/i });
     fireEvent.click(button);
     expect(onSubmit).toHaveBeenCalled();
   });
 
   it("renders property type options", () => {
-    render(
+    const { getByText } = render(
       <SearchFiltersBar
         filters={filters}
         setFilters={setFilters}
@@ -52,8 +52,8 @@ describe("SearchFiltersBar", () => {
         showMoveInDate={true}
       />
     );
-    fireEvent.mouseDown(screen.getByText(/property type/i));
-    expect(screen.getByText("Apartment")).toBeInTheDocument();
-    expect(screen.getByText("House")).toBeInTheDocument();
+    fireEvent.mouseDown(getByText(/property type/i));
+    expect(getByText("Apartment")).toBeInTheDocument();
+    expect(getByText("House")).toBeInTheDocument();
   });
 });
