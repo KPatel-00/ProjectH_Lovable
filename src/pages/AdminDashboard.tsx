@@ -1,8 +1,8 @@
 
 import React from "react";
 import { AdminSidebar } from "@/components/admin/AdminSidebar";
-import { BarChart, PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
-import { ArrowUpRight } from "lucide-react";
+import { BarChart, PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Bar } from "recharts";
+import { ArrowUpRight, Users, FileText } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const ANALYTICS = [
