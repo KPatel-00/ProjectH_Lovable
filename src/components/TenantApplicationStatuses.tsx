@@ -1,7 +1,9 @@
 
 import React from "react";
 import EmptyState from "@/components/EmptyState";
-import { FolderOpen } from "lucide-react";
+import { FolderOpen, ArrowRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 
 type Application = {
   id: number;
@@ -17,18 +19,32 @@ interface Props {
 }
 
 const statusColors: Record<string, string> = {
-  "Pending": "bg-yellow-100 text-yellow-800",
-  "Approved": "bg-emerald-100 text-emerald-700",
-  "Rejected": "bg-destructive text-destructive-foreground",
-  "In Review": "bg-blue-100 text-blue-700",
+  "Pending": "bg-yellow-50 text-yellow-700 border-yellow-200",
+  "Approved": "bg-emerald-50 text-emerald-700 border-emerald-200",
+  "Rejected": "bg-red-50 text-red-700 border-red-200",
+  "In Review": "bg-blue-50 text-blue-700 border-blue-200",
 };
 
 const TenantApplicationStatuses: React.FC<Props> = ({ applications }) => {
+  const navigate = useNavigate();
+
   return (
-    <section className="mt-10">
-      <h2 className="text-lg sm:text-xl font-bold text-foreground tracking-tight mb-3">
-        Your Applications
-      </h2>
+    <div>
+      <div className="flex items-center justify-between mb-6">
+        <h2 className="text-xl font-light tracking-wide text-[#1A1A1A] uppercase">
+          Recent Application Statuses
+        </h2>
+        <Button 
+          variant="ghost" 
+          size="sm"
+          onClick={() => navigate("/myapplications")}
+          className="text-xs uppercase tracking-widest text-[#8A8A8A] hover:text-[#1A1A1A] p-0 h-auto font-medium"
+        >
+          View All Applications
+          <ArrowRight className="w-3 h-3 ml-2" />
+        </Button>
+      </div>
+
       {applications.length === 0 ? (
         <EmptyState
           icon={FolderOpen}
@@ -36,43 +52,44 @@ const TenantApplicationStatuses: React.FC<Props> = ({ applications }) => {
           description="Your submitted applications and their status will appear here."
         />
       ) : (
-        <div className="flex flex-col gap-4">
-          {applications.map((app) => (
+        <div className="space-y-4">
+          {applications.slice(0, 3).map((app) => (
             <div
               key={app.id}
-              className="flex items-center gap-4 bg-white/90 border border-border rounded-2xl shadow-[0_2px_16px_-4px_rgba(146,153,188,0.11)] p-4 group hover:shadow-lg hover:scale-[1.02] transition-transform duration-150"
+              className="bg-white border border-[#EBEBEB] rounded-xl p-4 hover:border-[#1A1A1A] transition-colors duration-300 group"
             >
-              <img
-                src={app.image}
-                alt={app.title}
-                className="w-14 h-14 rounded-xl object-cover border"
-              />
-              <div className="flex-1 min-w-0">
-                <div className="font-semibold text-base text-foreground truncate">{app.title}</div>
-                <div className="text-xs text-muted-foreground mt-0.5">Applied {app.appliedDate}</div>
-              </div>
-              <div className="flex flex-col items-end gap-1 min-w-[95px]">
-                <span className={
-                  `inline-block px-2.5 py-1 rounded-xl text-xs font-semibold 
-                  ${statusColors[app.status] || "bg-muted text-muted-foreground"}`
-                }>
-                  {app.status}
-                </span>
-                {/* You could show a thin progress bar below if "progress" shown */}
-                {typeof app.progress === "number" && app.progress < 100 && (
-                  <div className="w-full h-1 bg-muted rounded mt-1">
-                    <div
-                      className="bg-primary h-1 rounded"
-                      style={{ width: `${app.progress}%`, transition: "width 0.3s" }}
-                    />
+              <div className="flex items-center gap-4">
+                <img
+                  src={app.image}
+                  alt={app.title}
+                  className="w-16 h-16 rounded-lg object-cover"
+                />
+                <div className="flex-1 min-w-0">
+                  <h3 className="font-medium text-[#1A1A1A] text-sm mb-1 truncate">
+                    {app.title}
+                  </h3>
+                  <p className="text-xs text-[#8A8A8A] mb-2">
+                    Applied on: {app.appliedDate}
+                  </p>
+                  <div className="flex items-center gap-3">
+                    <div className="flex-1 h-1 bg-[#F8F8F8] rounded-full overflow-hidden">
+                      <div
+                        className="h-full bg-[#1A1A1A] transition-all duration-500"
+                        style={{ width: `${app.progress}%` }}
+                      />
+                    </div>
+                    <span className={`px-2 py-1 rounded-md text-xs font-medium border ${statusColors[app.status] || "bg-gray-50 text-gray-700 border-gray-200"}`}>
+                      {app.status}
+                    </span>
                   </div>
-                )}
+                </div>
               </div>
             </div>
           ))}
         </div>
       )}
-    </section>
+    </div>
   );
 };
+
 export default TenantApplicationStatuses;

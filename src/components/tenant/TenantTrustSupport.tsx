@@ -1,62 +1,83 @@
 
 import React from "react";
+import { Star, Shield, HelpCircle, FileText, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 
-const reviews = [
-  {
-    text: "The smoothest renting experience ever! Highly recommend.",
-    user: "Max L.",
-    avatar: "https://randomuser.me/api/portraits/men/32.jpg"
-  },
-  {
-    text: "Trustworthy platform for students and expats.",
-    user: "Sophia W.",
-    avatar: "https://randomuser.me/api/portraits/women/65.jpg"
-  }
-];
-const partners = [
-  { name: "Berlin University", logo: "/placeholder.svg" },
-  { name: "Housing24", logo: "/placeholder.svg" }
-];
+const TenantTrustSupport: React.FC = () => {
+  const navigate = useNavigate();
 
-const TenantTrustSupport: React.FC = () => (
-  <section className="mt-10 pb-6">
-    <div className="flex flex-col md:flex-row gap-8">
-      <div className="flex-1">
-        <h2 className="font-semibold text-lg mb-2 flex items-center gap-2">⭐ Trustpilot Reviews <span className="text-base font-normal ml-1">4.8/5</span></h2>
-        <div className="flex space-x-4">
-          {reviews.map(r =>
-            <div key={r.user} className="rounded-lg bg-white p-4 shadow w-56 flex flex-col">
-              <div className="italic">"{r.text}"</div>
-              <div className="flex items-center gap-2 mt-3">
-                <img src={r.avatar} className="w-7 h-7 rounded-full" alt={r.user} />
-                <div className="font-semibold text-sm">{r.user}</div>
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
-      <div className="flex-1 flex flex-col gap-4 items-start">
-        <div>
-          <span className="font-semibold">Our Partners:</span>
-          <div className="flex gap-4 mt-2">
-            {partners.map(p => (
-              <img src={p.logo} alt={p.name} key={p.name} className="h-10 w-20 object-contain bg-white rounded shadow" />
+  return (
+    <div className="bg-white border border-[#EBEBEB] rounded-2xl p-8 md:p-12">
+      {/* Trust Indicators */}
+      <div className="text-center mb-8">
+        <h3 className="text-lg font-light tracking-wide text-[#1A1A1A] uppercase mb-6">
+          Trusted by Thousands
+        </h3>
+        
+        {/* Trustpilot Score */}
+        <div className="flex items-center justify-center gap-4 mb-6">
+          <div className="flex items-center gap-1">
+            {[...Array(5)].map((_, i) => (
+              <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
             ))}
           </div>
+          <span className="text-sm text-[#8A8A8A]">4.8/5 • 2,847 reviews</span>
         </div>
-        <div className="flex gap-4 items-center">
-          <span className="inline-flex items-center border rounded px-3 py-1 text-xs font-semibold text-emerald-700 border-emerald-300 bg-emerald-50">GDPR Secure</span>
-          <span className="inline-flex items-center border rounded px-3 py-1 text-xs font-semibold text-blue-700 border-blue-300 bg-blue-50">Verified Listings</span>
-        </div>
-        <div className="flex gap-3 mt-2 w-full flex-wrap">
-          <Button variant="link" className="px-0 text-blue-700" onClick={() => window.location.href='/help'}>🆘 Help Center</Button>
-          <Button variant="link" className="px-0 text-blue-700" onClick={() => window.location.href='/help/how-to-apply'}>📝 How to Apply</Button>
-          <Button variant="link" className="px-0 text-blue-700" onClick={() => window.location.href='/terms'}>📄 Terms</Button>
-          <Button variant="link" className="px-0 text-blue-700" onClick={() => window.location.href='/privacy'}>Privacy</Button>
+        
+        {/* Partner Logos */}
+        <div className="flex items-center justify-center gap-8 mb-8 opacity-60">
+          <div className="text-xs uppercase tracking-widest text-[#8A8A8A] font-medium">
+            GDPR Compliant
+          </div>
+          <div className="w-px h-4 bg-[#EBEBEB]" />
+          <div className="text-xs uppercase tracking-widest text-[#8A8A8A] font-medium">
+            SSL Secured
+          </div>
+          <div className="w-px h-4 bg-[#EBEBEB]" />
+          <div className="text-xs uppercase tracking-widest text-[#8A8A8A] font-medium">
+            Verified Listings
+          </div>
         </div>
       </div>
+      
+      {/* Support Links */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <Button
+          variant="ghost"
+          onClick={() => navigate("/help")}
+          className="flex items-center justify-center gap-3 p-4 border border-[#EBEBEB] hover:border-[#1A1A1A] hover:bg-[#F8F8F8] transition-all duration-300 h-auto"
+        >
+          <HelpCircle className="w-4 h-4 text-[#8A8A8A]" />
+          <span className="text-xs uppercase tracking-widest font-medium text-[#1A1A1A]">
+            Help Center
+          </span>
+        </Button>
+        
+        <Button
+          variant="ghost"
+          onClick={() => navigate("/help/how-to-apply")}
+          className="flex items-center justify-center gap-3 p-4 border border-[#EBEBEB] hover:border-[#1A1A1A] hover:bg-[#F8F8F8] transition-all duration-300 h-auto"
+        >
+          <FileText className="w-4 h-4 text-[#8A8A8A]" />
+          <span className="text-xs uppercase tracking-widest font-medium text-[#1A1A1A]">
+            How to Apply
+          </span>
+        </Button>
+        
+        <Button
+          variant="ghost"
+          onClick={() => navigate("/terms")}
+          className="flex items-center justify-center gap-3 p-4 border border-[#EBEBEB] hover:border-[#1A1A1A] hover:bg-[#F8F8F8] transition-all duration-300 h-auto"
+        >
+          <Shield className="w-4 h-4 text-[#8A8A8A]" />
+          <span className="text-xs uppercase tracking-widest font-medium text-[#1A1A1A]">
+            Terms & Privacy
+          </span>
+        </Button>
+      </div>
     </div>
-  </section>
-);
+  );
+};
+
 export default TenantTrustSupport;

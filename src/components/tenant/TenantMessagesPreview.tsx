@@ -3,7 +3,8 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import EmptyState from "@/components/EmptyState";
-import { MailWarning } from "lucide-react";
+import { MailWarning, ArrowRight } from "lucide-react";
+
 type Message = {
   id: number;
   landlordName: string;
@@ -11,20 +12,29 @@ type Message = {
   text: string;
   timestamp: string;
 };
+
 type Props = { messages: Message[] };
 
 const TenantMessagesPreview: React.FC<Props> = ({ messages }) => {
   const navigate = useNavigate();
+
   return (
-    <section className="mt-7">
-      <div className="flex justify-between items-center mb-3">
-        <h2 className="text-lg sm:text-xl font-bold text-foreground tracking-tight">
+    <div>
+      <div className="flex items-center justify-between mb-6">
+        <h2 className="text-xl font-light tracking-wide text-[#1A1A1A] uppercase">
           Messages from Landlords
         </h2>
-        <Button size="sm" onClick={() => navigate("/messages")}>
+        <Button 
+          variant="ghost" 
+          size="sm"
+          onClick={() => navigate("/messages")}
+          className="text-xs uppercase tracking-widest text-[#8A8A8A] hover:text-[#1A1A1A] p-0 h-auto font-medium"
+        >
           Go to Inbox
+          <ArrowRight className="w-3 h-3 ml-2" />
         </Button>
       </div>
+
       {messages.length === 0 ? (
         <EmptyState
           icon={MailWarning}
@@ -32,23 +42,39 @@ const TenantMessagesPreview: React.FC<Props> = ({ messages }) => {
           description="Message threads from landlords about your applications will show up here."
         />
       ) : (
-        <div className="flex flex-col gap-3">
-          {messages.map(msg =>
+        <div className="space-y-4">
+          {messages.slice(0, 3).map(msg => (
             <div
               key={msg.id}
-              className="flex items-center gap-3 bg-white/90 border border-border rounded-xl shadow-[0_2px_10px_-5px_rgba(146,153,188,0.09)] p-3 hover:shadow-md hover:scale-[1.01] transition"
+              className="bg-white border border-[#EBEBEB] rounded-xl p-4 hover:border-[#1A1A1A] transition-colors duration-300 group cursor-pointer"
+              onClick={() => navigate("/messages")}
             >
-              <img src={msg.landlordAvatar} className="w-10 h-10 rounded-full object-cover border" alt={msg.landlordName} />
-              <div className="flex-1 min-w-0">
-                <div className="font-semibold text-sm text-foreground truncate">{msg.landlordName}</div>
-                <div className="text-sm text-muted-foreground truncate">{msg.text}</div>
+              <div className="flex items-center gap-4">
+                <img 
+                  src={msg.landlordAvatar} 
+                  className="w-12 h-12 rounded-full object-cover" 
+                  alt={msg.landlordName} 
+                />
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center justify-between mb-1">
+                    <h3 className="font-medium text-[#1A1A1A] text-sm truncate">
+                      {msg.landlordName}
+                    </h3>
+                    <span className="text-xs text-[#8A8A8A] whitespace-nowrap">
+                      {msg.timestamp}
+                    </span>
+                  </div>
+                  <p className="text-sm text-[#8A8A8A] truncate">
+                    {msg.text}
+                  </p>
+                </div>
               </div>
-              <div className="text-xs text-muted-foreground whitespace-nowrap">{msg.timestamp}</div>
             </div>
-          )}
+          ))}
         </div>
       )}
-    </section>
+    </div>
   );
 };
+
 export default TenantMessagesPreview;

@@ -33,79 +33,75 @@ const TenantHomeSections: React.FC<Props> = ({ state, t, fetchData }) => {
   const shouldShowLoading = state.loading || !state.data;
 
   return (
-    <div className="editorial-layout">
+    <div className="w-full">
+      {/* Sticky Search Bar */}
       <TenantSearchBarSticky />
 
+      {/* Error Banner */}
       {state.error && (
-        <ErrorBanner message={state.error} onRetry={fetchData} className="mt-2" />
+        <ErrorBanner message={state.error} onRetry={fetchData} className="mt-6" />
       )}
       
-      {/* Editorial spacing section */}
-      <div className="editorial-section-spacing">
+      {/* Welcome Banner with integrated stats */}
+      <section className="mb-16 md:mb-20">
         {shouldShowLoading ? <TenantWelcomeBannerSkeleton /> :
-          <TenantWelcomeBanner firstName={state.data.mockUser.firstName} />
-        }
-      </div>
-      
-      {/* Quick stats with editorial margins */}
-      <div className="editorial-section-spacing">
-        {shouldShowLoading ? <TenantQuickStatsSkeleton /> :
-          <TenantQuickStats
-            saved={state.data.mockQuickStats.saved}
-            applications={state.data.mockQuickStats.applications}
-            messages={state.data.mockQuickStats.messages}
+          <TenantWelcomeBanner 
+            firstName={state.data.mockUser.firstName}
+            stats={{
+              saved: state.data.mockQuickStats.saved,
+              applications: state.data.mockQuickStats.applications,
+              messages: state.data.mockQuickStats.messages
+            }}
           />
         }
-      </div>
+      </section>
       
-      {/* Editorial divider */}
-      <div className="editorial-divider" />
+      {/* Split Layout: Applications & Messages */}
+      <section className="mb-16 md:mb-20">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
+          {/* Left: Application Statuses */}
+          <div>
+            {shouldShowLoading ? <TenantStatsSummarySkeleton /> :
+              <TenantApplicationStatuses applications={state.data.mockApplications} />
+            }
+          </div>
+          
+          {/* Right: Messages Preview */}
+          <div>
+            {shouldShowLoading ? <TenantMessagesPreviewSkeleton /> :
+              <TenantMessagesPreview messages={state.data.mockMessages} />
+            }
+          </div>
+        </div>
+      </section>
       
-      <div className="editorial-section-spacing">
+      {/* Saved Listings */}
+      <section className="mb-16 md:mb-20">
         {shouldShowLoading ? <TenantSavedListingsSkeleton /> :
           <TenantSavedListings listings={state.data.mockSavedListings} />
         }
-      </div>
+      </section>
       
-      <div className="editorial-divider" />
-      
-      <div className="editorial-section-spacing">
+      {/* Recommended Properties */}
+      <section className="mb-16 md:mb-20">
         {shouldShowLoading ? <TenantRecommendedSkeleton /> :
           <TenantRecommended listings={state.data.mockRecommended} />
         }
-      </div>
+      </section>
       
-      <div className="editorial-divider" />
-      
-      <div className="editorial-section-spacing">
-        {shouldShowLoading ? <TenantStatsSummarySkeleton /> :
-          <TenantApplicationStatuses applications={state.data.mockApplications} />
-        }
-      </div>
-      
-      <div className="editorial-divider" />
-      
-      <div className="editorial-section-spacing">
-        {shouldShowLoading ? <TenantMessagesPreviewSkeleton /> :
-          <TenantMessagesPreview messages={state.data.mockMessages} />
-        }
-      </div>
-      
-      <div className="editorial-divider" />
-      
-      <div className="editorial-section-spacing">
+      {/* Explore Cities */}
+      <section className="mb-16 md:mb-20">
         {shouldShowLoading ? <TenantExploreCitiesSkeleton /> :
           <TenantExploreCities cities={state.data.mockCities} />
         }
-      </div>
+      </section>
       
-      <div className="editorial-divider" />
-      
-      <div className="editorial-section-spacing">
+      {/* Trust & Support */}
+      <section className="mb-8">
         {shouldShowLoading ? <TenantTrustSupportSkeleton /> :
           <TenantTrustSupport />
         }
-      </div>
+      </section>
     </div>
   );
 };

@@ -1,5 +1,4 @@
 
-// --- Clean sticky search bar for tenant dashboard, matches new mockup ---
 import React from "react";
 import { MapPin, Home, Calendar, Search as SearchIcon } from "lucide-react";
 import { Input } from "@/components/ui/input";
@@ -13,66 +12,84 @@ const PROPERTY_TYPES = [
   { label: "WG Room", value: "wg" },
   { label: "Studio", value: "studio" },
 ];
+
 const TenantSearchBarSticky = () => {
   const { filters, setFilters, handleSearch } = useSearchFilters({ submitUrl: "/tenant/home" });
 
   return (
-    <section className="sticky top-16 z-20 bg-white border-b border-[#EBEBEB] px-4" style={{boxShadow:'0 2px 12px -9px #8787871b'}}>
-      <form
-        onSubmit={e => { e.preventDefault(); handleSearch(); }}
-        className="w-full max-w-screen-2xl mx-auto flex flex-wrap md:flex-nowrap gap-2 py-3"
-        autoComplete="off"
-      >
-        <div className="relative flex-1 min-w-[170px]">
-          <label className="block text-xs font-semibold text-gray-600 pl-2 mb-1">Location</label>
-          <Input
-            placeholder="Enter city or area"
-            className="pl-9 h-11 rounded-lg bg-[#F7F7F8] border border-[#EBEBEB] focus:ring-black"
-            value={filters.location}
-            onChange={e => setFilters({ location: e.target.value })}
-            name="location"
-            style={{ fontSize: '1em' }}
-          />
-          <MapPin className="absolute left-3 top-9 -mt-2.5 text-gray-400 w-5 h-5 pointer-events-none" />
-        </div>
-        <div className="relative min-w-[140px] max-w-[180px] flex-1">
-          <label className="block text-xs font-semibold text-gray-600 pl-2 mb-1">Property Type</label>
-          <Select value={filters.propertyType} onValueChange={(value) => setFilters({ propertyType: value })}>
-            <SelectTrigger className="h-11 rounded-lg bg-[#F7F7F8] border border-[#EBEBEB] px-4">
-              <Home className="w-4 h-4 mr-2 text-gray-400" />
-              <SelectValue placeholder="Select type" />
-            </SelectTrigger>
-            <SelectContent>
-              {PROPERTY_TYPES.map(pt => (
-                <SelectItem key={pt.value} value={pt.value}>{pt.label}</SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-        <div className="relative min-w-[140px] flex-1">
-          <label className="block text-xs font-semibold text-gray-600 pl-2 mb-1">Move-in Date</label>
-          <Input
-            type="month"
-            placeholder="Select date"
-            className="pl-10 h-11 rounded-lg bg-[#F7F7F8] border border-[#EBEBEB]"
-            value={filters.moveInDate || ""}
-            onChange={e => setFilters({ moveInDate: e.target.value })}
-            name="moveInDate"
-            style={{ fontSize: '1em' }}
-          />
-          <Calendar className="absolute left-3 top-9 -mt-2.5 text-gray-400 w-5 h-5 pointer-events-none" />
-        </div>
-        <div className="flex items-end">
-          <Button
-            className="rounded-lg bg-black hover:bg-black/90 text-white font-semibold px-7 h-11 shadow-md transition"
-            type="submit"
-          >
-            <SearchIcon className="w-5 h-5 mr-2" />
-            Search
-          </Button>
-        </div>
-      </form>
+    <section className="sticky top-16 z-20 bg-white/95 backdrop-blur-md border-b border-[#EBEBEB] py-6 shadow-[0_2px_24px_-8px_rgba(0,0,0,0.06)]">
+      <div className="max-w-6xl mx-auto px-6 md:px-12">
+        <form
+          onSubmit={e => { e.preventDefault(); handleSearch(); }}
+          className="grid grid-cols-1 md:grid-cols-12 gap-4 items-end"
+          autoComplete="off"
+        >
+          {/* City/Area Input */}
+          <div className="md:col-span-4">
+            <label className="block text-xs uppercase tracking-widest text-[#8A8A8A] font-medium mb-3">
+              Location
+            </label>
+            <div className="relative">
+              <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 text-[#8A8A8A] w-4 h-4" />
+              <Input
+                placeholder="Enter city or area"
+                className="pl-12 h-12 border-[#EBEBEB] bg-white hover:border-[#1A1A1A] focus:border-[#1A1A1A] transition-colors duration-300 text-sm"
+                value={filters.location}
+                onChange={e => setFilters({ location: e.target.value })}
+                name="location"
+              />
+            </div>
+          </div>
+
+          {/* Property Type Dropdown */}
+          <div className="md:col-span-3">
+            <label className="block text-xs uppercase tracking-widest text-[#8A8A8A] font-medium mb-3">
+              Property Type
+            </label>
+            <Select value={filters.propertyType} onValueChange={(value) => setFilters({ propertyType: value })}>
+              <SelectTrigger className="h-12 border-[#EBEBEB] bg-white hover:border-[#1A1A1A] focus:border-[#1A1A1A] transition-colors duration-300">
+                <Home className="w-4 h-4 mr-3 text-[#8A8A8A]" />
+                <SelectValue placeholder="Select type" />
+              </SelectTrigger>
+              <SelectContent className="bg-white border-[#EBEBEB]">
+                {PROPERTY_TYPES.map(pt => (
+                  <SelectItem key={pt.value} value={pt.value} className="text-sm">{pt.label}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          {/* Move-in Date */}
+          <div className="md:col-span-3">
+            <label className="block text-xs uppercase tracking-widest text-[#8A8A8A] font-medium mb-3">
+              Move-in Date
+            </label>
+            <div className="relative">
+              <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 text-[#8A8A8A] w-4 h-4" />
+              <Input
+                type="month"
+                className="pl-12 h-12 border-[#EBEBEB] bg-white hover:border-[#1A1A1A] focus:border-[#1A1A1A] transition-colors duration-300 text-sm"
+                value={filters.moveInDate || ""}
+                onChange={e => setFilters({ moveInDate: e.target.value })}
+                name="moveInDate"
+              />
+            </div>
+          </div>
+
+          {/* Search Button */}
+          <div className="md:col-span-2">
+            <Button
+              className="w-full h-12 bg-[#1A1A1A] hover:bg-[#8A8A8A] text-white text-xs uppercase tracking-widest font-medium transition-all duration-300"
+              type="submit"
+            >
+              <SearchIcon className="w-4 h-4 mr-2" />
+              Search
+            </Button>
+          </div>
+        </form>
+      </div>
     </section>
   );
 };
+
 export default TenantSearchBarSticky;
