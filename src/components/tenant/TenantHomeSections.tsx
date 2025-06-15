@@ -33,6 +33,9 @@ type Props = {
  * Encapsulates all content sections on TenantHome (except for header/footer).
  */
 const TenantHomeSections: React.FC<Props> = ({ state, t, fetchData }) => {
+  // Helper to check if we should show loading state
+  const shouldShowLoading = state.loading || !state.data;
+
   return (
     <>
       <TenantSearchBarSticky />
@@ -40,32 +43,40 @@ const TenantHomeSections: React.FC<Props> = ({ state, t, fetchData }) => {
       {state.error && (
         <ErrorBanner message={state.error} onRetry={fetchData} className="mt-2" />
       )}
-      {state.loading ? <TenantWelcomeBannerSkeleton /> :
+      
+      {shouldShowLoading ? <TenantWelcomeBannerSkeleton /> :
         <TenantWelcomeBanner firstName={state.data.mockUser.firstName} />
       }
-      {state.loading ? <TenantQuickStatsSkeleton /> :
+      
+      {shouldShowLoading ? <TenantQuickStatsSkeleton /> :
         <TenantQuickStats
           saved={state.data.mockQuickStats.saved}
           applications={state.data.mockQuickStats.applications}
           messages={state.data.mockQuickStats.messages}
         />
       }
-      {state.loading ? <TenantSavedListingsSkeleton /> :
+      
+      {shouldShowLoading ? <TenantSavedListingsSkeleton /> :
         <TenantSavedListings listings={state.data.mockSavedListings} />
       }
-      {state.loading ? <TenantRecommendedSkeleton /> :
+      
+      {shouldShowLoading ? <TenantRecommendedSkeleton /> :
         <TenantRecommended listings={state.data.mockRecommended} />
       }
-      {state.loading ? <TenantStatsSummarySkeleton /> :
+      
+      {shouldShowLoading ? <TenantStatsSummarySkeleton /> :
         <TenantApplicationStatuses applications={state.data.mockApplications} />
       }
-      {state.loading ? <TenantMessagesPreviewSkeleton /> :
+      
+      {shouldShowLoading ? <TenantMessagesPreviewSkeleton /> :
         <TenantMessagesPreview messages={state.data.mockMessages} />
       }
-      {state.loading ? <TenantExploreCitiesSkeleton /> :
+      
+      {shouldShowLoading ? <TenantExploreCitiesSkeleton /> :
         <TenantExploreCities cities={state.data.mockCities} />
       }
-      {state.loading ? <TenantTrustSupportSkeleton /> :
+      
+      {shouldShowLoading ? <TenantTrustSupportSkeleton /> :
         <TenantTrustSupport />
       }
     </>
