@@ -1,20 +1,19 @@
+
 import React, { useState, useEffect } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import LandlordWelcomeBanner from "@/components/landlord/LandlordWelcomeBanner";
-import LandlordWelcomeBannerSkeleton from "@/components/landlord/LandlordWelcomeBannerSkeleton";
-import StatCards from "@/components/landlord/StatCards";
-import StatCardsSkeleton from "@/components/landlord/StatCardsSkeleton";
-import RecentListingsCard from "@/components/landlord/RecentListingsCard";
-import RecentListingsCardSkeleton from "@/components/landlord/RecentListingsCardSkeleton";
-import RecentApplicationsCard from "@/components/landlord/RecentApplicationsCard";
-import RecentApplicationsCardSkeleton from "@/components/landlord/RecentApplicationsCardSkeleton";
-import { Button } from "@/components/ui/button";
-import { LayoutDashboard } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useT } from "@/i18n";
-import ErrorBanner from "@/components/ErrorBanner";
 import { toast } from "@/hooks/use-toast";
+import ErrorBanner from "@/components/ErrorBanner";
+import LandlordWelcomeBanner from "@/components/landlord/LandlordWelcomeBanner";
+import LandlordQuickStats from "@/components/landlord/LandlordQuickStats";
+import LandlordListingsCarousel from "@/components/landlord/LandlordListingsCarousel";
+import LandlordApplicationsPreview from "@/components/landlord/LandlordApplicationsPreview";
+import LandlordMessagesPreview from "@/components/landlord/LandlordMessagesPreview";
+import LandlordPerformanceSummary from "@/components/landlord/LandlordPerformanceSummary";
+import LandlordEnhancements from "@/components/landlord/LandlordEnhancements";
+import LandlordTrustShortcuts from "@/components/landlord/LandlordTrustShortcuts";
 import {
   landlord,
   metrics,
@@ -24,7 +23,6 @@ import {
 } from "@/mocks/landlordMockData";
 
 const LandlordHome = () => {
-  const navigate = useNavigate();
   const [state, setState] = useState<{
     loading: boolean;
     error: string | null;
@@ -36,6 +34,7 @@ const LandlordHome = () => {
     }
   }>({ loading: true, error: null, data: null });
   const t = useT();
+  const navigate = useNavigate();
 
   const fetchData = () => {
     setState({ loading: true, error: null, data: null });
@@ -55,84 +54,83 @@ const LandlordHome = () => {
     // eslint-disable-next-line
   }, []);
 
+  const landlordObj = state.data?.landlord || landlord;
+  const quickStats = state.data?.metrics || metrics;
+  const listings = state.data?.recentListings || recentListings;
+  const applications = state.data?.recentApplications || recentApplications;
+
   return (
     <div className="min-h-screen flex flex-col bg-neutral-50">
       <Header />
-      {/* Main Content */}
-      <main className="flex-1 w-full max-w-3xl mx-auto px-3 md:px-0 pt-12 pb-20 flex flex-col">
+
+      <main className="flex-1 w-full max-w-6xl mx-auto px-2 sm:px-4 pt-8 pb-14 flex flex-col gap-8">
+        {/* --- Welcome Banner & Quick Stats --- */}
         {state.error && (
           <ErrorBanner message={state.error} onRetry={fetchData} className="mt-2" />
         )}
-        {/* Header */}
-        {state.loading
-          ? <LandlordWelcomeBannerSkeleton />
-          : state.data && <LandlordWelcomeBanner
-              name={state.data.landlord.firstName}
-              business={state.data.landlord.businessName}
-              verified={state.data.landlord.verified}
+        <div className="flex flex-col lg:flex-row gap-4 animate-fade-in">
+          <div className="flex flex-1">
+            <LandlordWelcomeBanner
+              name={landlordObj.firstName}
+              business={landlordObj.businessName}
+              verified={landlordObj.verified}
             />
-        }
-
-        {/* Stat Cards */}
-        <div className="mb-8">
-          {state.loading
-            ? <StatCardsSkeleton />
-            : state.data && <StatCards stats={state.data.metrics.map(m => ({ label: t(m.labelKey), value: m.value }))} />
-          }
+          </div>
+          <div className="flex-1 lg:max-w-xs">
+            <LandlordQuickStats
+              stats={quickStats}
+              loading={state.loading}
+              onCreateListing={() => navigate("/createlisting")}
+            />
+          </div>
         </div>
 
-        {/* Recent Listings */}
-        <section className="mb-8">
-          <div className="flex justify-between items-center mb-4 px-1">
-            <h2 className="text-lg font-semibold text-gray-900">{t("recentListings")}</h2>
-            <button
-              className="text-sm font-medium text-primary hover:underline transition"
-              onClick={() => navigate("/landlord/dashboard/mylistings")}
-            >
-              {t("viewAll")}
-            </button>
-          </div>
-          {state.loading
-            ? <RecentListingsCardSkeleton />
-            : state.data && <RecentListingsCard
-                listings={state.data.recentListings}
-                showHeader={false}
-                className="border-none shadow-none bg-transparent"
-              />
-          }
-        </section>
+        {/* --- Your Active Listings Carousel/Grid --- */}
+        <LandlordListingsCarousel
+          listings={listings}
+          loading={state.loading}
+          onManage={id => navigate(`/landlord/listing/${id}/edit`)}
+          onPreview={id => navigate(`/listing/${id}`)}
+          onViewAll={() => navigate("/landlord/listings")}
+        />
 
-        {/* Recent Applications */}
-        <section className="mb-8">
-          <div className="flex justify-between items-center mb-4 px-1">
-            <h2 className="text-lg font-semibold text-gray-900">{t("recentApplications")}</h2>
-            <button
-              className="text-sm font-medium text-primary hover:underline transition"
-              onClick={() => navigate("/landlord/dashboard/applications")}
-            >
-              {t("viewAll")}
-            </button>
-          </div>
-          {state.loading
-            ? <RecentApplicationsCardSkeleton />
-            : state.data && <RecentApplicationsCard
-                applications={state.data.recentApplications}
-                showHeader={false}
-                className="border-none shadow-none bg-transparent"
-              />
-          }
-        </section>
+        {/* --- Recent Applications Table/Preview --- */}
+        <LandlordApplicationsPreview
+          applications={applications}
+          loading={state.loading}
+          onViewAll={() => navigate("/landlord/dashboard/applications")}
+        />
 
-        {/* CTA: Open Full Dashboard */}
-        <div className="sticky bottom-0 z-20 w-full flex items-center justify-center">
-          <Button
-            className="w-full md:w-fit mx-auto text-base md:text-lg font-semibold py-4 rounded-xl shadow-lg bg-primary text-primary-foreground hover:scale-105 hover:shadow-xl transition-all duration-150 px-8 flex items-center gap-2 animate-scale-in"
-            onClick={() => navigate("/landlord/dashboard")}
-          >
-            <LayoutDashboard className="w-6 h-6" />
-            <span>{t("openDashboard")}</span>
-          </Button>
-        </div>
+        {/* --- Messages Preview --- */}
+        <LandlordMessagesPreview
+          messages={[]} // This would use real data/messages
+          loading={false}
+          onInbox={() => navigate("/landlord/messages")}
+        />
+
+        {/* --- Performance Summary (Optional) --- */}
+        <LandlordPerformanceSummary
+          insights={{
+            views: 795,
+            messages: 32,
+            conversion: 12.9,
+            avgDays: 6.7,
+          }}
+          loading={false}
+          onViewDashboard={() => navigate("/landlord/dashboard")}
+        />
+
+        {/* --- Recommended Enhancements --- */}
+        <LandlordEnhancements
+          tips={[
+            { tip: "This listing has no floor plan – add one to get 30% more leads", trigger: "Low engagement" },
+            { tip: "Tenants are interested – follow up on 3 unread messages", trigger: "Unreplied messages" },
+            { tip: "Applications pending approval", trigger: "Apps not yet reviewed" }
+          ]}
+        />
+
+        {/* --- Trust & Compliance Shortcuts --- */}
+        <LandlordTrustShortcuts />
       </main>
       <Footer />
     </div>
@@ -140,3 +138,4 @@ const LandlordHome = () => {
 };
 
 export default LandlordHome;
+
