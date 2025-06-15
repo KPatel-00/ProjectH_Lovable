@@ -5,8 +5,9 @@ import LanguageSelector from '@/components/LanguageSelector';
 import BrandLogo from "@/components/shared/BrandLogo";
 import HeaderNotificationsButton from "@/components/shared/HeaderNotificationsButton";
 import HeaderAvatarMenuDesktop from "@/components/shared/HeaderAvatarMenuDesktop";
-import { UserRound } from "lucide-react";
+import { UserRound, Heart, ListChecks, Settings } from "lucide-react";
 
+// Main navigation links
 const mainNavLinks = [
   { name: 'BROWSE LISTINGS', path: '/tenant/home' },
   { name: 'WISHLIST', path: '/wishlist' },
@@ -20,20 +21,15 @@ const user = {
   avatarUrl: "",
 };
 
+// Menu for avatar dropdown
 const avatarMenu = [
-  { label: "Profile", icon: "user-round", path: "/tenant/profile" },
-  { label: "Settings", icon: "user-round", path: "/tenant/settings" }
+  { label: "My Profile", icon: UserRound, path: "/profile" },
+  { label: "Saved Listings", icon: Heart, path: "/wishlist" },
+  { label: "My Applications", icon: ListChecks, path: "/myapplications" },
+  { label: "Settings", icon: Settings, path: "/settings" },
 ];
 
-// Build menu objects with icon components (UserRound)
-function buildMenu(menuArray: typeof avatarMenu) {
-  return menuArray.map(item => ({
-    ...item,
-    icon: UserRound,
-  }));
-}
-
-// Helper get initials: returns capitalized first letters of user's name.
+// Helper: returns initials (first letter of each word in name)
 const getInitials = (name: string) => {
   if (!name) return '';
   return name.trim().split(' ').map(n => n[0]?.toUpperCase()).join('');
@@ -76,23 +72,20 @@ const TenantHomePageHeader = () => {
             <LanguageSelector />
           </div>
           
-          {/* Notification Bell - strong contrast, border, visible icon */}
+          {/* Notification bell */}
           <HeaderNotificationsButton 
             ariaLabel="Notifications"
             className="bg-white border border-border rounded-2xl h-12 w-12 flex items-center justify-center transition-all duration-200 hover:bg-accent hover:scale-105 shadow-sm"
           />
 
-          {/* Avatar (initials in bold white on black) */}
-          <div className="rounded-2xl h-12 w-12 flex items-center justify-center bg-black border border-border">
-            <span className="text-white font-bold text-base select-none">
-              {getInitials(user.name)}
-            </span>
-          </div>
-          {/* 
-          If you want avatar dropdown instead of static, 
-          just use HeaderAvatarMenuDesktop, but override its avatar fallback style with props. 
-          If dropdown not needed, this is simplest and guaranteed WCAG-visible. 
-          */}
+          {/* Avatar with dropdown */}
+          <HeaderAvatarMenuDesktop
+            user={user}
+            menu={avatarMenu}
+            onNavigate={(to: string) => navigate(to)}
+            // You can customize the fallback style with AvatarFallback directly in AvatarMenuDropdown if desired,
+            // but by default, AvatarMenuDropdown uses .bg-black .text-white .font-bold for fallback
+          />
         </div>
       </div>
     </header>
@@ -100,3 +93,4 @@ const TenantHomePageHeader = () => {
 };
 
 export default TenantHomePageHeader;
+
