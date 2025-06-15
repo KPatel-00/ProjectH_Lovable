@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
@@ -233,7 +232,8 @@ const LandlordListings: React.FC = () => {
                         </Button>
                         <Button
                           size="icon"
-                          variant="destructive"
+                          variant="outline"
+                          className="text-destructive border-destructive"
                           onClick={() => setDeleteId(listing.id)}
                           title="Delete"
                         >
@@ -261,7 +261,11 @@ const LandlordListings: React.FC = () => {
             <Button variant="outline" onClick={() => setDeleteId(null)}>
               Cancel
             </Button>
-            <Button variant="destructive" onClick={() => handleDelete(deleteId!)}>
+            <Button
+              variant="outline"
+              className="text-destructive border-destructive"
+              onClick={() => handleDelete(deleteId!)}
+            >
               Delete
             </Button>
           </DialogFooter>
