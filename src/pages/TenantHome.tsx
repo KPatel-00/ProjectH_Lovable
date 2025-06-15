@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -61,17 +60,16 @@ const TenantHome = () => {
       </a>
 
       {/* Responsive Search Bar */}
-      <div className="mt-1 mb-4 sm:mb-8 flex px-2 sm:px-6 md:px-12">
+      <div className="mt-1 mb-4 sm:mb-8 flex px-2 sm:px-6 md:px-12 w-full">
         <TenantSearchBar />
       </div>
 
-      {/* Main content with responsive spacing */}
       <main
         id="main-content"
         className="min-h-screen bg-background flex flex-col"
         tabIndex={-1}
       >
-        <div className="mx-auto w-full max-w-6xl px-1 sm:px-6 md:px-12 py-3 sm:py-8 flex-1 flex flex-col">
+        <div className="mx-auto w-full max-w-6xl px-1 sm:px-3 md:px-12 py-3 sm:py-8 flex-1 flex flex-col">
           <TenantHomeSections state={state} t={t} fetchData={fetchData} />
         </div>
       </main>

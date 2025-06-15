@@ -32,10 +32,8 @@ const TenantHomeSections: React.FC<Props> = ({ state, t, fetchData }) => {
   const shouldShowLoading = state.loading || !state.data;
 
   return (
-    <div className="w-full px-1 sm:px-3 md:px-4 max-w-full">
-      {/* Sticky Search Bar */}
+    <div className="w-full px-0 sm:px-3 md:px-4 max-w-full">
       <TenantSearchBarSticky />
-
       {/* Error Banner */}
       {state.error && (
         <ErrorBanner message={state.error} onRetry={fetchData} className="mt-4 sm:mt-6" />
