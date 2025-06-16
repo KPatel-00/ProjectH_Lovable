@@ -48,32 +48,60 @@ const LandlordApplicationsPreview: React.FC<Props> = ({
             </tr>
           </thead>
           <tbody>
-            {(loading ? Array.from({ length: 3 }) : applications.slice(0, 5)).map((app, idx) => (
-              <tr key={app?.id || idx} className="border-b last:border-none">
-                <td className="py-2">
-                  <div className="flex items-center gap-2">
-                    <FileText className="w-4 h-4 text-muted-foreground" />
-                    <span>{app?.listingTitle || <div className="bg-muted h-3 w-16 rounded" />}</span>
-                  </div>
-                </td>
-                <td className="py-2">
-                  <div className="flex items-center gap-2">
-                    <Avatar className="h-7 w-7 text-xs">
-                      <AvatarFallback className="bg-muted text-gray-700 font-bold">{(app?.applicantName || "U")[0]}</AvatarFallback>
-                    </Avatar>
-                    <span>{app?.applicantName || <div className="bg-muted h-3 w-12 rounded" />}</span>
-                  </div>
-                </td>
-                <td className="py-2">
-                  <span className="text-xs">{app?.date || <div className="bg-muted h-3 w-10 rounded" />}</span>
-                </td>
-                <td className="py-2">
-                  <span className={`text-xs px-2 py-0.5 rounded-full font-semibold ${statusColors[app?.status || "New"]}`}>
-                    {app?.status || "New"}
-                  </span>
-                </td>
-              </tr>
-            ))}
+            {loading 
+              ? Array.from({ length: 3 }).map((_, idx) => (
+                  <tr key={idx} className="border-b last:border-none">
+                    <td className="py-2">
+                      <div className="flex items-center gap-2">
+                        <FileText className="w-4 h-4 text-muted-foreground" />
+                        <div className="bg-muted h-3 w-16 rounded" />
+                      </div>
+                    </td>
+                    <td className="py-2">
+                      <div className="flex items-center gap-2">
+                        <Avatar className="h-7 w-7 text-xs">
+                          <AvatarFallback className="bg-muted text-gray-700 font-bold">U</AvatarFallback>
+                        </Avatar>
+                        <div className="bg-muted h-3 w-12 rounded" />
+                      </div>
+                    </td>
+                    <td className="py-2">
+                      <div className="bg-muted h-3 w-10 rounded" />
+                    </td>
+                    <td className="py-2">
+                      <span className="text-xs px-2 py-0.5 rounded-full font-semibold bg-yellow-100 text-yellow-900">
+                        New
+                      </span>
+                    </td>
+                  </tr>
+                ))
+              : applications.slice(0, 5).map((app) => (
+                  <tr key={app.id} className="border-b last:border-none">
+                    <td className="py-2">
+                      <div className="flex items-center gap-2">
+                        <FileText className="w-4 h-4 text-muted-foreground" />
+                        <span>{app.listingTitle}</span>
+                      </div>
+                    </td>
+                    <td className="py-2">
+                      <div className="flex items-center gap-2">
+                        <Avatar className="h-7 w-7 text-xs">
+                          <AvatarFallback className="bg-muted text-gray-700 font-bold">{app.applicantName[0]}</AvatarFallback>
+                        </Avatar>
+                        <span>{app.applicantName}</span>
+                      </div>
+                    </td>
+                    <td className="py-2">
+                      <span className="text-xs">{app.date}</span>
+                    </td>
+                    <td className="py-2">
+                      <span className={`text-xs px-2 py-0.5 rounded-full font-semibold ${statusColors[app.status || "New"]}`}>
+                        {app.status || "New"}
+                      </span>
+                    </td>
+                  </tr>
+                ))
+            }
           </tbody>
         </table>
       </CardContent>

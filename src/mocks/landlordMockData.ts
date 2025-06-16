@@ -13,15 +13,15 @@ export const metrics = [
 ];
 
 export const recentListings = [
-  { id: 1, title: "Modern 2BR Apartment", status: "Active", views: 73, lastUpdated: "2024-06-09" },
-  { id: 2, title: "Cozy Studio Center", status: "Pending", views: 36, lastUpdated: "2024-06-05" },
-  { id: 3, title: "Family Home", status: "Inactive", views: 20, lastUpdated: "2024-06-02" }
+  { id: 1, title: "Modern 2BR Apartment", status: "Active" as const, views: 73, lastUpdated: "2024-06-09" },
+  { id: 2, title: "Cozy Studio Center", status: "Pending" as const, views: 36, lastUpdated: "2024-06-05" },
+  { id: 3, title: "Family Home", status: "Inactive" as const, views: 20, lastUpdated: "2024-06-02" }
 ];
 
 export const recentApplications = [
-  { id: 1, applicantName: "Emma Becker", listingTitle: "Modern 2BR Apartment", date: "2024-06-10" },
-  { id: 2, applicantName: "Lucas Schulz", listingTitle: "Cozy Studio Center", date: "2024-06-08" },
-  { id: 3, applicantName: "Nina Graf", listingTitle: "Family Home", date: "2024-06-06" }
+  { id: 1, applicantName: "Emma Becker", listingTitle: "Modern 2BR Apartment", date: "2024-06-10", status: "New" as const },
+  { id: 2, applicantName: "Lucas Schulz", listingTitle: "Cozy Studio Center", date: "2024-06-08", status: "Under Review" as const },
+  { id: 3, applicantName: "Nina Graf", listingTitle: "Family Home", date: "2024-06-06", status: "New" as const }
 ];
 
 export const FAKE_API_FAIL_RATE = 0.22;
