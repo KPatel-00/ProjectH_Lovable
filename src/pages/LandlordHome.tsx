@@ -165,14 +165,13 @@ const LandlordHome = () => {
           </div>
         </section>
 
-        {/* --- Existing homepage sections remain below: Listings, Applications, Messages, etc --- */}
         {/* --- Your Active Listings Carousel/Grid --- */}
         <LandlordListingsCarousel
           listings={state.data?.recentListings || recentListings}
           loading={state.loading}
           onManage={id => navigate(`/landlord/listing/${id}/edit`)}
           onPreview={id => navigate(`/listing/${id}`)}
-          onViewAll={() => navigate("/landlord/listings")}
+          onViewAll={() => navigate("/landlord/mylistings")}
         />
 
         {/* --- Recent Applications Table/Preview --- */}
@@ -186,7 +185,7 @@ const LandlordHome = () => {
         <LandlordMessagesPreview
           messages={[]} // This would use real data/messages
           loading={false}
-          onInbox={() => navigate("/landlord/messages")}
+          onInbox={() => navigate("/landlord/inbox")}
         />
 
         {/* --- Performance Summary (Optional) --- */}

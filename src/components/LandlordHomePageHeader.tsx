@@ -1,7 +1,7 @@
 
 import React, { useState } from "react";
 import { NavLink, useNavigate, useLocation } from "react-router-dom";
-import { Menu, Bell, User, LogOut, LayoutDashboard, List, HelpCircle, FileText, Settings } from "lucide-react";
+import { Menu, Bell, User, LogOut, LayoutDashboard, List, HelpCircle, FileText, Settings, MessageSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import LanguageSelector from "@/components/LanguageSelector";
 import {
@@ -40,12 +40,13 @@ const avatarMenu = [
   { label: "Dashboard", icon: LayoutDashboard, path: "/landlord/dashboard" },
   { label: "My Listings", icon: List, path: "/landlord/dashboard/mylistings" },
   { label: "Applications Management", icon: FileText, path: "/landlord/dashboard/applications" },
+  { label: "Inbox", icon: MessageSquare, path: "/inbox" },
   { label: "Settings", icon: Settings, path: "/settings" }
 ];
 
 const navLinks = [
-  { name: "Dashboard", to: "/landlord/dashboard" },
-  { name: "My Listings", to: "/landlord/dashboard/mylistings" },
+  { name: "Browse Properties", to: "/search" },
+  { name: "List your Property", to: "/createlisting" },
   { name: "Help Center", to: "/help" },
 ];
 
@@ -80,9 +81,9 @@ const LandlordHomePageHeader = () => {
 
   // map navLinks with translation
   const translatedNavLinks = [
-    { name: t("dashboard"), to: "/landlord/dashboard" },
-    { name: t("myListings"), to: "/landlord/dashboard/mylistings" },
-    { name: t("helpCenter"), to: "/help" },
+    { name: t("browseProperties") || "Browse Properties", to: "/search" },
+    { name: t("listYourProperty") || "List your Property", to: "/createlisting" },
+    { name: t("helpCenter") || "Help Center", to: "/help" },
   ];
 
   // Accessibility: use skip link focus management
@@ -106,7 +107,23 @@ const LandlordHomePageHeader = () => {
         </div>
         
         {/* --- CENTER: Navigation Menu --- */}
-        <LandlordNavLinks />
+        <nav className="hidden md:flex gap-2 sm:gap-8 flex-1 justify-center">
+          {navLinks.map(link => (
+            <NavLink
+              key={link.to}
+              to={link.to}
+              className={({ isActive }) =>
+                `relative py-2 px-4 text-xs font-medium uppercase tracking-wide transition-all duration-300 ease-out ${
+                  isActive
+                    ? "text-primary after:absolute after:-bottom-1 after:left-1/2 after:-translate-x-1/2 after:w-3/4 after:h-0.5 after:bg-primary after:rounded-full after:content-[''] after:animate-in after:slide-in-from-bottom-1"
+                    : "text-muted-foreground hover:text-primary hover:scale-105"
+                }`
+              }
+            >
+              {link.name}
+            </NavLink>
+          ))}
+        </nav>
         
         {/* --- RIGHT: Actions --- */}
         <div className="flex items-center space-x-1">
@@ -132,6 +149,8 @@ const LandlordHomePageHeader = () => {
                   ? "dashboard"
                   : item.label === "My Listings"
                   ? "myListings"
+                  : item.label === "Inbox"
+                  ? "inbox"
                   : item.label === "Settings"
                   ? "settings"
                   : item.label
@@ -153,6 +172,8 @@ const LandlordHomePageHeader = () => {
                     ? "dashboard"
                     : item.label === "My Listings"
                     ? "myListings"
+                    : item.label === "Inbox"
+                    ? "inbox"
                     : item.label === "Settings"
                     ? "settings"
                     : item.label
