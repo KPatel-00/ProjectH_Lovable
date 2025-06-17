@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -14,6 +15,9 @@ import LandlordMessagesPreview from "@/components/landlord/LandlordMessagesPrevi
 import LandlordPerformanceSummary from "@/components/landlord/LandlordPerformanceSummary";
 import LandlordEnhancements from "@/components/landlord/LandlordEnhancements";
 import LandlordTrustShortcuts from "@/components/landlord/LandlordTrustShortcuts";
+import LandlordWelcomeBanner from "@/components/landlord/LandlordWelcomeBanner";
+import LandlordQuickStatsGrid from "@/components/landlord/LandlordQuickStatsGrid";
+import LandlordCTAPanel from "@/components/landlord/LandlordCTAPanel";
 
 // Types for metrics/stat cards
 const ALL_STAT_KEYS = [
@@ -43,7 +47,6 @@ const getStatCardData = (
   stats: { labelKey: string; value: number }[] | null | undefined,
   unreadMessages: number
 ): QuickStatCard[] => {
-  // Map to default, but use values from metrics if available
   return LANDLORD_STAT_DEFAULTS.map((stat) => {
     if (stat.key === "unreadMessages") {
       return { ...stat, value: unreadMessages ?? 0 };
@@ -88,129 +91,88 @@ const LandlordHome = () => {
 
   const landlordObj = state.data?.landlord || landlord;
   const statsArr = state.data?.metrics || metrics;
-  // Placeholder for unread messages (could be dynamically fetched later)
   const unreadMessages = 5;
-
-  // Map all quick stats into cards for grid
   const quickStats: QuickStatCard[] = getStatCardData(statsArr, unreadMessages);
 
   return (
-    <div className="min-h-screen flex flex-col bg-neutral-50">
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-neutral-50 to-neutral-100">
       <Header />
-      <main className="flex-1 w-full max-w-5xl mx-auto px-2 sm:px-6 pt-8 pb-14 flex flex-col gap-8"
+      <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-16"
             id="main-content">
-        {/* --- Error Banner --- */}
+        
+        {/* Error Banner */}
         {state.error && (
-          <ErrorBanner message={state.error} onRetry={fetchData} className="mt-2" />
+          <ErrorBanner message={state.error} onRetry={fetchData} className="mb-6" />
         )}
 
-        {/* --- Welcome Banner --- */}
-        <section className="flex items-center gap-4 px-6 py-5 rounded-2xl bg-white shadow-md">
-          {/* Avatar */}
-          <div className="flex items-center justify-center h-16 w-16 rounded-full bg-primary text-white font-bold text-3xl">
-            {landlordObj.firstName?.[0] || "?"}
+        {/* Welcome Banner */}
+        <LandlordWelcomeBanner
+          name={landlordObj.firstName}
+          business={landlordObj.businessName}
+          verified={landlordObj.verified}
+        />
+
+        {/* Quick Stats & CTAs Section */}
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-8">
+          <div className="lg:col-span-3">
+            <LandlordQuickStatsGrid stats={quickStats} loading={state.loading} />
           </div>
-          {/* Name + Badge */}
-          <div className="flex-1 flex flex-col gap-1">
-            <div className="flex items-center gap-2">
-              <span className="text-2xl font-bold leading-tight text-gray-900">
-                Welcome back, {landlordObj.firstName}!
-              </span>
-              {landlordObj.verified && (
-                <Shield className="text-green-600 w-5 h-5" aria-label="Verified" />
-              )}
-            </div>
-            <div className="flex items-center">
-              <span className="text-sm text-muted-foreground font-semibold">{landlordObj.businessName}</span>
-              {landlordObj.verified && (
-                <span className="ml-3 px-2 py-0.5 rounded bg-green-100 text-green-700 text-xs font-semibold">Verified</span>
-              )}
-            </div>
+          <div className="lg:col-span-1">
+            <LandlordCTAPanel onCreateListing={() => navigate("/createlisting")} onOpenDashboard={() => navigate("/landlord/dashboard")} />
           </div>
-        </section>
+        </div>
 
-        {/* --- Quick Stats & CTA Grid --- */}
-        <section className="flex flex-col md:flex-row gap-4">
-          {/* Stats Cards Grid */}
-          <div className="flex-1 bg-white rounded-2xl shadow-md p-5 flex flex-col">
-            <div className="text-xs font-bold text-muted-foreground mb-5">Quick Overview</div>
-            <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-3">
-              {quickStats.map(stat =>
-                <div
-                  key={stat.key}
-                  className="flex items-center gap-3 p-4 bg-neutral-50 rounded-xl border hover:shadow transition"
-                >
-                  <div className="text-2xl">
-                    {stat.icon}
-                  </div>
-                  <div className="flex flex-col">
-                    <span className="text-lg font-extrabold text-gray-900">{state.loading ? "--" : stat.value}</span>
-                    <span className="text-xs text-muted-foreground">{stat.label}</span>
-                  </div>
-                </div>
-              )}
-            </div>
+        {/* Content Sections */}
+        <div className="space-y-8">
+          {/* Your Active Listings */}
+          <LandlordListingsCarousel
+            listings={state.data?.recentListings || recentListings}
+            loading={state.loading}
+            onManage={id => navigate(`/landlord/listing/${id}/edit`)}
+            onPreview={id => navigate(`/listing/${id}`)}
+            onViewAll={() => navigate("/landlord/mylistings")}
+          />
+
+          {/* Recent Applications & Messages */}
+          <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
+            <LandlordApplicationsPreview
+              applications={state.data?.recentApplications || recentApplications}
+              loading={state.loading}
+              onViewAll={() => navigate("/landlord/dashboard/applications")}
+            />
+            
+            <LandlordMessagesPreview
+              messages={[]}
+              loading={false}
+              onInbox={() => navigate("/landlord/inbox")}
+            />
           </div>
-          {/* CTAs Panel */}
-          <div className="flex flex-col justify-between bg-white rounded-2xl shadow-md p-5 min-w-[220px]">
-            <div className="flex flex-col gap-4">
-              <Button className="w-full" size="lg" onClick={() => navigate("/createlisting")}>
-                + Create New Listing
-              </Button>
-              <Button className="w-full" size="lg" variant="outline"
-                      onClick={() => navigate("/landlord/dashboard")}>
-                Open Dashboard
-              </Button>
-            </div>
+
+          {/* Performance Summary */}
+          <LandlordPerformanceSummary
+            insights={{
+              views: 795,
+              messages: 32,
+              conversion: 12.9,
+              avgDays: 6.7,
+            }}
+            loading={false}
+            onViewDashboard={() => navigate("/landlord/dashboard")}
+          />
+
+          {/* Enhancements & Trust */}
+          <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
+            <LandlordEnhancements
+              tips={[
+                { tip: "This listing has no floor plan – add one to get 30% more leads", trigger: "Low engagement" },
+                { tip: "Tenants are interested – follow up on 3 unread messages", trigger: "Unreplied messages" },
+                { tip: "Applications pending approval", trigger: "Apps not yet reviewed" }
+              ]}
+            />
+            
+            <LandlordTrustShortcuts />
           </div>
-        </section>
-
-        {/* --- Your Active Listings Carousel/Grid --- */}
-        <LandlordListingsCarousel
-          listings={state.data?.recentListings || recentListings}
-          loading={state.loading}
-          onManage={id => navigate(`/landlord/listing/${id}/edit`)}
-          onPreview={id => navigate(`/listing/${id}`)}
-          onViewAll={() => navigate("/landlord/mylistings")}
-        />
-
-        {/* --- Recent Applications Table/Preview --- */}
-        <LandlordApplicationsPreview
-          applications={state.data?.recentApplications || recentApplications}
-          loading={state.loading}
-          onViewAll={() => navigate("/landlord/dashboard/applications")}
-        />
-
-        {/* --- Messages Preview --- */}
-        <LandlordMessagesPreview
-          messages={[]} // This would use real data/messages
-          loading={false}
-          onInbox={() => navigate("/landlord/inbox")}
-        />
-
-        {/* --- Performance Summary (Optional) --- */}
-        <LandlordPerformanceSummary
-          insights={{
-            views: 795,
-            messages: 32,
-            conversion: 12.9,
-            avgDays: 6.7,
-          }}
-          loading={false}
-          onViewDashboard={() => navigate("/landlord/dashboard")}
-        />
-
-        {/* --- Recommended Enhancements --- */}
-        <LandlordEnhancements
-          tips={[
-            { tip: "This listing has no floor plan – add one to get 30% more leads", trigger: "Low engagement" },
-            { tip: "Tenants are interested – follow up on 3 unread messages", trigger: "Unreplied messages" },
-            { tip: "Applications pending approval", trigger: "Apps not yet reviewed" }
-          ]}
-        />
-
-        {/* --- Trust & Compliance Shortcuts --- */}
-        <LandlordTrustShortcuts />
+        </div>
       </main>
       <Footer />
     </div>
